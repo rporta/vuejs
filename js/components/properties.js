@@ -1,6 +1,4 @@
-var hexaColorR = new RegExp("(#*([a-fA-F0-9]{6}))","g");
-
-var colors = {
+var colorsFull = {
 	"red" : new String("#ffebee red lighten-5,#ffcdd2 red lighten-4,#ef9a9a red lighten-3,#e57373 red lighten-2,#ef5350 red lighten-1,#f44336 red,#e53935 red darken-1,#d32f2f red darken-2,#c62828 red darken-3,#b71c1c red darken-4,#ff8a80 red accent-1,#ff5252 red accent-2,#ff1744 red accent-3,#d50000 red accent-4").split(","), 
 	"pink" : new String("#fce4ec pink lighten-5,#f8bbd0 pink lighten-4,#f48fb1 pink lighten-3,#f06292 pink lighten-2,#ec407a pink lighten-1,#e91e63 pink,#d81b60 pink darken-1,#c2185b pink darken-2,#ad1457 pink darken-3,#880e4f pink darken-4,#ff80ab pink accent-1,#ff4081 pink accent-2,#f50057 pink accent-3,#c51162 pink accent-4").split(","), 
 	"purple" : new String("#f3e5f5 purple lighten-5,#e1bee7 purple lighten-4,#ce93d8 purple lighten-3,#ba68c8 purple lighten-2,#ab47bc purple lighten-1,#9c27b0 purple,#8e24aa purple darken-1,#7b1fa2 purple darken-2,#6a1b9a purple darken-3,#4a148c purple darken-4,#ea80fc purple accent-1,#e040fb purple accent-2,#d500f9 purple accent-3,#aa00ff purple accent-4").split(","),
@@ -22,21 +20,52 @@ var colors = {
 	"blueGrey" : new String("#eceff1 blue-grey lighten-5,#cfd8dc blue-grey lighten-4,#b0bec5 blue-grey lighten-3,#90a4ae blue-grey lighten-2,#78909c blue-grey lighten-1,#607d8b blue-grey,#546e7a blue-grey darken-1,#455a64 blue-grey darken-2,#37474f blue-grey darken-3,#263238 blue-grey darken-4").split(","),
 	"bwt" : new String("#000000 black,#ffffff white,transparent").split(",")			
 };
-
-
-var colorsHexa = function () {
+var colors = (() => {
+	var excludeHexaColorR = new RegExp("[^#a-z0-9].+");
 	var objColor = {};
 	var hexaColor;
-	$.each( colors, function( keyColor, valColor ) {
+	$.each( colorsFull, function( keyColor, valColor ) {
+		var arrayRange = new Array();
+		$.each(valColor, function(i, rangeColor) {
+			hexaColor = excludeHexaColorR.exec(rangeColor);
+			if(hexaColor !== null){
+				arrayRange.push(hexaColor[0].trim());
+			}
+		});
+		objColor[keyColor] = arrayRange;
+	});
+	objColor.bwt.push("transparent");
+	return objColor;
+})();
+
+var colorsHexa = (() => {
+	var hexaColorR = new RegExp("#.{6}");
+	var objColor = {};
+	var hexaColor;
+	$.each( colorsFull, function( keyColor, valColor ) {
 		var arrayRange = new Array();
 		$.each(valColor, function(i, rangeColor) {
 			hexaColor = hexaColorR.exec(rangeColor);
-			if(typeof hexaColor === 'Array'){
-				console.log(hexaColor);
+			if(hexaColor !== null){
+				arrayRange.push(hexaColor[0]);
 			}
+		});
+		objColor[keyColor] = arrayRange;
+	});
+	return objColor;
+})();
+
+var colorText = (() => {
+	var tagText = "-text";
+	var replaceTagText = "-text text-";
+	var objColor = {};
+	$.each( colors, function( keyColor, valColor ) {
+		var arrayRange = new Array();
+		$.each(valColor, function(i, rangeColor) {
+			rangeColor = rangeColor.search(" ") === -1 ? rangeColor + "-text" : rangeColor.replace(" ", replaceTagText);
 			arrayRange.push(rangeColor);
 		});
 		objColor[keyColor] = arrayRange;
 	});
-	// return objColor;
-}
+	return objColor;
+})();
