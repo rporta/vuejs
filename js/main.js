@@ -20,3 +20,5 @@ var app = new Vue({
 });
 
 // aca comienza el trabajo entre instancias aver que pasa...
+
+// var preload = Vue.component(progressIndeterminate);
