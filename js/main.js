@@ -1,7 +1,11 @@
 var app = new Vue({
 	el: '#app',
 	data: {
-
+		'blogTitle' : "algo",
+		'color' : colors,
+		'colorHexa' : colorsHexa,
+		'colorText' : colorsText,
+		'colorFull' : colorsFull
 	},
 	components: {
 		'Indeterminate' : progressIndeterminate
@@ -18,7 +22,3 @@ var app = new Vue({
 		}
 	}
 });
-
-// aca comienza el trabajo entre instancias aver que pasa...
-
-// var preload = Vue.component(progressIndeterminate);

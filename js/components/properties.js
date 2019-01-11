@@ -55,7 +55,7 @@ var colorsHexa = (() => {
 	return objColor;
 })();
 
-var colorText = (() => {
+var colorsText = (() => {
 	var tagText = "-text";
 	var replaceTagText = "-text text-";
 	var objColor = {};
