@@ -69,3 +69,15 @@ var colorsText = (() => {
 	});
 	return objColor;
 })();
+
+
+//necesario para generar id
+var generateId = function(length){
+	var id = "";
+	var char_list = 
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	for(var i=0; i < length; i++ ){  
+		id += char_list.charAt(Math.floor(Math.random() * char_list.length));
+	}
+	return '-' + id;
+}

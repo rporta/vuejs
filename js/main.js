@@ -1,24 +1,9 @@
-var app = new Vue({
-	el: '#app',
-	data: {
-		'blogTitle' : "algo",
-		'color' : colors,
-		'colorHexa' : colorsHexa,
-		'colorText' : colorsText,
-		'colorFull' : colorsFull
-	},
-	components: {
-		'Indeterminate' : progressIndeterminate
-	},
-	methods:{
-		generateId : function(length){
-			var id = "";
-			var char_list = 
-			"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-			for(var i=0; i < length; i++ ){  
-				id += char_list.charAt(Math.floor(Math.random() * char_list.length));
-			}
-			return '-' + id;
-		}
-	}
-});
+//aca trabajo con la instancia
+//example:
+
+var preload = app.newComponent('Indeterminate');
+
+preload.color[0] = app.color.green[5];
+preload.color[1] = app.color.teal[5];
+
+app.create(preload.insertDom());
