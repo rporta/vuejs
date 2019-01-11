@@ -10,7 +10,7 @@ var app = new Vue({
 		[progress.name] : progress
 	},
 	methods:{
-		create : function (element){
+		create : function(element){
 			return this.$el.append(element);
 		},
 		newComponent : function(component){
