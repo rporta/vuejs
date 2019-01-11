@@ -24,6 +24,10 @@ var app = new Vue({
 				id += char_list.charAt(Math.floor(Math.random() * char_list.length));
 			}
 			return '-' + id;
+		},
+		setColor : function(arg){
+			$('body').toggleClass(arg);
+			return this;
 		}
 	}
 });
