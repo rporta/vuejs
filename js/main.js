@@ -1,4 +1,32 @@
 //aca trabajo con la instancia
 //example:
-
-app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(8)).insertDom());
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(1);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(2);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(3);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(4);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(5);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(6);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(7);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(8);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(1);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(2);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(3);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(4);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(5);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(6);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(7);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(8);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(1);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(2);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(3);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(4);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(5);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(6);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(7);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(8);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(1);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(2);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(3);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(4);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(5);
+((j) => {app.create(app.newComponent('Preloader').setColor(((range) => {return new Array(app.color.blue[range], app.color.yellow[range])})(j)).insertDom())})(6);
