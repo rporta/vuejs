@@ -7,14 +7,14 @@ var app = new Vue({
 		'colorFull' : colorsFull
 	},
 	components: {
-		[progress.name] : progress
+		[Preloader.name] : Preloader
 	},
 	methods:{
 		create : function(element){
 			return this.$el.append(element);
 		},
 		newComponent : function(component){
-			return eval("new this.$options.components." + component + "()");
+			return new this.$options.components[component]();
 		},
 		generateId: function(length){
 			var id = "";

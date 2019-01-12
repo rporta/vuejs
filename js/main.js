@@ -1,7 +1,7 @@
 //aca trabajo con la instancia
 //example:
 
-app.setColor(app.color.red[5]);
+app.setColor(app.color.red[8]);
 ((j,a,x) => {app.create(app.newComponent('Preloader').setColor(((range, color1, color2) => {return new Array(app.color[color1][range], app.color[color2][range])})(j,a,x)).insertDom())})(1,"lightGreen", "cyan");
 ((j,a,x) => {app.create(app.newComponent('Preloader').setColor(((range, color1, color2) => {return new Array(app.color[color1][range], app.color[color2][range])})(j,a,x)).insertDom())})(2,"lime", "teal");
 ((j,a,x) => {app.create(app.newComponent('Preloader').setColor(((range, color1, color2) => {return new Array(app.color[color1][range], app.color[color2][range])})(j,a,x)).insertDom())})(3,"yellow", "green");

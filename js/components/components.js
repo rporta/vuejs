@@ -1,4 +1,4 @@
-var progress = {
+var Preloader = {
 	name : "Preloader",
 	data: function () {
 		return {
@@ -22,15 +22,12 @@ var progress = {
 		},
 		setMode : function(set){
 			switch (set) {
-				case 0 : this.mode = "indeterminate"
-				break;
-				case 1 : this.mode = "determinate"
-				break;
+				case 0 :
 				case "indeterminate" : this.mode = "indeterminate"
 				break;
+				case 1 : 
 				case "determinate" : this.mode = "determinate"
 				break;
-
 			}
 			return this;
 		},
