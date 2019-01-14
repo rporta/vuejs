@@ -35,14 +35,11 @@ var Preloader = {
 			var out;
 			switch (this.mode) {
 				case 0 : out = {};
-				break;
-				case 1 : out = { width : this.progress + this.percentage};
-				break; 
 				case "indeterminate" : out = {};
 				break;
+				case 1 : out = { width : this.progress + this.percentage};
 				case "determinate" : out = { width : this.progress + this.percentage};
 				break;
-
 			}	
 			return out;
 		},
