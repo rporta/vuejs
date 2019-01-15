@@ -7,11 +7,37 @@ app.setColor(app.color.blue[8]);
 
 var container = app.newComponent('c-container').setStyleP(true);
 var section = app.newComponent('c-section').setStyleP(true);
-var preloader = app.newComponent('c-preloader');
+
+var preloader = new Array();
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
+preloader.push(app.newComponent('c-preloader'));
 
 app.create(section);
 section.create(container);
-container.create(preloader);
+$.each(preloader, function(index, val) {
+	container.create(val);
+	
+});
+
 
 // ((j,a,x) => {app.create(app.newComponent('c-preloader').setColor(((range, color1, color2) => {return new Array(app.color[color1][range], app.color[color2][range])})(j,a,x)).insertDom())})(2,"lime", "teal");
 // ((j,a,x) => {app.create(app.newComponent('c-preloader').setColor(((range, color1, color2) => {return new Array(app.color[color1][range], app.color[color2][range])})(j,a,x)).insertDom())})(3,"yellow", "green");
