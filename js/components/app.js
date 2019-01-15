@@ -1,13 +1,24 @@
 var app = new Vue({
 	el: '#app',
 	data: {
+		'colorFull' : colorsFull,
 		'color' : colors,
 		'colorHexa' : colorsHexa,
 		'colorText' : colorsText,
-		'colorFull' : colorsFull
+		'float' : float,
+		'textAling' : textAling,
+		'edge' : edge,
+		'shadow' : shadow,
+		'transitions' : transitions,
+		'sizeIcon' : sizeIcon,
+		'sizeCard' : sizeCard,
+		'sizePreloader' : sizePreloader,
+		'waves' : waves
 	},
 	components: {
-		[Preloader.name] : Preloader
+		[preloader.name] : preloader,
+		[container.name] : container,
+		[section.name] : section
 	},
 	methods:{
 		create : function(element){
@@ -31,3 +42,4 @@ var app = new Vue({
 		}
 	}
 });
+

@@ -37,7 +37,6 @@ var colors = (() => {
 	objColor.bwt.push("transparent");
 	return objColor;
 })();
-
 var colorsHexa = (() => {
 	var hexaColorR = new RegExp("#.{6}");
 	var objColor = {};
@@ -54,7 +53,6 @@ var colorsHexa = (() => {
 	});
 	return objColor;
 })();
-
 var colorsText = (() => {
 	var tagText = "-text";
 	var replaceTagText = "-text text-";
@@ -68,4 +66,62 @@ var colorsText = (() => {
 		objColor[keyColor] = arrayRange;
 	});
 	return objColor;
+})();
+var float = ((arg) => {
+	var out = {};
+	$.each(arg, function(x, i){
+		out[i.slice(0,1)] = i;
+	});
+	return out;
+})(new Array("left", "center", "right"));
+var textAling = ((arg) => {
+	var out = {};
+	$.each(arg, function(x, i){
+		out[x] = i + "-align";
+	});
+	return out;
+})(float);
+var edge = ((arg) => {
+	var out = {};
+	$.each(arg, function(x, i){
+		out[i.slice(0,1)] = i;
+	});
+	return out;
+})(new Array("left", "right"));
+var shadow = ((count) => {
+	var out = new Array();
+	$.each(new Array(count), function(x, i) {out.push("z-depth-" + (x+1) )});
+	return out;
+})(5);
+var transitions = ((arg) => {
+	return {in : arg, out : arg + ' scale-out'};
+})('scale-transition');
+var sizeIcon = ((arg) => {
+	var out = {};
+	$.each(arg, function(x, i){
+		out[i.slice(0,1)] = i;
+	});
+	return out;
+})(new Array("tiny", "small", "medium", "large"));
+var sizeCard = ((arg) => {
+	var out = {};
+	$.each(arg, function(x, i){
+		out[i.slice(0,1)] = i;
+	});
+	return out;
+})(new Array("small", "medium", "large"));
+var sizePreloader = ((arg) => {
+	var out = {};
+	$.each(arg, function(x, i){
+		out[i.slice(0,1)] = i;
+	});
+	return out;
+})(new Array("small", "medium", "big"));
+var waves = (() => {
+	var out = {default : new Array(), circle : new Array()};
+	$.each(new String("waves-effect,waves-effect waves-light,waves-effect waves-red,waves-effect waves-yellow,waves-effect waves-orange,waves-effect waves-purple,waves-effect waves-green,waves-effect waves-teal").split(","), function(x, i){
+		out.default.push(i);
+		out.circle.push(((c , s = " ") => { return x == 0 ? i + s + c : i.replace(" ", s + c + s)})("waves-circle"));
+	});
+	return out;
 })();
