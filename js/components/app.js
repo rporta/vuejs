@@ -22,7 +22,7 @@ var app = new Vue({
 	},
 	methods:{
 		create : function(element){
-			return this.$el.append(element);
+			return this.$el.append(element.$el);
 		},
 		newComponent : function(component){
 			return new this.$options.components[component]();
