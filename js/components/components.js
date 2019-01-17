@@ -10,7 +10,7 @@ var preloader = {
 			show : true
 		}
 	},
-	template: '<div v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="color[0]"  class="progress" ><div v-bind:style="this.setStyle()" v-bind:class="color[1] + space + mode"></div></div>',
+	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="color[0]"  class="progress" ><div v-bind:style="this.setStyle()" v-bind:class="color[1] + space + mode"></div></div></transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -69,7 +69,7 @@ var preloaderCircle = {
 		}
 	},
 	template: 
-	'<div v-show="this.show" v-bind:class="this.size"  class="preloader-wrapper active">\
+	'<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:class="this.size"  class="preloader-wrapper active">\
 	<div class="spinner-layer" v-bind:style="this.setStyle()">\
 	<div class="circle-clipper left">\
 	<div class="circle"></div>\
@@ -81,7 +81,7 @@ var preloaderCircle = {
 	<div class="circle"></div>\
 	</div>\
 	</div>\
-	</div>',
+	</div></transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -130,7 +130,7 @@ var container = {
 			show : true
 		}
 	},
-	template: '<div v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>',
+	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div></transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -231,7 +231,7 @@ var section = {
 			show : true
 		}
 	},
-	template: '<div v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div>',
+	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div></transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -421,7 +421,8 @@ var preloaderCircleFull = {
 		setSize : function(arg){
 			this.size = arg;
 			if(this.$el){
-				container = this.getChild(this);
+				section = this.getInstance();
+				container = this.getChild(section);
 				preloaderCircle = this.getChild(container).setSize(arg);
 			}
 			return this;
@@ -429,7 +430,7 @@ var preloaderCircleFull = {
 		setShow : function(arg){
 			this.show = arg;
 			if(this.$el){
-				this.getInstance().setShow(arg);
+				var section = this.getInstance().setShow(arg);
 			}			
 			return this;
 		},		
@@ -437,7 +438,13 @@ var preloaderCircleFull = {
 			return instance.$el.childNodes[index].__vue__;
 		},
 		getInstance : function (){
-			return this.$el.__vue__;
+			//transition on
+			return this._vnode.child;
+			
+			//transition off
+			// return this.$el.__vue__.$options.parent;
+			// return this.$el.__vue__.$options.parent;
+			
 		}
 	},
 	render: function (createElement) {

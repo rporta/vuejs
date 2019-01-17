@@ -5,8 +5,7 @@ var app = new Vue({
 		'color' : colors,
 		'colorHexa' : colorsHexa,
 		'colorText' : colorsText,
-		'float' : float,
-		'textAling' : textAling,
+		'float' : float,		'textAling' : textAling,
 		'edge' : edge,
 		'shadow' : shadow,
 		'transitions' : transitions,
@@ -43,17 +42,45 @@ var app = new Vue({
 			$('body').toggleClass(arg);
 			return this;
 		},
-		generateColor : function(){
+		generateColor : function(arg = 0){
 			var color = new Array("red", "pink", "purple", "deepPurple", "indigo", "blue", "lightBlue", "cyan", "teal", "green", "lightGreen", "lime", "yellow", "amber", "orange", "deepOrange", "brown", "grey", "blueGrey", "bwt");
-			return ((c) => { return this.color[c][Math.floor(Math.random() * this.color[c].length)]})(color[Math.floor(Math.random() * color.length)])
+			var out;
+			if(arg > 0){
+				out = new Array();
+				for (var i = 0; i < arg; i++) {
+					out.push(((c) => { return this.color[c][Math.floor(Math.random() * this.color[c].length)]})(color[Math.floor(Math.random() * color.length)]));
+				}
+				return out ;
+			}else{
+				out = ((c) => { return this.color[c][Math.floor(Math.random() * this.color[c].length)]})(color[Math.floor(Math.random() * color.length)]);
+			}
+			return out;
 		},
-		generateColorText : function(){
+		generateColorText : function(arg = 0){
 			var color = new Array("red", "pink", "purple", "deepPurple", "indigo", "blue", "lightBlue", "cyan", "teal", "green", "lightGreen", "lime", "yellow", "amber", "orange", "deepOrange", "brown", "grey", "blueGrey", "bwt");
-			return ((c) => { return this.colorText[c][Math.floor(Math.random() * this.colorText[c].length)]})(color[Math.floor(Math.random() * color.length)])
+			if(arg > 0){
+				out = new Array();
+				for (var i = 0; i < arg; i++) {
+					out.push(((c) => { return this.colorText[c][Math.floor(Math.random() * this.colorText[c].length)]})(color[Math.floor(Math.random() * color.length)]));
+				}
+				return out;
+			}else{
+				out = ((c) => { return this.colorText[c][Math.floor(Math.random() * this.colorText[c].length)]})(color[Math.floor(Math.random() * color.length)]);
+			}
+			return out;
 		},
-		generateColorHexa : function(){
+		generateColorHexa : function(arg = 0){
 			var color = new Array("red", "pink", "purple", "deepPurple", "indigo", "blue", "lightBlue", "cyan", "teal", "green", "lightGreen", "lime", "yellow", "amber", "orange", "deepOrange", "brown", "grey", "blueGrey", "bwt");
-			return ((c) => { return this.colorHexa[c][Math.floor(Math.random() * this.colorHexa[c].length)]})(color[Math.floor(Math.random() * color.length)])
+			if(arg > 0){
+				out = new Array();
+				for (var i = 0; i < arg; i++) {
+					out.push(((c) => { return this.colorHexa[c][Math.floor(Math.random() * this.colorHexa[c].length)]})(color[Math.floor(Math.random() * color.length)]));
+				}
+				return out;
+			}else{
+				out = ((c) => { return this.colorHexa[c][Math.floor(Math.random() * this.colorHexa[c].length)]})(color[Math.floor(Math.random() * color.length)]);
+			}
+			return out;
 		}
 	}
 });
