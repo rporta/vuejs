@@ -6,10 +6,11 @@ var preloader = {
 			mode : "indeterminate",
 			space : " ",
 			percentage : "%",
-			progress : 40
+			progress : 40,
+			show : true
 		}
 	},
-	template: '<div v-bind:id="this.generateId(5)"  v-bind:class="color[0]"  class="progress" ><div v-bind:style="this.setStyle()" v-bind:class="color[1] + space + mode"></div></div>',
+	template: '<div v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="color[0]"  class="progress" ><div v-bind:style="this.setStyle()" v-bind:class="color[1] + space + mode"></div></div>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -51,7 +52,11 @@ var preloader = {
 		setColor : function(arg){
 			this.color = arg
 			return this;
-		}
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}		
 	}
 };
 var preloaderCircle = {
@@ -59,11 +64,12 @@ var preloaderCircle = {
 	data: function () {
 		return {
 			colorsHexa : "red",
-			size : "big"
+			size : "big",
+			show : true
 		}
 	},
 	template: 
-	'<div v-bind:class="this.size"  class="preloader-wrapper active">\
+	'<div v-show="this.show" v-bind:class="this.size"  class="preloader-wrapper active">\
 	<div class="spinner-layer" v-bind:style="this.setStyle()">\
 	<div class="circle-clipper left">\
 	<div class="circle"></div>\
@@ -98,7 +104,11 @@ var preloaderCircle = {
 		setSize : function(arg){
 			this.size = arg;
 			return this;
-		}
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}			
 	}
 };
 var container = {
@@ -116,10 +126,11 @@ var container = {
 			hoverable : false,
 			valign : false,
 			styleP :false,
-			container :true
+			container :true,
+			show : true
 		}
 	},
-	template: '<div v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>',
+	template: '<div v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -194,7 +205,11 @@ var container = {
 		setContainer : function (arg){
 			this.container = arg;
 			return this;
-		}
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}			
 	}
 };
 var section = {
@@ -212,10 +227,11 @@ var section = {
 			hoverable : false,
 			container : false,
 			valign : false,
-			styleP : false
+			styleP : false,
+			show : true
 		}
 	},
-	template: '<div v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div>',
+	template: '<div v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -286,7 +302,11 @@ var section = {
 				height: "100%"
 			};
 			return this.styleP ? stylePreload : {};
-		}
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}		
 	}
 };
 var preloaderFull = {
@@ -296,7 +316,8 @@ var preloaderFull = {
 			sectionColor : "",
 			color : new Array("", ""),
 			mode : 0,
-			progress : 40
+			progress : 40,
+			show : true
 		}
 	},
 	methods: {
@@ -338,6 +359,13 @@ var preloaderFull = {
 			}				
 			return this;
 		},
+		setShow : function(arg){
+			this.show = arg;
+			if(this.$el){
+				this.getInstance().setShow(arg);
+			}			
+			return this;
+		},			
 		getChild : function(instance, index = 0){
 			return instance.$el.childNodes[index].__vue__;
 		},
@@ -370,7 +398,8 @@ var preloaderCircleFull = {
 		return {
 			sectionColor : "",
 			colorsHexa : "red",
-			size : "big"
+			size : "big",
+			show : true
 		}
 	},
 	methods: {
@@ -397,6 +426,13 @@ var preloaderCircleFull = {
 			}
 			return this;
 		},
+		setShow : function(arg){
+			this.show = arg;
+			if(this.$el){
+				this.getInstance().setShow(arg);
+			}			
+			return this;
+		},		
 		getChild : function(instance, index = 0){
 			return instance.$el.childNodes[index].__vue__;
 		},
