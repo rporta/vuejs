@@ -16,6 +16,8 @@ var app = new Vue({
 		'waves' : waves
 	},
 	components: {
+		[preloaderCircleFull.name] : preloaderCircleFull,
+		[preloaderCircle.name] : preloaderCircle,
 		[preloader.name] : preloader,
 		[preloaderFull.name] : preloaderFull,
 		[container.name] : container,

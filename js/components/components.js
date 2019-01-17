@@ -54,6 +54,53 @@ var preloader = {
 		}
 	}
 };
+var preloaderCircle = {
+	name : "c-preloaderCircle",
+	data: function () {
+		return {
+			colorsHexa : "red",
+			size : "big"
+		}
+	},
+	template: 
+	'<div v-bind:class="this.size"  class="preloader-wrapper active">\
+	<div class="spinner-layer" v-bind:style="this.setStyle()">\
+	<div class="circle-clipper left">\
+	<div class="circle"></div>\
+	</div>\
+	<div class="gap-patch">\
+	<div class="circle"></div>\
+	</div>\
+	<div class="circle-clipper right">\
+	<div class="circle"></div>\
+	</div>\
+	</div>\
+	</div>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		create : function(element){
+			return this.$el.append(element.$mount().$el);
+		},
+		setStyle : function(){
+			var out;
+			out = {borderColor : this.colorsHexa}	
+			return out;
+		},
+		setColorHexa : function(arg){
+			this.colorsHexa = arg
+			return this;
+		},
+		setSize : function(arg){
+			this.size = arg;
+			return this;
+		}
+	}
+};
 var container = {
 	name : "c-container",
 	data: function () {
@@ -68,10 +115,11 @@ var container = {
 			cardpanel : false,
 			hoverable : false,
 			valign : false,
-			styleP :false
+			styleP :false,
+			container :true
 		}
 	},
-	template: '<div v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  class="container" v-bind:style="this.setStyle()">{{this.text}}</div>',
+	template: '<div v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -131,7 +179,8 @@ var container = {
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "" ).join(" ");
+			var container = "container";
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
 		setStyle : function(){			
 			var stylePreload = {
@@ -141,6 +190,10 @@ var container = {
 				transform: "translate(-50%, -50%)"
 			};
 			return this.styleP ? stylePreload : {};			
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
 		}
 	}
 };
@@ -242,7 +295,7 @@ var preloaderFull = {
 		return {
 			sectionColor : "",
 			color : new Array("", ""),
-			mode : "indeterminate",
+			mode : 0,
 			progress : 40
 		}
 	},
@@ -304,6 +357,65 @@ var preloaderFull = {
 	},
 	components: {
 		[preloader.name] : preloader,
+		[this.name] : preloaderFull,
+		[container.name] : container,
+		[section.name] : section
+	}
+};
+
+
+var preloaderCircleFull = {
+	name : "c-preloaderCircleFull",
+	data: function () {
+		return {
+			sectionColor : "",
+			colorsHexa : "red",
+			size : "big"
+		}
+	},
+	methods: {
+		setColorHexa : function(arg){
+			this.colorsHexa = arg;
+			if(this.$el){
+				container = this.getChild(this);
+				preloaderCircle = this.getChild(container).setColorHexa(arg);
+			}
+			return this;
+		},
+		setSectionColor : function(arg){
+			this.sectionColor = arg;
+			if(this.$el){
+				this.getInstance().setColor(arg);
+			}			
+			return this;
+		},
+		setSize : function(arg){
+			this.size = arg;
+			if(this.$el){
+				container = this.getChild(this);
+				preloaderCircle = this.getChild(container).setSize(arg);
+			}
+			return this;
+		},
+		getChild : function(instance, index = 0){
+			return instance.$el.childNodes[index].__vue__;
+		},
+		getInstance : function (){
+			return this.$el.__vue__;
+		}
+	},
+	render: function (createElement) {
+		var csection = new this.$options.components['c-section']().$mount().setStyleP(true).setColor(this.sectionColor);
+		var ccontainer = new this.$options.components['c-container']().$mount().setStyleP(true).setContainer(false);
+		var preloaderCircle = new this.$options.components['c-preloaderCircle']().$mount().setColorHexa(this.colorsHexa).setSize(this.size);
+		csection.create(ccontainer);
+		ccontainer.create(preloaderCircle);
+		var section = createElement('c-section');
+		section.child = csection;
+		return section;
+	},
+	components: {
+		[preloaderCircle.name] : preloaderCircle,
 		[this.name] : preloaderFull,
 		[container.name] : container,
 		[section.name] : section

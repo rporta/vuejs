@@ -6,8 +6,8 @@
 
 app.setColor(app.generateColor());
 
-var preloaderFull = app.newComponent('c-preloaderFull').setSectionColor(app.generateColor());
-app.create(preloaderFull);
+var preloaderCircleFull = app.newComponent('c-preloaderCircleFull');
+app.create(preloaderCircleFull);
 // setTimeout(() => {
 // 	preloaderFull.setColor(new Array(app.generateColor(), app.generateColor()));
 // }, 3000);
