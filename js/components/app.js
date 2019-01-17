@@ -17,6 +17,7 @@ var app = new Vue({
 	},
 	components: {
 		[preloader.name] : preloader,
+		[preloaderFull.name] : preloaderFull,
 		[container.name] : container,
 		[section.name] : section
 	},
@@ -39,6 +40,18 @@ var app = new Vue({
 		setColor : function(arg){
 			$('body').toggleClass(arg);
 			return this;
+		},
+		generateColor : function(){
+			var color = new Array("red", "pink", "purple", "deepPurple", "indigo", "blue", "lightBlue", "cyan", "teal", "green", "lightGreen", "lime", "yellow", "amber", "orange", "deepOrange", "brown", "grey", "blueGrey", "bwt");
+			return ((c) => { return this.color[c][Math.floor(Math.random() * this.color[c].length)]})(color[Math.floor(Math.random() * color.length)])
+		},
+		generateColorText : function(){
+			var color = new Array("red", "pink", "purple", "deepPurple", "indigo", "blue", "lightBlue", "cyan", "teal", "green", "lightGreen", "lime", "yellow", "amber", "orange", "deepOrange", "brown", "grey", "blueGrey", "bwt");
+			return ((c) => { return this.colorText[c][Math.floor(Math.random() * this.colorText[c].length)]})(color[Math.floor(Math.random() * color.length)])
+		},
+		generateColorHexa : function(){
+			var color = new Array("red", "pink", "purple", "deepPurple", "indigo", "blue", "lightBlue", "cyan", "teal", "green", "lightGreen", "lime", "yellow", "amber", "orange", "deepOrange", "brown", "grey", "blueGrey", "bwt");
+			return ((c) => { return this.colorHexa[c][Math.floor(Math.random() * this.colorHexa[c].length)]})(color[Math.floor(Math.random() * color.length)])
 		}
 	}
 });

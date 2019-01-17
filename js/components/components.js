@@ -236,3 +236,76 @@ var section = {
 		}
 	}
 };
+var preloaderFull = {
+	name : "c-preloaderFull",
+	data: function () {
+		return {
+			sectionColor : "",
+			color : new Array("", ""),
+			mode : "indeterminate",
+			progress : 40
+		}
+	},
+	methods: {
+		setColor : function(arg){
+			this.color = arg;
+			if(this.$el){
+				container = this.getChild(this);
+				preloader = this.getChild(container).setColor(arg);
+			}
+			return this;
+		},
+		setSectionColor : function(arg){
+			this.sectionColor = arg;
+			if(this.$el){
+				this.getInstance().setColor(arg);
+			}			
+			return this;
+		},
+		setMode : function(arg){
+			switch (arg) {
+				case 0 :
+				case "indeterminate" : this.mode = "indeterminate";
+				break;
+				case 1 : 
+				case "determinate" : this.mode = "determinate";
+				break;
+			}
+			if(this.$el){
+				container = this.getChild(this);
+				preloader = this.getChild(container).setMode(arg);
+			}			
+			return this;
+		},
+		setProgress : function(arg){
+			this.progress = arg;
+			if(this.$el){
+				container = this.getChild(this);
+				preloader = this.getChild(container).setProgress(arg);
+			}				
+			return this;
+		},
+		getChild : function(instance, index = 0){
+			return instance.$el.childNodes[index].__vue__;
+		},
+		getInstance : function (){
+			return this.$el.__vue__;
+		}
+	},
+	render: function (createElement) {
+		var csection = new this.$options.components['c-section']().$mount().setStyleP(true).setColor(this.sectionColor);
+		var ccontainer = new this.$options.components['c-container']().$mount().setStyleP(true);
+		var cpreloader = new this.$options.components['c-preloader']().$mount().setColor(this.color).setMode(this.mode).setProgress(this.progress);
+		csection.create(ccontainer);
+		ccontainer.create(cpreloader);
+		var section = createElement('c-section');
+		section.child = csection;
+		return section;
+	},
+	components: {
+		[preloader.name] : preloader,
+		[this.name] : preloaderFull,
+		[container.name] : container,
+		[section.name] : section
+	}
+};

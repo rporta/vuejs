@@ -1,42 +1,17 @@
 //aca trabajo con la instancia
 //example:
 
-app.setColor(app.color.blue[8]);
+
 // ((j,a,x) => {app.create(app.newComponent('c-preloader').setColor(((range, color1, color2) => {return new Array(app.color[color1][range], app.color[color2][range])})(j,a,x)))})(1,"lightGreen", "cyan");
 
+app.setColor(app.generateColor());
 
-var container = app.newComponent('c-container').setStyleP(true);
-var section = app.newComponent('c-section').setStyleP(true);
+var preloaderFull = app.newComponent('c-preloaderFull').setSectionColor(app.generateColor());
+app.create(preloaderFull);
+// setTimeout(() => {
+// 	preloaderFull.setColor(new Array(app.generateColor(), app.generateColor()));
+// }, 3000);
 
-var preloader = new Array();
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-preloader.push(app.newComponent('c-preloader'));
-
-app.create(section);
-section.create(container);
-$.each(preloader, function(index, val) {
-	container.create(val);
-	
-});
 
 
 // ((j,a,x) => {app.create(app.newComponent('c-preloader').setColor(((range, color1, color2) => {return new Array(app.color[color1][range], app.color[color2][range])})(j,a,x)).insertDom())})(2,"lime", "teal");
