@@ -6,11 +6,19 @@
 
 app.setColor(app.generateColor());
 
-var preloaderCircleFull = app.newComponent('c-preloaderCircleFull');
-app.create(preloaderCircleFull);
-// setTimeout(() => {
-// 	preloaderFull.setColor(new Array(app.generateColor(), app.generateColor()));
-// }, 3000);
+var preloaderFull = app.newComponent('c-preloaderFull').setSectionColor(app.generateColor());
+app.create(preloaderFull);
+
+var header = app.newComponent('c-header').setText("soy header").setColor(app.generateColor());
+var main = app.newComponent('c-main').setText("soy main").setColor(app.generateColor());
+var footer = app.newComponent('c-footer').setText("soy footer").setColor(app.generateColor());
+app.create(header);
+app.create(main);
+app.create(footer);
+
+setTimeout(() => {
+	preloaderFull.setShow(false);
+}, 5000);
 
 
 

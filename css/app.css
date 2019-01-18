@@ -4,3 +4,11 @@
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
 	opacity: 0
 }
+#app{
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+main {
+	flex: 1 0 auto;
+}

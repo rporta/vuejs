@@ -15,12 +15,17 @@ var app = new Vue({
 		'waves' : waves
 	},
 	components: {
-		[preloaderCircleFull.name] : preloaderCircleFull,
-		[preloaderCircle.name] : preloaderCircle,
 		[preloader.name] : preloader,
-		[preloaderFull.name] : preloaderFull,
+		[preloaderCircle.name] : preloaderCircle,
+		[section.name] : section,
 		[container.name] : container,
-		[section.name] : section
+		[row.name] : row,
+		[col.name] : col,
+		[header.name] : header,
+		[main.name] : main,
+		[footer.name] : footer,
+		[preloaderFull.name] : preloaderFull,
+		[preloaderCircleFull.name] : preloaderCircleFull
 	},
 	methods:{
 		create : function(element){
