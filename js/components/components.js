@@ -367,10 +367,16 @@ var preloaderFull = {
 			return this;
 		},			
 		getChild : function(instance, index = 0){
-			return instance.$el.childNodes[index].__vue__;
+			return instance.$el.childNodes[index].__vue__.$options.parent;
 		},
 		getInstance : function (){
-			return this.$el.__vue__;
+			//transition on
+			return this._vnode.child;
+			
+			//transition off
+			// return this.$el.__vue__.$options.parent;
+			// return this.$el.__vue__.$options.parent;
+			
 		}
 	},
 	render: function (createElement) {
@@ -435,7 +441,7 @@ var preloaderCircleFull = {
 			return this;
 		},		
 		getChild : function(instance, index = 0){
-			return instance.$el.childNodes[index].__vue__;
+			return instance.$el.childNodes[index].__vue__.$options.parent;
 		},
 		getInstance : function (){
 			//transition on
