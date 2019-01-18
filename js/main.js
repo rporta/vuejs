@@ -7,6 +7,11 @@
 app.setColor(app.generateColor());
 
 var preloaderFull = app.newComponent('c-preloaderFull').setSectionColor(app.generateColor());
+
+setTimeout(() => {
+	preloaderFull.setShow(false);
+}, 1000);
+
 app.create(preloaderFull);
 
 var header = app.newComponent('c-header').setText("soy header").setColor(app.generateColor());
@@ -15,10 +20,6 @@ var footer = app.newComponent('c-footer').setText("soy footer").setColor(app.gen
 app.create(header);
 app.create(main);
 app.create(footer);
-
-setTimeout(() => {
-	preloaderFull.setShow(false);
-}, 5000);
 
 
 

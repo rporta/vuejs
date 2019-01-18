@@ -186,12 +186,17 @@ var section = {
 			this.styleP = arg;
 			return this;			
 		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},		
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "" ).join(" ");
+			var container = "container";
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
 		setStyle : function(){
 			var stylePreload = {
@@ -379,12 +384,17 @@ var row = {
 			this.text = arg;
 			return this;
 		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "" ).join(" ");
+			var container = "container";
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
@@ -481,6 +491,10 @@ var col = {
 			this.text = arg;
 			return this;
 		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},		
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -490,8 +504,8 @@ var col = {
 			var m = "m";
 			var l = "l";
 			var xl = "xl";
-			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", typeof this.s === "number" ? this.s : 12, typeof this.m === "number" ? this.m : 12, typeof this.l === "number" ? this.l : 12, typeof this.xl === "number" ? this.xl : 12).join(" ");
+			var container = "container";
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", typeof this.s === "number" ? this.s : 12, typeof this.m === "number" ? this.m : 12, typeof this.l === "number" ? this.l : 12, typeof this.xl === "number" ? this.xl : 12, this.container ? container : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
@@ -569,12 +583,17 @@ var header = {
 			this.text = arg;
 			return this;
 		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "" ).join(" ");
+			var container = "container";			
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
@@ -652,12 +671,17 @@ var main = {
 			this.text = arg;
 			return this;
 		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "" ).join(" ");
+			var container = "container";			
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
@@ -735,12 +759,17 @@ var footer = {
 			this.text = arg;
 			return this;
 		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "" ).join(" ");
+			var container = "container";			
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
