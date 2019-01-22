@@ -24,6 +24,7 @@ var app = new Vue({
 		[header.name] : header,
 		[main.name] : main,
 		[footer.name] : footer,
+		[h.name] : h,
 		[preloaderFull.name] : preloaderFull,
 		[preloaderCircleFull.name] : preloaderCircleFull
 	},

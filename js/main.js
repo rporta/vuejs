@@ -16,3 +16,6 @@ var header = app.newComponent('c-header').setText("soy header").setColor(app.gen
 app.create(header);
 app.create(main);
 app.create(footer);
+
+var h = app.newComponent("c-h").setText("soy H").setSize(6);
+footer.create(h);
