@@ -793,7 +793,6 @@ var h = {
 			container : false,
 			valign : false,
 			show : true,
-			tagName : "h",
 			size : 1
 		}
 	},
