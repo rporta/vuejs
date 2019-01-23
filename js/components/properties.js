@@ -125,3 +125,10 @@ var waves = (() => {
 	});
 	return out;
 })();
+var sizeButton = ((arg) => {
+	var out = {};
+	$.each(arg, function(x, i){
+		out[i.slice(4,5)] = i;
+	});
+	return out;
+})(new Array("btn-small" , "btn-large"));

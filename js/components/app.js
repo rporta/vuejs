@@ -9,6 +9,7 @@ var app = new Vue({
 		'edge' : edge,
 		'shadow' : shadow,
 		'transitions' : transitions,
+		'sizeButton' : sizeButton,
 		'sizeIcon' : sizeIcon,
 		'sizeCard' : sizeCard,
 		'sizePreloader' : sizePreloader,
@@ -35,6 +36,9 @@ var app = new Vue({
 		[icon.name] : icon,
 		/*components-table*/
 		[table.name] : table,
+		/*components-button*/
+		[button.name] : button,
+		[a.name] : a,
 		/*macro-components-preloader*/
 		[preloaderFull.name] : preloaderFull,
 		[preloaderCircleFull.name] : preloaderCircleFull
