@@ -31,3 +31,5 @@ footer.create(p);
 footer.create(span);
 footer.create(pre);
 footer.create(table);
+var icon = app.newComponent("c-icon").setIcon("account_balance");
+footer.create(icon);

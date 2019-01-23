@@ -31,6 +31,7 @@ var app = new Vue({
 		[p.name] : p,
 		[span.name] : span,
 		[pre.name] : pre,
+		[icon.name] : icon,
 		/*components-table*/
 		[table.name] : table,
 		/*macro-components-preloader*/
