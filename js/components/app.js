@@ -39,6 +39,8 @@ var app = new Vue({
 		/*components-button*/
 		[button.name] : button,
 		[a.name] : a,
+		/*components-input*/
+		[inputFields.name] : inputFields,
 		/*macro-components-preloader*/
 		[preloaderFull.name] : preloaderFull,
 		[preloaderCircleFull.name] : preloaderCircleFull

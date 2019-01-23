@@ -1758,7 +1758,112 @@ var a = {
 		}		
 	}		
 };
-
+var inputFields = {
+	name : "c-inputFields",
+	data: function (){
+		return {
+			inputLabelId : "",
+			text : "",
+			color : "",
+			colorText : "",
+			text : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			type : 0,
+			show : true			
+		}
+	},
+	template: '<transition name="fade"><div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><input v-bind:id="this.generateInputLabelId(5)" v-bind:type="generateType()" class="validate"><label v-bind:for="this.inputLabelId">{{this.text}}</label></div></transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		generateInputLabelId : function(arg){
+			this.inputLabelId = app.generateId(arg);
+			return this.inputLabelId;	
+		},				
+		create : function(element){
+			return this.$el.prepend(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},		
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},																						
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";				
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		},
+		setType : function (arg){
+			switch(arg){
+				case "text":
+				case "TEXT":
+				case 0: this.type = 0;
+				break;
+				case "email":
+				case "EMAIL":
+				case 1: this.type = 1;
+				break;
+				case "password":
+				case "PASSWORD":
+				case 2: this.type = 2;
+				break;
+			}
+			return this;
+		},
+		generateType : function(){
+			var type = new Array("text", "email", "password");
+			return type[this.type];	
+		}	
+	}
+}
 //macro components
 var preloaderFull = {
 	name : "c-preloaderFull",
