@@ -24,10 +24,10 @@ var span = app.newComponent("c-span").setText("soy span").setColorText(app.gener
 var pre = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
 var table = app.newComponent("c-table").setColor(app.generateColor()).setCentered(true);
 
-table.setHead(new Array("fa", "so", "gg"));
+table.setHead(new Array("fa", "so", "gg", "sarasa"));
 table.addRow(new Array("f", "j", "l"));
 table.addRow(new Array("f", "j", "l"));
-table.addRow(new Array("f", "j", "l"));
+table.addRow(new Array("f", "j", "l", "ggg"));
 
 
 footer.create(p);
@@ -35,6 +35,5 @@ footer.create(span);
 footer.create(pre);
 footer.create(table);
 var icon = app.newComponent("c-icon").setIcon("account_balance");
-footer.create(icon);
 var form = app.newComponent("c-form");
 footer.create(form);
