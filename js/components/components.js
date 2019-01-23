@@ -1162,6 +1162,7 @@ var icon = {
 			hoverable : false,
 			container : false,
 			valign : false,
+			prefix : false,
 			size : "Small",
 			show : true
 		}
@@ -1224,14 +1225,19 @@ var icon = {
 		setSize : function (arg){
 			this.size = arg;
 			return this;
-		},			
+		},
+		setPrefix : function (arg){
+			this.prefix = arg;
+			return this;
+		},
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
 			var container = "container";			
-			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+			var prefix = "prefix";			
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "",  this.prefix ? prefix : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
@@ -1791,6 +1797,7 @@ var inputFields = {
 			return this.inputLabelId;	
 		},				
 		create : function(element){
+			element.setPrefix(true);
 			return this.$el.prepend(element.$mount().$el);
 		},
 		setColor : function(arg){
@@ -1863,7 +1870,94 @@ var inputFields = {
 			return type[this.type];	
 		}	
 	}
+};
+var inputTextarea = {
+	name : "c-inputTextarea",
+	data: function (){
+		return {
+			inputLabelId : "",
+			text : "",
+			color : "",
+			colorText : "",
+			text : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			type : 0,
+			show : true			
+		}
+	},
+	template: '<transition name="fade"><div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><textarea class="materialize-textarea" v-bind:id="this.generateInputLabelId(5)"></textarea><label v-bind:for="this.inputLabelId">{{this.text}}</label></div></transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		generateInputLabelId : function(arg){
+			this.inputLabelId = app.generateId(arg);
+			return this.inputLabelId;	
+		},				
+		create : function(element){
+			element.setPrefix(true);
+			return this.$el.prepend(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},		
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},																						
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";				
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}	
+	}
 }
+
 //macro components
 var preloaderFull = {
 	name : "c-preloaderFull",

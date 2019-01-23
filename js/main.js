@@ -22,7 +22,7 @@ footer.create(h);
 var p = app.newComponent("c-p").setText("soy p").setColorText(app.generateColorText());
 var span = app.newComponent("c-span").setText("soy span").setColorText(app.generateColorText());
 var pre = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
-var table = app.newComponent("c-table").setHead(new Array("fa", "so", "gg"));
+var table = app.newComponent("c-table").setHead(new Array("fa", "so", "gg")).setColor(app.generateColor());
 table.addRow(new Array("f", "j", "l"));
 table.addRow(new Array("f", "j", "l"));
 table.addRow(new Array("f", "j", "l"));
