@@ -15,9 +15,10 @@ var app = new Vue({
 		'waves' : waves
 	},
 	components: {
-		/*components*/
+		/*components-preloader*/
 		[preloader.name] : preloader,
 		[preloaderCircle.name] : preloaderCircle,
+		/*components-containers*/
 		[section.name] : section,
 		[container.name] : container,
 		[row.name] : row,
@@ -25,12 +26,14 @@ var app = new Vue({
 		[header.name] : header,
 		[main.name] : main,
 		[footer.name] : footer,
+		/*components-text*/
 		[h.name] : h,
 		[p.name] : p,
 		[span.name] : span,
 		[pre.name] : pre,
+		/*components-table*/
 		[table.name] : table,
-		/*macro components*/
+		/*macro-components-preloader*/
 		[preloaderFull.name] : preloaderFull,
 		[preloaderCircleFull.name] : preloaderCircleFull
 	},
