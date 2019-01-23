@@ -1148,7 +1148,161 @@ var pre = {
 		}		
 	}		
 };
+var table = {
+	name : "c-table",
+	data: function () {
+		return {
+			color : "",
+			colorText : "",
+			textAling : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			striped : false,
+			highlight : false,
+			centered : false,
+			responsive : false,
+			head : new Array(),
+			row : new Array(),
+			show : true
+		}
+	},
+	template: 
+	'<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><thead v-html="this.generateHead()"></thead><tbody v-html="this.generateRow()"></tbody></div></transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		generateTag : function(arg){
+			var tagName = "table";
+			return tagName;	
+		},		
+		generateHead : function(){
+			var out = new Array();
+			var head = new Array();
+			out.push("<tr>");
 
+			$.each(this.head, function(x, j) {
+				head.push("<th>");
+				head.push(j);
+				head.push("</th>");
+			});
+			out.push(head.join(""));
+			out.push("</tr>");
+			return out.join("");	
+		},		
+		generateRow : function(){
+			var out = new Array();
+			var row = new Array();
+			$.each(this.row, function(x, data) {
+				out.push("<tr>");
+				$.each(data, function(p, l) {
+					var row = new Array();
+					row.push("<td>");
+					row.push(l);
+					row.push("</td>");
+					out.push(row.join(""));
+				});
+				out.push("</tr>");
+			});
+			return out.join("");
+		},		
+		create : function(element){
+			return this.$el.append(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setHead : function(arg){
+			this.head = arg;
+			return this;
+		},
+		addRow : function(arg){
+			this.row.push(arg);
+			return this;
+		},
+		addHead : function(arg){
+			this.head.push(arg);
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setTextAling : function(arg){
+			this.textAling = arg;
+			return this;
+		},
+		setFloat : function(arg){
+			this.float = arg;
+			return this;
+		},
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},			
+		setStriped : function (arg){
+			this.striped = arg;
+			return this;
+		},			
+		setHighlight : function (arg){
+			this.highlight = arg;
+			return this;
+		},			
+		setCentered : function (arg){
+			this.centered = arg;
+			return this;
+		},			
+		setResponsive : function (arg){
+			this.responsive = arg;
+			return this;
+		},			
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";			
+			var striped = "striped";			
+			var highlight = "highlight";			
+			var centered = "centered";			
+			var responsive = "responsive-table";
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.striped ? striped : "", this.highlight ? highlight : "", this.centered ? centered : "", this.responsive ? responsive : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}		
+	}		
+};
 //macro components
 var preloaderFull = {
 	name : "c-preloaderFull",

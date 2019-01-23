@@ -15,6 +15,7 @@ var app = new Vue({
 		'waves' : waves
 	},
 	components: {
+		/*components*/
 		[preloader.name] : preloader,
 		[preloaderCircle.name] : preloaderCircle,
 		[section.name] : section,
@@ -28,6 +29,8 @@ var app = new Vue({
 		[p.name] : p,
 		[span.name] : span,
 		[pre.name] : pre,
+		[table.name] : table,
+		/*macro components*/
 		[preloaderFull.name] : preloaderFull,
 		[preloaderCircleFull.name] : preloaderCircleFull
 	},
