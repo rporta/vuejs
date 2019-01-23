@@ -33,3 +33,5 @@ footer.create(pre);
 footer.create(table);
 var icon = app.newComponent("c-icon").setIcon("account_balance");
 footer.create(icon);
+var form = app.newComponent("c-form");
+footer.create(form);

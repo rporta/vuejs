@@ -26,6 +26,7 @@ var app = new Vue({
 		[header.name] : header,
 		[main.name] : main,
 		[footer.name] : footer,
+		[form.name] : form,
 		/*components-text*/
 		[h.name] : h,
 		[p.name] : p,

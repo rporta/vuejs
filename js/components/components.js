@@ -804,7 +804,7 @@ var h = {
 		generateId : function(arg){
 			return this.$options.name + app.generateId(arg);	
 		},
-		generateTag : function(arg){
+		generateTag : function(){
 			var tagName = "h";
 			return tagName + this.size;	
 		},		
@@ -901,7 +901,7 @@ var p = {
 		generateId : function(arg){
 			return this.$options.name + app.generateId(arg);	
 		},
-		generateTag : function(arg){
+		generateTag : function(){
 			var tagName = "p";
 			return tagName;	
 		},		
@@ -992,7 +992,7 @@ var span = {
 		generateId : function(arg){
 			return this.$options.name + app.generateId(arg);	
 		},
-		generateTag : function(arg){
+		generateTag : function(){
 			var tagName = "span";
 			return tagName;	
 		},		
@@ -1083,7 +1083,7 @@ var pre = {
 		generateId : function(arg){
 			return this.$options.name + app.generateId(arg);	
 		},
-		generateTag : function(arg){
+		generateTag : function(){
 			var tagName = "pre";
 			return tagName;	
 		},		
@@ -1174,7 +1174,7 @@ var icon = {
 		generateId : function(arg){
 			return this.$options.name + app.generateId(arg);	
 		},
-		generateTag : function(arg){
+		generateTag : function(){
 			var tagName = "i";
 			return tagName;	
 		},		
@@ -1225,6 +1225,114 @@ var icon = {
 			this.size = arg;
 			return this;
 		},			
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";			
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}		
+	}		
+};
+var form = {
+	name : "c-form",
+	data: function () {
+		return {
+			color : "",
+			colorText : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			file : false,
+			method : 0,
+			show : true
+		}
+	},
+	template: '<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div></transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		generateTag : function(){
+			var tagName = "form";
+			return tagName;	
+		},		
+		generateEnctype : function(){
+			var enctype = this.file ? "multipart/form-data" : "";
+			return enctype;	
+		},		
+		generateMethod : function(){
+			var methods = new Array("get", "post");
+			return methods[this.method];	
+		},		
+		create : function(element){
+			return this.$el.append(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setFloat : function(arg){
+			this.float = arg;
+			return this;
+		},
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},					
+		setFile : function (arg){
+			this.file = arg;
+			return this;
+		},					
+		setMethod : function (arg){
+			switch(arg){
+				case "GET":
+				case "get":
+				case 0: this.method = 0;
+				break;
+				case "POST":
+				case "post":
+				case 1: this.method = 1;
+				break;
+			}
+			return this;
+		},					
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
