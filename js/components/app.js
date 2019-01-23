@@ -43,6 +43,7 @@ var app = new Vue({
 		[inputFields.name] : inputFields,
 		[inputTextarea.name] : inputTextarea,
 		[inputSwitch.name] : inputSwitch,
+		/*quedan 8 components-input pendientes */
 		/*macro-components-preloader*/
 		[preloaderFull.name] : preloaderFull,
 		[preloaderCircleFull.name] : preloaderCircleFull
