@@ -24,10 +24,12 @@ var span = app.newComponent("c-span").setText("soy span").setColorText(app.gener
 var pre = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
 var table = app.newComponent("c-table").setColor(app.generateColor()).setCentered(true);
 
+var span = app.newComponent("c-span").setText("reg 8").setColorText(app.generateColorText());
+
 table.setHead(new Array("fa", "so", "gg", "sarasa"));
 table.addRow(new Array("f", "j", "l"));
 table.addRow(new Array("f", "j", "l"));
-table.addRow(new Array("f", "j", "l", "ggg"));
+table.addRow(new Array(span.$mount().$el.outerHTML, "j", "l", "ggg"));
 
 
 footer.create(p);
