@@ -1775,6 +1775,7 @@ var inputFields = {
 			text : "",
 			float : "",
 			shadow : "",
+			name : "",
 			truncate : false,
 			cardpanel : false,
 			hoverable : false,
@@ -1784,7 +1785,7 @@ var inputFields = {
 			show : true			
 		}
 	},
-	template: '<transition name="fade"><div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><input v-bind:id="this.generateInputLabelId(5)" v-bind:type="generateType()" class="validate"><label v-bind:for="this.inputLabelId">{{this.text}}</label></div></transition>',
+	template: '<transition name="fade"><div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><input v-bind:name="this.name" v-bind:id="this.generateInputLabelId(5)" v-bind:type="generateType()" class="validate"><label v-bind:for="this.inputLabelId">{{this.text}}</label></div></transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1810,6 +1811,10 @@ var inputFields = {
 		},
 		setText : function(arg){
 			this.text = arg;
+			return this;
+		},		
+		setName : function(arg){
+			this.name = arg;
 			return this;
 		},		
 		setShadow : function(arg){
@@ -1876,6 +1881,7 @@ var inputTextarea = {
 	data: function (){
 		return {
 			inputLabelId : "",
+			name : "",
 			text : "",
 			color : "",
 			colorText : "",
@@ -1891,7 +1897,7 @@ var inputTextarea = {
 			show : true			
 		}
 	},
-	template: '<transition name="fade"><div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><textarea class="materialize-textarea" v-bind:id="this.generateInputLabelId(5)"></textarea><label v-bind:for="this.inputLabelId">{{this.text}}</label></div></transition>',
+	template: '<transition name="fade"><div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><textarea v-bind:name="this.name" class="materialize-textarea" v-bind:id="this.generateInputLabelId(5)"></textarea><label v-bind:class="this.setClass()" v-bind:for="this.inputLabelId">{{this.text}}</label></div></transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1917,6 +1923,10 @@ var inputTextarea = {
 		},
 		setText : function(arg){
 			this.text = arg;
+			return this;
+		},		
+		setName : function(arg){
+			this.name = arg;
 			return this;
 		},		
 		setShadow : function(arg){
