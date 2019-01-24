@@ -11,7 +11,12 @@ var preloader = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="color[0]"  class="progress" ><div v-bind:style="this.setStyle()" v-bind:class="color[1] + space + mode"></div></div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="color[0]"  class="progress" >\
+	<div v-bind:style="this.setStyle()" v-bind:class="color[1] + space + mode"></div>\
+	</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -131,7 +136,10 @@ var section = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -233,7 +241,10 @@ var container = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -333,7 +344,10 @@ var row = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="row">{{this.text}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="row">{{this.text}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -424,7 +438,10 @@ var col = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="col">{{this.text}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="col">{{this.text}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -532,7 +549,10 @@ var header = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><header key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</header></transition>',
+	template: 
+	'<transition name="fade">\
+	<header key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</header>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -620,7 +640,10 @@ var main = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><main key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</main></transition>',
+	template: 
+	'<transition name="fade">\
+	<main key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</main>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -708,7 +731,10 @@ var footer = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><footer key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</footer></transition>',
+	template: 
+	'<transition name="fade">\
+	<footer key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</footer>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -796,7 +822,10 @@ var h = {
 			size : 1
 		}
 	},
-	template: '<transition name="fade"><h1 v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</h1></transition>',
+	template: 
+	'<transition name="fade">\
+	<h1 v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</h1>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -893,7 +922,10 @@ var p = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -984,7 +1016,10 @@ var span = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1075,7 +1110,10 @@ var pre = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1167,7 +1205,10 @@ var icon = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div class="material-icons" v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.icon}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div class="material-icons" v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.icon}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1263,7 +1304,10 @@ var form = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1377,7 +1421,12 @@ var table = {
 		}
 	},
 	template: 
-	'<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><thead v-html="this.generateHead()"></thead><tbody v-html="this.generateRow()"></tbody></div></transition>',
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
+	<thead v-html="this.generateHead()"></thead>\
+	<tbody v-html="this.generateRow()"></tbody>\
+	</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1531,7 +1580,10 @@ var button = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:type="this.generateType()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:type="this.generateType()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1668,7 +1720,10 @@ var a = {
 			show : true
 		}
 	},
-	template: '<transition name="fade"><div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:href="this.href" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:href="this.href" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1785,7 +1840,13 @@ var inputFields = {
 			show : true			
 		}
 	},
-	template: '<transition name="fade"><div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><input v-bind:name="this.name" v-bind:id="this.generateInputLabelId(5)" v-bind:type="generateType()" class="validate"><label v-bind:for="this.inputLabelId">{{this.text}}</label></div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
+	<input v-bind:name="this.name" v-bind:id="this.generateInputLabelId(5)" v-bind:type="generateType()" class="validate">\
+	<label v-bind:for="this.inputLabelId">{{this.text}}</label>\
+	</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1897,7 +1958,13 @@ var inputTextarea = {
 			show : true			
 		}
 	},
-	template: '<transition name="fade"><div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><textarea v-bind:name="this.name" class="materialize-textarea" v-bind:id="this.generateInputLabelId(5)"></textarea><label v-bind:class="this.setClass()" v-bind:for="this.inputLabelId">{{this.text}}</label></div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
+	<textarea v-bind:name="this.name" class="materialize-textarea" v-bind:id="this.generateInputLabelId(5)"></textarea>\
+	<label v-bind:class="this.setClass()" v-bind:for="this.inputLabelId">{{this.text}}</label>\
+	</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -1988,7 +2055,15 @@ var inputSwitch = {
 			show : true			
 		}
 	},
-	template: '<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" class="switch"><label>{{this.text[0]}}<input v-bind:name="this.name" type="checkbox"><span class="lever"></span>{{this.text[1]}}</label></div></transition>',
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" class="switch">\
+	<label>{{this.text[0]}}\
+	<input v-bind:name="this.name" type="checkbox">\
+	<span class="lever"></span>{{this.text[1]}}\
+	</label>\
+	</div>\
+	</transition>',
 	methods: {
 		newComponent : function(component){
 			return new this.$options.components[component]();
@@ -2057,8 +2132,105 @@ var inputSwitch = {
 			return this;
 		}	
 	}
-}
-
+};
+var inputSelect = {
+	name : "c-inputSwitch",
+	data: function (){
+		return {
+			inputLabelId : "",
+			name : "",
+			text : new Array("Off", "On"),
+			color : "",
+			colorText : "",
+			text : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			type : 0,
+			show : true			
+		}
+	},
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" class="switch">\
+	<label>{{this.text[0]}}\
+	<input v-bind:name="this.name" type="checkbox">\
+	<span class="lever"></span>{{this.text[1]}}\
+	</label>\
+	</div>\
+	</transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		generateInputLabelId : function(arg){
+			this.inputLabelId = app.generateId(arg);
+			return this.inputLabelId;	
+		},				
+		create : function(element){
+			return this.$el.prepend(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},		
+		setName : function(arg){
+			this.name = arg;
+			return this;
+		},		
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},																						
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";				
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}	
+	}	
+};
 //macro components
 var preloaderFull = {
 	name : "c-preloaderFull",
