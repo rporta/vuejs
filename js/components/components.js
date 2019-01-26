@@ -2235,6 +2235,108 @@ var inputCheckbox = {
 		}	
 	}	
 };
+var inputRadio = {
+	name : "c-inputRadio",
+	data: function (){
+		return {
+			inputLabelId : "",
+			name : "",
+			text : "",
+			color : "",
+			colorText : "",
+			text : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			withGap : false,
+			type : 0,
+			show : true			
+		}
+	},
+	template: 
+	'<transition name="fade">\
+	<label key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
+	<input v-bind:class="this.setClass()" v-bind:name="this.name" type="radio" />\
+	<span>{{this.text}}</span>\
+	</label>\
+	</transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		generateInputLabelId : function(arg){
+			this.inputLabelId = app.generateId(arg);
+			return this.inputLabelId;	
+		},				
+		create : function(element){
+			return this.$el.prepend(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setWithGap : function(arg){
+			this.withGap = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},		
+		setName : function(arg){
+			this.name = arg;
+			return this;
+		},		
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},																						
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";				
+			var withGap = "with-gap";				
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.withGap ? withGap : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}	
+	}	
+};
 //macro components
 var preloaderFull = {
 	name : "c-preloaderFull",
