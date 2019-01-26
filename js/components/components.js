@@ -2133,13 +2133,13 @@ var inputSwitch = {
 		}	
 	}
 };
-var inputSelect = {
-	name : "c-inputSwitch",
+var inputCheckbox = {
+	name : "c-inputCheckbox",
 	data: function (){
 		return {
 			inputLabelId : "",
 			name : "",
-			text : new Array("Off", "On"),
+			text : "",
 			color : "",
 			colorText : "",
 			text : "",
@@ -2150,18 +2150,17 @@ var inputSelect = {
 			hoverable : false,
 			container : false,
 			valign : false,
+			filledIn : false,
 			type : 0,
 			show : true			
 		}
 	},
 	template: 
 	'<transition name="fade">\
-	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" class="switch">\
-	<label>{{this.text[0]}}\
-	<input v-bind:name="this.name" type="checkbox">\
-	<span class="lever"></span>{{this.text[1]}}\
+	<label key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
+	<input v-bind:class="this.setClass()" v-bind:name="this.name" type="checkbox" />\
+	<span>{{this.text}}</span>\
 	</label>\
-	</div>\
 	</transition>',
 	methods: {
 		newComponent : function(component){
@@ -2179,6 +2178,10 @@ var inputSelect = {
 		},
 		setColor : function(arg){
 			this.color = arg;
+			return this;
+		},
+		setFilledIn : function(arg){
+			this.filledIn = arg;
 			return this;
 		},
 		setColorText : function(arg){
@@ -2223,7 +2226,8 @@ var inputSelect = {
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
 			var container = "container";				
-			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+			var filledIn = "filled-in";				
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.filledIn ? filledIn : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
