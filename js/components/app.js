@@ -23,6 +23,7 @@ var app = new Vue({
 		/*components-containers*/
 		[section.name] : section,
 		[container.name] : container,
+		[div.name] : div,
 		[row.name] : row,
 		[col.name] : col,
 		[header.name] : header,
