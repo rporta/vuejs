@@ -198,13 +198,19 @@ var section = {
 			this.container = arg;
 			return this;
 		},		
+		setD : function (arg){
+			this.d = arg;
+			return this;
+		},		
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
 			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+			var dbox = "dbox";
+			var dline = "dline";			
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", (this.d == 0 ? "" : (this.d == 1 ? dline : (this.d == 2 ? dbox : "")))).join(" ");
 		},
 		setStyle : function(){
 			var stylePreload = {
@@ -456,6 +462,13 @@ var col = {
 			this.color = arg;
 			return this;
 		},
+		setAll : function(arg){
+			this.s = arg;
+			this.m = arg;
+			this.l = arg;
+			this.xl = arg;
+			return this;
+		},
 		setS : function(arg){
 			this.s = arg;
 			return this;
@@ -522,7 +535,7 @@ var col = {
 			var l = "l";
 			var xl = "xl";
 			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", typeof this.s === "number" ? this.s : 12, typeof this.m === "number" ? this.m : 12, typeof this.l === "number" ? this.l : 12, typeof this.xl === "number" ? this.xl : 12, this.container ? container : "").join(" ");
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", typeof this.s === "number" ? s + this.s : s + 12, typeof this.m === "number" ? m + this.m : m +  12, typeof this.l === "number" ? l + this.l : l + 12, typeof this.xl === "number" ? xl + this.xl : xl + 12, this.container ? container : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
@@ -1201,6 +1214,7 @@ var icon = {
 			container : false,
 			valign : false,
 			prefix : false,
+			d : 0,
 			size : "Small",
 			show : true
 		}
@@ -1271,14 +1285,20 @@ var icon = {
 			this.prefix = arg;
 			return this;
 		},
+		setD : function (arg){
+			this.d = arg;
+			return this;
+		},
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
 			var container = "container";			
-			var prefix = "prefix";			
-			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "",  this.prefix ? prefix : "").join(" ");
+			var prefix = "prefix";
+			var dbox = "dbox";
+			var dline = "dline";
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "",  this.prefix ? prefix : "", (this.d == 0 ? "" : (this.d == 1 ? dline : (this.d == 2 ? dbox : "")))).join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
@@ -2330,6 +2350,124 @@ var inputRadio = {
 			var container = "container";				
 			var withGap = "with-gap";				
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.withGap ? withGap : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}	
+	}	
+};
+var img = {
+	name : "c-img",
+	data: function (){
+		return {
+			inputLabelId : "",
+			name : "",
+			text : "",
+			color : "",
+			colorText : "",
+			text : "",
+			float : "",
+			shadow : "",
+			src : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			circle : false,
+			responsive : false,
+			materialbox : false,
+			type : 0,
+			show : true			
+		}
+	},
+	template: 
+	'<transition name="fade">\
+	<img key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="setClass()" v-bind:src="this.src">\
+	</transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		generateInputLabelId : function(arg){
+			this.inputLabelId = app.generateId(arg);
+			return this.inputLabelId;	
+		},				
+		create : function(element){
+			return this.$el.prepend(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setCircle : function(arg){
+			this.circle = arg;
+			return this;
+		},
+		setResponsive : function(arg){
+			this.responsive = arg;
+			return this;
+		},
+		setMaterialbox : function(arg){
+			this.materialbox = arg;
+			if(arg){
+				$('.materialboxed').materialbox();
+			}
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},		
+		setSrc : function(arg){
+			this.src = arg;
+			return this;
+		},		
+		setName : function(arg){
+			this.name = arg;
+			return this;
+		},		
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},																						
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var circle = "circle";							
+			var responsive = "responsive";							
+			var materialbox = "materialboxed";												
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.circle ? circle : "", this.responsive ? responsive : "", this.materialbox ? materialbox : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;

@@ -5,7 +5,8 @@ var app = new Vue({
 		'color' : colors,
 		'colorHexa' : colorsHexa,
 		'colorText' : colorsText,
-		'float' : float,		'textAling' : textAling,
+		'float' : float,		
+		'textAling' : textAling,
 		'edge' : edge,
 		'shadow' : shadow,
 		'transitions' : transitions,
@@ -34,6 +35,8 @@ var app = new Vue({
 		[span.name] : span,
 		[pre.name] : pre,
 		[icon.name] : icon,
+		/*components-media*/
+		[img.name] : img,
 		/*components-table*/
 		[table.name] : table,
 		/*components-button*/
