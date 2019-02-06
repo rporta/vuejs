@@ -38,6 +38,7 @@ var app = new Vue({
 		[span.name] : span,
 		[pre.name] : pre,
 		[icon.name] : icon,
+		[blockquotes.name] : blockquotes,
 		/*components-\n*/
 		[br.name] : br,
 		[divider.name] : divider,		
