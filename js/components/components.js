@@ -441,10 +441,14 @@ var modal = {
 			return this;
 		},
 		open: function (){
-			$('.modal').modal();
 			return this.$el.M_Modal.open();
 		}
-	}
+	},
+	mounted: function () {
+		this.$nextTick(function () {
+			$('.modal').modal();
+		})
+	}	
 };
 var br = {
 	name : "c-br",
