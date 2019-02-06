@@ -48,6 +48,7 @@ var app = new Vue({
 		/*components-button*/
 		[button.name] : button,
 		[a.name] : a,
+		[dropdown.name] : dropdown,
 		/*components-input*/
 		[inputFields.name] : inputFields,
 		[inputTextarea.name] : inputTextarea,

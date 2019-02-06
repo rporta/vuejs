@@ -1260,7 +1260,8 @@ var h = {
 			container : false,
 			valign : false,
 			show : true,
-			size : 1
+			size : 1,
+			flowText : false
 		}
 	},
 	template: 
@@ -1337,12 +1338,17 @@ var h = {
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
 			var container = "container";			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+			var flowText = "flow-text";			
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
 			return this;
-		}		
+		},
+		setFlowText : function(arg){
+			this.flowText = arg;
+			return this;
+		}	
 	}		
 };
 var p = {
@@ -1360,7 +1366,8 @@ var p = {
 			hoverable : false,
 			container : false,
 			valign : false,
-			show : true
+			show : true,
+			flowText : false
 		}
 	},
 	template: 
@@ -1430,13 +1437,18 @@ var p = {
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			var container = "container";			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+			var container = "container";
+			var flowText = "flow-text";				
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
 			return this;
-		}		
+		},
+		setFlowText : function(arg){
+			this.flowText = arg;
+			return this;
+		}
 	}		
 };
 var span = {
@@ -1454,7 +1466,8 @@ var span = {
 			hoverable : false,
 			container : false,
 			valign : false,
-			show : true
+			show : true,
+			flowText : false
 		}
 	},
 	template: 
@@ -1524,13 +1537,18 @@ var span = {
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			var container = "container";			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+			var container = "container";
+			var flowText = "flow-text";	
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
 			return this;
-		}		
+		},
+		setFlowText : function(arg){
+			this.flowText = arg;
+			return this;			
+		}
 	}		
 };
 var pre = {
@@ -1548,7 +1566,8 @@ var pre = {
 			hoverable : false,
 			container : false,
 			valign : false,
-			show : true
+			show : true,
+			flowText : false
 		}
 	},
 	template: 
@@ -1618,13 +1637,20 @@ var pre = {
 			var cardpanel = "card-panel";
 			var hoverable = "hoverable";
 			var valign = "valign-wrapper";
-			var container = "container";			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+			var container = "container";
+			var flowText = "flow-text";	
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
 		setShow : function(arg){
 			this.show = arg;
 			return this;
+		},
+		setFlowText : function(arg){
+			this.flowText = arg;
+			return this;
+
 		}		
+
 	}		
 };
 var icon = {
@@ -2806,7 +2832,6 @@ var img = {
 			circle : false,
 			responsive : false,
 			materialbox : false,
-			type : 0,
 			show : true			
 		}
 	},
@@ -2903,6 +2928,169 @@ var img = {
 		}	
 	}	
 };
+var dropdown = {
+	name : "c-dropdown",
+	data: function () {
+		return {
+			dropdown : new Array(),
+			id : null,
+			idA : null,
+			color : "",
+			colorText : "",
+			text : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			disable : false,
+			flat : false,
+			floating : false,
+			wave : "",
+			size : "btn-small",
+			href : "#",
+			show : true
+
+		}
+	},
+	template:
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show">\
+	<div v-bind:id="this.generateIdA()" v-bind:is="this.generateTag()" key="this.generateId(5)" class="dropdown-trigger" v-bind:data-target="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
+	<ul key="this.generateId(5)" v-bind:id="this.id" class="dropdown-content" v-html="this.generateDropDown()" ></ul>\
+	</div>\
+	</transition>',
+	methods: {
+		generateDropDown: function (arg){
+			var out = new Array();
+			$.each(this.dropdown, function(i, v) {
+				out.push("<li>");
+				if(typeof v == 'string'){
+					out.push(v);
+				}else{
+					console.log(v);
+					out.push(v.$el.outerHTML);
+				}
+				out.push("</li>");
+			});
+			return out.join("");
+		},
+		addDropDown : function (arg){
+			this.dropdown.push(arg);
+			return this;
+		},
+		clearDropDown : function (arg){
+			this.dropdown = new Array();
+			return this;
+		},
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			this.id = this.$options.name + app.generateId(arg);
+			return this.id;
+		},
+		generateIdA : function(arg){
+			this.idA = this.$options.name + app.generateId(arg);
+			return this.idA;
+		},		
+		generateTag : function(){
+			var tagName = "a";
+			return tagName;	
+		},				
+		create : function(element){
+			return this.$el.prepend(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},		
+		setFloat : function(arg){
+			this.float = arg;
+			return this;
+		},
+		setDisable : function(arg){
+			this.disable = arg;
+			return this;
+		},
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},						
+		setFlat : function (arg){
+			this.flat = arg;
+			return this;
+		},					
+		setFloating : function (arg){
+			this.floating = arg;
+			return this;
+		},					
+		setSize : function (arg){
+			this.size = arg;
+			return this;
+		},								
+		setWave : function (arg){
+			this.wave = arg;
+			return this;
+		},								
+		setHref : function (arg){
+			this.href = arg;
+			return this;
+		},								
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";			
+			var disable = "disable";			
+			var flat = "flat";			
+			var floating = "floating";			
+			return new Array(this.wave, this.size, this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.disable ? disable : "", this.flat ? flat : "", this.floating ? floating : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}		
+
+	},
+	mounted: function () {
+		this.$nextTick(function () {
+			$('#'+this.idA).dropdown();
+		})
+	}	
+
+}
 //macro components
 var preloaderFull = {
 	name : "c-preloaderFull",
