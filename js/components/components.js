@@ -332,7 +332,330 @@ var div = {
 		}			
 	}
 };
-
+var modal = {
+	name : "c-modal",
+	data: function () {
+		return {
+			text: "",
+			color : "",
+			colorText : "",
+			textAling : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			styleP : false,
+			show : true
+		}
+	},
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="modal">\
+	<div class="modal-content center-align">{{this.text}}</div>\
+	<div class="modal-footer" style="text-align: center !important;">\
+	<a class="modal-close waves-effect btn-flat" >Aceptar</a>\
+	</div>\
+	</div>\
+	</transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		create : function(element){
+			return this.$el.append(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setTextAling : function(arg){
+			this.textAling = arg;
+			return this;
+		},
+		setFloat : function(arg){
+			this.float = arg;
+			return this;
+		},
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},
+		setStyleP : function(arg){
+			this.styleP = arg;
+			return this;			
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},		
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+		},
+		setStyle : function(){
+			var stylePreload = {
+				position: "fixed",
+				top: "0px",
+				zIndex: "9999",
+				width: "100%",
+				height: "100%"
+			};
+			return this.styleP ? stylePreload : {};
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		},
+		open: function (){
+			$('.modal').modal();
+			return this.$el.M_Modal.open();
+		}
+	}
+};
+var br = {
+	name : "c-br",
+	data: function () {
+		return {
+			text: "",
+			color : "",
+			colorText : "",
+			textAling : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			styleP : false,
+			show : true
+		}
+	},
+	template: 
+	'<transition name="fade">\
+	<br key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
+	</transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		create : function(element){
+			return this.$el.append(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setTextAling : function(arg){
+			this.textAling = arg;
+			return this;
+		},
+		setFloat : function(arg){
+			this.float = arg;
+			return this;
+		},
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},
+		setStyleP : function(arg){
+			this.styleP = arg;
+			return this;			
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},		
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+		},
+		setStyle : function(){
+			var stylePreload = {
+				position: "fixed",
+				top: "0px",
+				zIndex: "9999",
+				width: "100%",
+				height: "100%"
+			};
+			return this.styleP ? stylePreload : {};
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}		
+	}
+};
+var divider = {
+	name : "c-divider",
+	data: function () {
+		return {
+			text: "",
+			color : "",
+			colorText : "",
+			textAling : "",
+			float : "",
+			shadow : "",
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			styleP : false,
+			show : true
+		}
+	},
+	template: 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-bind:class="this.setClass()" v-show="this.show" v-bind:id="this.generateId(5)" class="divider"></div>\
+	</transition>',
+	methods: {
+		newComponent : function(component){
+			return new this.$options.components[component]();
+		},
+		generateId : function(arg){
+			return this.$options.name + app.generateId(arg);	
+		},
+		create : function(element){
+			return this.$el.append(element.$mount().$el);
+		},
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setTextAling : function(arg){
+			this.textAling = arg;
+			return this;
+		},
+		setFloat : function(arg){
+			this.float = arg;
+			return this;
+		},
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setTruncate : function(arg){
+			this.truncate = arg;
+			return this;
+		},
+		setCardpanel : function(arg){
+			this.cardpanel = arg;
+			return this;
+		},
+		setHoverable : function(arg){
+			this.hoverable = arg;
+			return this;
+		},
+		setValign : function(arg){
+			this.valign = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},
+		setStyleP : function(arg){
+			this.styleP = arg;
+			return this;			
+		},
+		setContainer : function (arg){
+			this.container = arg;
+			return this;
+		},		
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
+		},
+		setStyle : function(){
+			var stylePreload = {
+				position: "fixed",
+				top: "0px",
+				zIndex: "9999",
+				width: "100%",
+				height: "100%"
+			};
+			return this.styleP ? stylePreload : {};
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}		
+	}
+};
 var container = {
 	name : "c-container",
 	data: function () {

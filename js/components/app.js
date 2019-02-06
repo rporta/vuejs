@@ -20,6 +20,8 @@ var app = new Vue({
 		/*components-preloader*/
 		[preloader.name] : preloader,
 		[preloaderCircle.name] : preloaderCircle,
+		/*components-modal*/
+		[modal.name] : modal,
 		/*components-containers*/
 		[section.name] : section,
 		[container.name] : container,
@@ -36,6 +38,9 @@ var app = new Vue({
 		[span.name] : span,
 		[pre.name] : pre,
 		[icon.name] : icon,
+		/*components-\n*/
+		[br.name] : br,
+		[divider.name] : divider,		
 		/*components-media*/
 		[img.name] : img,
 		/*components-table*/
