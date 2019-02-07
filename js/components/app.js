@@ -39,6 +39,7 @@ var app = new Vue({
 		[pre.name] : pre,
 		[icon.name] : icon,
 		[blockquotes.name] : blockquotes,
+		[badge.name] : badge,
 		/*components-\n*/
 		[br.name] : br,
 		[divider.name] : divider,		
@@ -46,6 +47,8 @@ var app = new Vue({
 		[img.name] : img,
 		/*components-table*/
 		[table.name] : table,
+		/*components-collections*/
+		[collection.name] : collection,
 		/*components-button*/
 		[button.name] : button,
 		[a.name] : a,

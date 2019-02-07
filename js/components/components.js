@@ -3206,7 +3206,178 @@ var dropdown = {
 		})
 	}	
 
-}
+};
+var badge = {
+	name : "c-badge",
+	data : function () {
+		return {
+			text : "",
+			color : "",
+			colorText : "",
+			show : true,
+			new : false
+		}
+	},
+	template:
+	'<transition name="fade">\
+	<span key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="badge">{{this.text}}</span>\
+	</transition>',	
+	methods : {
+		generateId : function(arg){
+			this.id = this.$options.name + app.generateId(arg);
+			return this.id;
+		},		
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setText : function(arg){
+			this.text = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},		
+		setNew : function(arg){
+			this.new = arg;
+			return this;
+		},		
+		setClass : function(){
+			var css = "new"; 
+			return new Array(this.color, this.colorText, this.new ? css : "").join(" ");
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		}
+	}
+};
+var collection = {
+	name : "c-collection",
+	template : 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-html="this.generateRow()" >\
+	</div>\
+	</transition>',
+	data : function(){
+		return {
+			color : "",
+			colorText : "",
+			textAling : "",
+			shadow : "",
+			show : true,
+			mode : 0,
+			row : new Array(),			
+		}
+	},
+	methods : {
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setTextAling : function(arg){
+			this.textAling = arg;
+			return this;
+		},
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},		
+		setClass : function (){
+			var setClass = "";
+			switch(this.mode){
+				case 0 : setClass = "collection";
+				break; 
+				case 1 : 
+				case 2 : setClass = "collection with-header";
+				break; 
+			}
+
+			return new Array(setClass, this.color, this.colorText, this.textAling, this.shadow).join(" ");
+		},
+		generateId : function(arg){
+			this.id = this.$options.name + app.generateId(arg);
+			return this.id;
+		},
+		generateRow : function(){
+			var out = new Array();
+			switch(this.mode){
+				case 0 : 
+				$.each(this.row, function(i, v) {
+					out.push('<li class="collection-item">' + v + '</li>');
+				});
+				break; 
+				case 1 :
+				$.each(this.row, function(i, v) {
+					console.log(v.$el);
+					$(v.$el).addClass('collection-item');
+					out.push(v.$el.outerHTML);
+				});
+				break; 
+				case 2 :
+				$.each(this.row, function(i, v) {
+					if(i == 0){
+						out.push('<li class="collection-header">' + v.$el.outerHTML + '</li>');
+					}else{
+						out.push('<li class="collection-item">' + v.$el.outerHTML + '</li>');
+					}
+				});
+				break; 
+			}			
+
+			return out.join("");
+		},
+		generateTag : function(){
+			var tagName = "";
+			switch(this.mode){
+				case 0 : tagName = "ul";
+				break; 
+				case 1 : tagName = "div";
+				break; 
+				case 2 : tagName = "ul";
+				break; 
+			}
+			return tagName;	
+		},	
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		},
+		addRow : function(arg){
+			this.row.push(arg)
+			return this;			
+		},
+		clearRow : function(){
+			this.row = new Array();
+			return this;
+		},
+		setMode : function(set){
+			switch (set) {
+				case 0 :
+				case "basic" : 
+				case "Basic" : 
+				this.mode = 0;
+				break;
+				case 1 : 
+				case "link" : 
+				case "Link" : 
+				this.mode = 1;
+				break;
+				case 2 : 
+				case "headers" : 
+				case "HEADERS" : 
+				this.mode = 2;
+				break;
+			}
+			return this;
+		}
+	}
+};
 //macro components
 var preloaderFull = {
 	name : "c-preloaderFull",
