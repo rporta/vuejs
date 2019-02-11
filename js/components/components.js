@@ -3454,7 +3454,7 @@ var collapsible = {
 	},
 	mounted: function () {
 		this.$nextTick(function () {
-			// $('#'+this.id).collapsible();
+			$('#'+this.id).collapsible();
 		})
 	}	
 };
