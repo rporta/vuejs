@@ -45,6 +45,7 @@ var app = new Vue({
 		[divider.name] : divider,		
 		/*components-media*/
 		[img.name] : img,
+		[parallax.name] : parallax,
 		/*components-table*/
 		[table.name] : table,
 		/*components-collections*/

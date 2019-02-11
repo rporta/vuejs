@@ -3454,9 +3454,44 @@ var collapsible = {
 	},
 	mounted: function () {
 		this.$nextTick(function () {
-			$('#'+this.id).collapsible();
+			// $('#'+this.id).collapsible();
 		})
 	}	
+};
+var parallax = {
+	name : "c-parallax",
+	template : 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" class="parallax-container">\
+	<div class="parallax"><img v-bind:src="this.src"></div>\
+	</div>\
+	</transition>',
+	data: function () {
+		return {
+			id : null,
+			show : true,
+			src : null
+		}
+	},	
+	methods: {
+		generateId : function(arg){
+			this.id = this.$options.name + app.generateId(arg);
+			return this.id;
+		},
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		},
+		setSrc : function(arg){
+			this.src = arg;
+			return this;
+		},	
+	},
+	mounted: function () {
+		this.$nextTick(function () {
+			$('.parallax').parallax();
+		})
+	}		
 };
 //macro components
 var preloaderFull = {
