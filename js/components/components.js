@@ -3378,6 +3378,86 @@ var collection = {
 		}
 	}
 };
+var collapsible = {
+	name : "c-collapsible",
+	template : 
+	'<transition name="fade">\
+	<ul key="this.generateId(5)" v-show="this.show" class="collapsible" v-bind:class="this.setClass()"  v-bind:id="this.generateId(5)" v-html="this.generateRow()">\
+	</ul>\
+	</transition>'
+	,
+	data : function () {
+		return {
+			id : null,
+			color : app.color.bwt[1] ,
+			colorText : app.colorText.bwt[0],
+			textAling : app.textAling.l,
+			shadow : null,
+			show : true,
+			row : new Array(),
+		}
+	},
+	methods : {
+		setColor : function(arg){
+			this.color = arg;
+			return this;
+		},		
+		setColorText : function(arg){
+			this.colorText = arg;
+			return this;
+		},
+		setTextAling : function(arg){
+			this.textAling = arg;
+			return this;
+		},
+		setShadow : function(arg){
+			this.shadow = arg;
+			return this;
+		},
+		setClass : function (){
+			return new Array(this.color, this.colorText, this.textAling, this.shadow).join(" ");
+		},
+		generateId : function(arg){
+			this.id = this.$options.name + app.generateId(arg);
+			return this.id;
+		},
+		generateRow : function(){
+			var out = new Array();
+			$.each(this.row, function(i, v) {
+				out.push('<li>');
+				out.push('<div class="collapsible-header">');
+				out.push(v.header.$el ? v.header.$el.outerHTML : v.header);
+				out.push('</div>');
+				out.push('<div class="collapsible-body">');
+				out.push(v.body.$el ? v.body.$el.outerHTML : v.body);
+				out.push('</div>');
+				out.push('</li>');				
+			});
+			return out.join("");
+		},		
+		setShow : function(arg){
+			this.show = arg;
+			return this;
+		},
+		/**
+		* [addRow description] se agrega un vector a la lista
+		* @param {[type]} arg [description] Array (header, body), donde header y body, son componentes 
+		*/
+		addRow : function(arg){
+			this.row.push(arg)
+			return this;			
+		},
+		clearRow : function(){
+			this.row = new Array();
+			return this;
+		},		
+	},
+	mounted: function () {
+		this.$nextTick(function () {
+			$('#'+this.id).collapsible();
+		})
+	}	
+};
 //macro components
 var preloaderFull = {
 	name : "c-preloaderFull",

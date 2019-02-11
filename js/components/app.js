@@ -49,6 +49,7 @@ var app = new Vue({
 		[table.name] : table,
 		/*components-collections*/
 		[collection.name] : collection,
+		[collapsible.name] : collapsible,
 		/*components-button*/
 		[button.name] : button,
 		[a.name] : a,
