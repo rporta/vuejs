@@ -10,7 +10,6 @@ let configComponent = class {
 	 	var setProperty = {};
 
 	 	for (var i in obj) {
-
 			//set name
 			i == 'name'
 			? this[i] = obj[i]
@@ -38,13 +37,13 @@ let configComponent = class {
 			: null;
 		};
 
-		//set data && extr
+		//set data && extra data
 		this.data = function (){
 
 			return Object.assign(setProperty, obj.data);
 		}
 
-		//set methods 
+		//set methods
 		for(i in this.data()){
 			var method =  'set' + i.charAt(0).toUpperCase() + i.slice(1);
 			this[method] = function(arg){
@@ -52,7 +51,6 @@ let configComponent = class {
 				return this;
 			}
 		}
-
 		//set extra methods
 		this[method] = Object.assign(this[method], obj.method);
 
