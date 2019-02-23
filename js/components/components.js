@@ -1,3 +1,81 @@
+//Obj config component
+let configComponent = class {
+
+	/**
+	 * [constructor description]
+	 * @param  {obj} obj [description] keys : string(name), obj(property) 
+	 * @return {void}     [description] create config component : string(name), function(data), obj(methods)
+	 */
+	 constructor(obj) {
+	 	var setProperty = {};
+
+	 	for (var i in obj) {
+
+			//set name
+			i == 'name'
+			? this[i] = obj[i]
+			: null;
+
+			i == 'property'
+			? (() => {
+				for(var property in obj[i]){
+					property == 'text' 
+					? setProperty[property] = obj[i][property]
+					: null ;
+					property == 'color' 
+					? setProperty[property] = obj[i][property]
+					: null ;					
+					property == 'colorText' 
+					? setProperty[property] = obj[i][property]
+					: null ;
+					property == 'textAling' 
+					? setProperty[property] = obj[i][property]
+					: null ;					
+					property == 'float' 
+					? setProperty[property] = obj[i][property]
+					: null ;
+					property == 'shadow' 
+					? setProperty[property] = obj[i][property]
+					: null ;					
+					property == 'truncate' 
+					? setProperty[property] = obj[i][property]
+					: null ;
+					property == 'cardpanel' 
+					? setProperty[property] = obj[i][property]
+					: null ;					
+					property == 'hoverable' 
+					? setProperty[property] = obj[i][property]
+					: null ;
+					property == 'container' 
+					? setProperty[property] = obj[i][property]
+					: null ;					
+					property == 'valign' 
+					? setProperty[property] = obj[i][property]
+					: null ;
+					property == 'show' 
+					? setProperty[property] = obj[i][property]
+					: null ;				
+				}
+			})()
+			: null;
+		};
+
+		//set data
+		this.data = function (){
+			return setProperty;
+		}
+
+		//set methods 
+		for(i in this.data()){
+			var method =  'set' + i.charAt(0).toUpperCase() + i.slice(1);
+			this[method] = function(arg){
+				this[method] = arg;
+				return this;
+			}
+		}
+	};
+};
+
 //components
 var preloader = {
 	name : "c-preloader",
