@@ -3,7 +3,7 @@ let configComponent = class {
 
 	/**
 	 * [constructor description]
-	 * @param  {obj} obj [description] keys : string(name), obj(property) 
+	 * @param  {obj} obj [description] keys : string(name), obj(property) , obj(data), obj(methods)
 	 * @return {void}     [description] create config component : string(name), function(data), obj(methods)
 	 */
 	 constructor(obj) {
@@ -19,50 +19,29 @@ let configComponent = class {
 			i == 'property'
 			? (() => {
 				for(var property in obj[i]){
-					property == 'text' 
-					? setProperty[property] = obj[i][property]
-					: null ;
-					property == 'color' 
-					? setProperty[property] = obj[i][property]
-					: null ;					
-					property == 'colorText' 
-					? setProperty[property] = obj[i][property]
-					: null ;
-					property == 'textAling' 
-					? setProperty[property] = obj[i][property]
-					: null ;					
-					property == 'float' 
-					? setProperty[property] = obj[i][property]
-					: null ;
-					property == 'shadow' 
-					? setProperty[property] = obj[i][property]
-					: null ;					
-					property == 'truncate' 
-					? setProperty[property] = obj[i][property]
-					: null ;
-					property == 'cardpanel' 
-					? setProperty[property] = obj[i][property]
-					: null ;					
-					property == 'hoverable' 
-					? setProperty[property] = obj[i][property]
-					: null ;
-					property == 'container' 
-					? setProperty[property] = obj[i][property]
-					: null ;					
-					property == 'valign' 
-					? setProperty[property] = obj[i][property]
-					: null ;
+					property == 'text' ||
+					property == 'color' ||
+					property == 'colorText' ||
+					property == 'textAling' ||
+					property == 'float' ||
+					property == 'shadow' ||
+					property == 'truncate' ||
+					property == 'cardpanel' ||
+					property == 'hoverable' ||
+					property == 'container' || 
+					property == 'valign' || 
 					property == 'show' 
 					? setProperty[property] = obj[i][property]
-					: null ;				
+					: null;		
 				}
 			})()
 			: null;
 		};
 
-		//set data
+		//set data && extr
 		this.data = function (){
-			return setProperty;
+
+			return Object.assign(setProperty, obj.data);
 		}
 
 		//set methods 
@@ -72,6 +51,20 @@ let configComponent = class {
 				this[method] = arg;
 				return this;
 			}
+		}
+
+		//set extra methods
+		this[method] = Object.assign(this[method], obj.method);
+
+		//set default methods
+		this.newComponent = function(component){
+			return new this.$options.components[component]();
+		}
+		this.generateId = function(arg){
+			return this.$options.name + app.generateId(arg);	
+		}
+		this.create = function(element){
+			return this.$el.append(element.$mount().$el);
 		}
 	};
 };
