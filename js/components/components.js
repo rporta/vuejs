@@ -26,7 +26,7 @@ let configComponent = class {
 	 		i == 'beforeDestroy' ||
 	 		i == 'destroyed' ||
 	 		i == 'computed' ||
-	 		i == 'component' ||
+	 		i == 'components' ||
 	 		i == 'props' 
 	 		? this[i] = obj[i]
 	 		: null;
@@ -34,18 +34,34 @@ let configComponent = class {
 	 		i == 'property'
 	 		? (() => {
 	 			for(let property in obj[i]){
+	 				property == "striped" ||
+	 				property == "highlight" ||
+	 				property == "centered" ||
+	 				property == "responsive" ||
 	 				property == 'text' ||
 	 				property == 'color' ||
 	 				property == 'colorText' ||
+	 				property == 'colorHexa' ||
 	 				property == 'textAling' ||
 	 				property == 'float' ||
+	 				property == 'flowText' ||
 	 				property == 'shadow' ||
 	 				property == 'truncate' ||
 	 				property == 'cardpanel' ||
 	 				property == 'hoverable' ||
+	 				property == 'href' ||
+	 				property == 'src' ||
 	 				property == 'container' || 
 	 				property == 'valign' || 
-	 				property == 'show' 
+	 				property == 'size' || 
+	 				property == 'show' ||
+	 				property == 'disable' ||
+	 				property == 'flat' ||
+	 				property == 'name' ||
+	 				property == 'filledIn' ||
+	 				property == 'floating' ||
+	 				property == 'withGap' ||
+	 				property == 'wave' 
 	 				? setProperty[property] = obj[i][property]
 	 				: null;		
 	 			}
@@ -53,54 +69,69 @@ let configComponent = class {
 	 		: null;
 	 	};
 
-		//set data && extra data
-		this.data = function (){
-			return Object.assign(setProperty, obj.data);
-		}
-
-		//set methods
-		for(let i in this.data()){
+		//create methods in property
+		for(let i in setProperty){
 			var method =  'set' + i.charAt(0).toUpperCase() + i.slice(1);
 			setMethods[method] = function(arg) {
 				this[i] = arg;
 				return this;
 			}
 		}
-		this.methods =  Object.assign(setMethods, obj.methods);
 
-		//set default methods
-		this.methods.newComponent = function(component){
+		//create default methods
+		setMethods.newComponent = function(component){
 			return new this.$options.components[component]();
 		}
-		this.methods.generateId = function(arg){			
+		setMethods.generateId = function(arg){			
 			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);		
 		}
-		this.methods.create = function(element){
+		setMethods.create = function(element){
 			return this.$el.append(element.$mount().$el);
 		}
-		this.methods.setClass = function(arg){
+		setMethods.setClass = function(arg){
 			let setClass = new Array;
+			//default class
+			for(let i in this.$options.data()){
+
+				i == 'truncate' && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'cardpanel' && this.$options.data()[i] ? setClass.push('card-panel') : null;
+				i == 'hoverable' && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'container'  && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'valign' && this.$options.data()[i] ? setClass.push('valign-wrapper') : null;
+				i == 'flowText' && this.$options.data()[i] ? setClass.push('flow-text') : null;
+				i == 'striped' && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'highlight' && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'centered' && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'responsive' && this.$options.data()[i] ? setClass.push('responsive-table') : null;
+				i == 'filledIn' && this.$options.data()[i] ? setClass.push('filled-in') : null;
+				i == 'disable' && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'flat' && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'floating' && this.$options.data()[i] ? setClass.push(i) : null;
+				i == 'withGap' && this.$options.data()[i] ? setClass.push('with-gap') : null;
+
+				i == 'color' ||
+				i == 'colorText' ||
+				i == 'colorHexa' ||
+				i == 'textAling' ||
+				i == 'float' ||
+				i == 'shadow' 
+				? setClass.push(this.$options.data()[i])
+				: null;
+			}
+
+			//custom class
 			switch(arg){
 				default:
-				for(let i in this.$options.data()){
-					i == 'truncate' && this.$options.data()[i] ? setClass.push(i) : null;
-					i == 'cardpanel' && this.$options.data()[i] ? setClass.push('card-panel') : null;
-					i == 'hoverable' && this.$options.data()[i] ? setClass.push(i) : null;
-					i == 'container'  && this.$options.data()[i] ? setClass.push(i) : null;
-					i == 'valign' && this.$options.data()[i] ? setClass.push('valign-wrapper') : null;
-
-					i == 'color' ||
-					i == 'colorText' ||
-					i == 'textAling' ||
-					i == 'float' ||
-					i == 'shadow' 
-					? setClass.push(this.$options.data()[i])
-					: null;
-				}
 				break;
 			}
 			return setClass.join(" ");
-		}		
+		}
+		//set data property && obj.data
+		this.data = function (){
+			return Object.assign(setProperty, obj.data);
+		}
+		//set methods && obj.methods
+		this.methods = Object.assign(setMethods, obj.methods);
 	};
 };
 var test = new  configComponent({
@@ -117,7 +148,7 @@ var test = new  configComponent({
 		hoverable : false,
 		valign : false,
 		container :true,
-		show : true
+		show : true,
 	},
 	template : 
 	'<transition name="fade">\
@@ -126,17 +157,17 @@ var test = new  configComponent({
 })
 
 //components
-var preloader = {
+var preloader = new  configComponent({
 	name : "c-preloader",
-	data: function () {
-		return {
-			color : new Array("", ""),
-			mode : "indeterminate",
-			space : " ",
-			percentage : "%",
-			progress : 40,
-			show : true
-		}
+	property : {
+		show : true,
+		color : new Array(null, null),
+	},
+	data: {
+		mode : "indeterminate",
+		space : " ",
+		percentage : "%",
+		progress : 40,
 	},
 	template: 
 	'<transition name="fade">\
@@ -145,15 +176,6 @@ var preloader = {
 	</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
 		setMode : function(set){
 			switch (set) {
 				case 0 :
@@ -182,24 +204,14 @@ var preloader = {
 			this.progress = arg;
 			return this;
 		},
-		setColor : function(arg){
-			this.color = arg
-			return this;
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
-	}
-};
-var preloaderCircle = {
-	name : "c-preloaderCircle",
-	data: function () {
-		return {
-			colorsHexa : "red",
-			size : "big",
-			show : true
-		}
+	},
+});
+var preloaderCircle = new  configComponent({
+	name : "c-preloader-circle",
+	property : {
+		colorHexa : "red",
+		show : true,
+		size : "big",
 	},
 	template: 
 	'<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:class="this.size"  class="preloader-wrapper active">\
@@ -216,115 +228,42 @@ var preloaderCircle = {
 	</div>\
 	</div></transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
 		setStyle : function(){
 			var out;
 			out = {borderColor : this.colorsHexa}	
 			return out;
 		},
-		setColorHexa : function(arg){
-			this.colorsHexa = arg
-			return this;
-		},
-		setSize : function(arg){
-			this.size = arg;
-			return this;
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}			
 	}
-};
-var section = {
+});
+var section = new  configComponent({
 	name : "c-section",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			styleP : false,
-			show : true
-		}
+	property : {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true		
+	},
+	data: {
+		styleP : false,
+		d : 0,
 	},
 	template: 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
 		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},		
 		setD : function (arg){
 			this.d = arg;
 			return this;
@@ -349,85 +288,32 @@ var section = {
 			};
 			return this.styleP ? stylePreload : {};
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}
-};
-var div = {
+});
+var div = new configComponent({
 	name : "c-div",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			valign : false,
-			styleP :false,
-			container :false,
-			show : true
-		}
+	data: {
+		styleP :false,
+	},
+	property : {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		valign : false,
+		container :false,
+		show : true
 	},
 	template: 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
@@ -448,35 +334,27 @@ var div = {
 				transform: "translate(-50%, -50%)"
 			};
 			return this.styleP ? stylePreload : {};			
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}			
+		}	
 	}
-};
-var modal = {
+});
+var modal = new configComponent({
 	name : "c-modal",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			styleP : false,
-			show : true
-		}
+	data:  {
+		styleP : false,
+	},
+	property: {
+		text:null,
+		color :null,
+		colorText :null,
+		textAling :null,
+		float :null,
+		shadow :null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
 	},
 	template: 
 	'<transition name="fade">\
@@ -488,63 +366,10 @@ var modal = {
 	</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
 		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},		
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -562,10 +387,6 @@ var modal = {
 				height: "100%"
 			};
 			return this.styleP ? stylePreload : {};
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
 		},
 		open: function (){
 			return this.$el.M_Modal.open();
@@ -576,88 +397,36 @@ var modal = {
 			$('.modal').modal();
 		})
 	}	
-};
-var br = {
+});
+var br = new configComponent({
 	name : "c-br",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			styleP : false,
-			show : true
-		}
+	data: 
+	{
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+	},
+	property: {
+		styleP : false,
 	},
 	template: 
 	'<transition name="fade">\
 	<br key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
 		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},		
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -676,93 +445,36 @@ var br = {
 			};
 			return this.styleP ? stylePreload : {};
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}
-};
-var divider = {
+});
+var divider = new configComponent({
 	name : "c-divider",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			styleP : false,
-			show : true
-		}
+	property :{
+		styleP : false,
+	},
+	data:{
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true
 	},
 	template: 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-bind:class="this.setClass()" v-show="this.show" v-bind:id="this.generateId(5)" class="divider"></div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
 		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},		
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -780,86 +492,33 @@ var divider = {
 				height: "100%"
 			};
 			return this.styleP ? stylePreload : {};
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
+		},	
 	}
-};
-var container = {
+});
+var container = new configComponent({
 	name : "c-container",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			valign : false,
-			styleP :false,
-			container :true,
-			show : true
-		}
+	data: {
+		styleP :false,
+	},
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		valign : false,
+		container :true,
+		show : true,
 	},
 	template: 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
@@ -880,93 +539,33 @@ var container = {
 				transform: "translate(-50%, -50%)"
 			};
 			return this.styleP ? stylePreload : {};			
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}			
-	}
-};
-var row = {
+		},	
+	},
+});
+var row = new configComponent({
 	name : "c-row",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true
+	},
+	data:{
+
 	},
 	template: 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="row">{{this.text}}</div>\
 	</transition>',
-	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
+	methods: {	
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -975,52 +574,35 @@ var row = {
 			var container = "container";
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
-	}		
-};
-var col = {
+	},	
+});
+var col = new configComponent({
 	name : "c-col",
-	data: function () {
-		return {
-			s: 12,
-			m: 12,
-			l: 12,
-			xl: 12,
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+	},
+	data:{
+		s: 12,
+		m: 12,
+		l: 12,
+		xl: 12,		
 	},
 	template: 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="col">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
 		setAll : function(arg){
 			this.s = arg;
 			this.m = arg;
@@ -1044,46 +626,6 @@ var col = {
 			this.xl = arg;
 			return this;
 		},		
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},		
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1096,89 +638,33 @@ var col = {
 			var container = "container";
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", typeof this.s === "number" ? s + this.s : s + 12, typeof this.m === "number" ? m + this.m : m +  12, typeof this.l === "number" ? l + this.l : l + 12, typeof this.xl === "number" ? xl + this.xl : xl + 12, this.container ? container : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
-	}		
-};
+	},	
+});
 
-var header = {
+var header = new configComponent({
 	name : "c-header",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+	},
+	data : {
+
 	},
 	template: 
 	'<transition name="fade">\
 	<header key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</header>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1187,89 +673,33 @@ var header = {
 			var container = "container";			
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}		
-};
+});
 
-var main = {
+var main = new configComponent({
 	name : "c-main",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+	},
+	data: {
+
 	},
 	template: 
 	'<transition name="fade">\
 	<main key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</main>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1278,89 +708,33 @@ var main = {
 			var container = "container";			
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}		
-};
+});
 
-var footer = {
+var footer = new configComponent({
 	name : "c-footer",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true
+	},
+	data : {
+
 	},
 	template: 
 	'<transition name="fade">\
 	<footer key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</footer>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1369,93 +743,36 @@ var footer = {
 			var container = "container";			
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}		
-};
-var h = {
+});
+var h = new configComponent({
 	name : "c-h",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			size : 1,
-			flowText : false
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+		flowText : false
+	},
+	data: {
+		size : 1,
 	},
 	template: 
 	'<transition name="fade">\
 	<h1 v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</h1>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
-			var tagName = "h";
-			return tagName + this.size;	
-		},		
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
+			var tagName = "h" + this.size;
+			return tagName;	
 		},			
 		setSize : function (arg){
 			if (arg >= 1 && arg <= 6){
@@ -1472,97 +789,37 @@ var h = {
 			var flowText = "flow-text";			
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		},
-		setFlowText : function(arg){
-			this.flowText = arg;
-			return this;
-		}	
-	}		
-};
-var p = {
+	},		
+});
+var p = new configComponent({
 	name : "c-p",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+		flowText : false
+	},
+	data : {
+
 	},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
 			var tagName = "p";
 			return tagName;	
 		},		
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1572,102 +829,36 @@ var p = {
 			var flowText = "flow-text";				
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		},
-		setFlowText : function(arg){
-			this.flowText = arg;
-			return this;
-		}
 	}		
-};
-var blockquotes = {
+});
+var blockquotes = new configComponent({
 	name : "c-blockquotes",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			colorHexa : null,
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		colorHexa : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+		flowText : false
 	},
+	data: {},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
 			var tagName = "blockquote";
 			return tagName;	
 		},		
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorHexa : function (arg){
-			this.colorHexa = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1679,10 +870,6 @@ var blockquotes = {
 		},
 		setShow : function(arg){
 			this.show = arg;
-			return this;
-		},
-		setFlowText : function(arg){
-			this.flowText = arg;
 			return this;
 		},
 		setStyle : function(){
@@ -1693,88 +880,34 @@ var blockquotes = {
 			return out;
 		}		
 	}		
-};
-var span = {
+});
+var span = new configComponent({
 	name : "c-span",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+		flowText : false
 	},
+	data : {},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
 			var tagName = "span";
 			return tagName;	
 		},		
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1784,97 +917,37 @@ var span = {
 			var flowText = "flow-text";	
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		},
-		setFlowText : function(arg){
-			this.flowText = arg;
-			return this;			
-		}
 	}		
-};
-var pre = {
+});
+var pre = new configComponent({
 	name : "c-pre",
-	data: function () {
-		return {
-			text: "",
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false
-		}
+	property: {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+		flowText : false
+	},
+	data:{
+
 	},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
 			var tagName = "pre";
 			return tagName;	
 		},		
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1884,98 +957,39 @@ var pre = {
 			var flowText = "flow-text";	
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		},
-		setFlowText : function(arg){
-			this.flowText = arg;
-			return this;
-
-		}		
-
 	}		
-};
-var icon = {
+});
+var icon = new configComponent({
 	name : "c-icon",
-	data: function () {
-		return {
-			icon: "",
-			color : "",
-			colorText : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			prefix : false,
-			d : 0,
-			size : "Small",
-			show : true
-		}
+	property: {
+		color : null,
+		colorText : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		size : "Small",
+		show : true
+	},
+	data: {
+		d : 0,
+		prefix : false,
+		icon: null,
 	},
 	template: 
 	'<transition name="fade">\
 	<div class="material-icons" v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.icon}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
 			var tagName = "i";
 			return tagName;	
 		},		
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
 		setIcon : function(arg){
 			this.icon = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
-		setSize : function (arg){
-			this.size = arg;
 			return this;
 		},
 		setPrefix : function (arg){
@@ -1997,41 +1011,31 @@ var icon = {
 			var dline = "dline";
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "",  this.prefix ? prefix : "", (this.d == 0 ? "" : (this.d == 1 ? dline : (this.d == 2 ? dbox : "")))).join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}		
-};
-var form = {
+});
+var form = new configComponent({
 	name : "c-form",
-	data: function () {
-		return {
-			color : "",
-			colorText : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			file : false,
-			method : 0,
-			show : true
-		}
+	property: {
+		color : null,
+		colorText : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true
+	},
+	data: {
+		file : false,
+		method : 0,		
 	},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
 			var tagName = "form";
 			return tagName;	
@@ -2043,46 +1047,7 @@ var form = {
 		generateMethod : function(){
 			var methods = new Array("get", "post");
 			return methods[this.method];	
-		},		
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},					
+		},						
 		setFile : function (arg){
 			this.file = arg;
 			return this;
@@ -2107,35 +1072,31 @@ var form = {
 			var valign = "valign-wrapper";
 			var container = "container";			
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
+		},	
 	}		
-};
-var table = {
+});
+var table = new configComponent({
 	name : "c-table",
-	data: function () {
-		return {
-			color : "",
-			colorText : "",
-			textAling : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			striped : false,
-			highlight : false,
-			centered : false,
-			responsive : false,
-			head : new Array(),
-			row : new Array(),
-			show : true
-		}
+	property: {
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,
+		striped : false,
+		highlight : false,
+		centered : false,
+		responsive : false,
+	},
+	data: {
+		head : new Array(),
+		row : new Array(),		
 	},
 	template: 
 	'<transition name="fade">\
@@ -2145,12 +1106,6 @@ var table = {
 	</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(arg){
 			var tagName = "table";
 			return tagName;	
@@ -2185,13 +1140,6 @@ var table = {
 			});
 			return out.join("");
 		},		
-		create : function(element){
-			return this.$el.append(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
 		setHead : function(arg){
 			this.head = arg;
 			return this;
@@ -2203,59 +1151,7 @@ var table = {
 		addHead : function(arg){
 			this.head.push(arg);
 			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},			
-		setStriped : function (arg){
-			this.striped = arg;
-			return this;
-		},			
-		setHighlight : function (arg){
-			this.highlight = arg;
-			return this;
-		},			
-		setCentered : function (arg){
-			this.centered = arg;
-			return this;
-		},			
-		setResponsive : function (arg){
-			this.responsive = arg;
-			return this;
-		},			
+		},		
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -2268,46 +1164,36 @@ var table = {
 			var responsive = "responsive-table";
 			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.striped ? striped : "", this.highlight ? highlight : "", this.centered ? centered : "", this.responsive ? responsive : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}		
-};
-var button = {
+});
+var button =  new configComponent({
 	name : "c-button",
-	data: function () {
-		return {
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			wave : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			disable : false,
-			flat : false,
-			floating : false,
-			type : 0,
-			size : "btn-small",
-			show : true
-		}
+	property: {
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		wave : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		size : "btn-small",
+		show : true,
+		disable : false,
+		flat : false,
+		floating : false,
+	},
+	data: {
+		type : 0,
 	},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:type="this.generateType()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
 			var tagName = "button";
 			return tagName;	
@@ -2316,69 +1202,6 @@ var button = {
 			var type = new Array("button", "submit", "reset");
 			return type[this.type];	
 		},		
-		create : function(element){
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setDisable : function(arg){
-			this.disable = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},						
-		setFlat : function (arg){
-			this.flat = arg;
-			return this;
-		},					
-		setFloating : function (arg){
-			this.floating = arg;
-			return this;
-		},					
-		setSize : function (arg){
-			this.size = arg;
-			return this;
-		},
-		setWave : function (arg){
-			this.wave = arg;
-			return this;
-		},				
 		setType : function (arg){
 			switch(arg){
 				case "button":
@@ -2407,118 +1230,41 @@ var button = {
 			var floating = "floating";			
 			return new Array(this.wave, this.size, this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.disable ? disable : "", this.flat ? flat : "", this.floating ? floating : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}		
-};
-
-var a = {
+});
+var a = new configComponent({
 	name : "c-a",
-	data: function () {
-		return {
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			disable : false,
-			flat : false,
-			floating : false,
-			wave : "",
-			size : "btn-small",
-			href : "",
-			show : true
-		}
+	property: {
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		wave : null,
+		size : "btn-small",
+		href : null,
+		show : true,
+		disable : false,
+		flat : false,
+		floating : false,
+	},
+	data : {
+
 	},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:href="this.href" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateTag : function(){
 			var tagName = "a";
 			return tagName;	
-		},				
-		create : function(element){
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setDisable : function(arg){
-			this.disable = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},						
-		setFlat : function (arg){
-			this.flat = arg;
-			return this;
-		},					
-		setFloating : function (arg){
-			this.floating = arg;
-			return this;
-		},					
-		setSize : function (arg){
-			this.size = arg;
-			return this;
-		},								
-		setWave : function (arg){
-			this.wave = arg;
-			return this;
-		},								
-		setHref : function (arg){
-			this.href = arg;
-			return this;
-		},								
+		},													
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -2530,32 +1276,28 @@ var a = {
 			var floating = "floating";			
 			return new Array(this.wave, this.size, this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.disable ? disable : "", this.flat ? flat : "", this.floating ? floating : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
 	}		
-};
-var inputFields = {
+});
+var inputFields = new configComponent({
 	name : "c-inputFields",
-	data: function (){
-		return {
-			inputLabelId : "",
-			text : "",
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			name : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			type : 0,
-			show : true			
-		}
+	property: {
+		inputLabelId : null,
+		text : null,
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		name : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true			
+	},
+	data :{
+		type : 0,
 	},
 	template: 
 	'<transition name="fade">\
@@ -2565,60 +1307,10 @@ var inputFields = {
 	</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateInputLabelId : function(arg){
 			this.inputLabelId = app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
 			return this.inputLabelId;	
-		},				
-		create : function(element){
-			element.setPrefix(true);
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setName : function(arg){
-			this.name = arg;
-			return this;
-		},		
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},																						
+		},																	
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -2626,10 +1318,6 @@ var inputFields = {
 			var valign = "valign-wrapper";
 			var container = "container";				
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
 		},
 		setType : function (arg){
 			switch(arg){
@@ -2651,29 +1339,28 @@ var inputFields = {
 		generateType : function(){
 			var type = new Array("text", "email", "password");
 			return type[this.type];	
-		}	
+		},
 	}
-};
-var inputTextarea = {
+});
+var inputTextarea = new configComponent({
 	name : "c-inputTextarea",
-	data: function (){
-		return {
-			inputLabelId : "",
-			name : "",
-			text : "",
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			type : 0,
-			show : true			
-		}
+	property: {
+		inputLabelId : null,
+		name : null,
+		text : null,
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true			
+	},
+	data: {	
 	},
 	template: 
 	'<transition name="fade">\
@@ -2683,60 +1370,10 @@ var inputTextarea = {
 	</div>\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
 		generateInputLabelId : function(arg){
 			this.inputLabelId = app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
 			return this.inputLabelId;	
-		},				
-		create : function(element){
-			element.setPrefix(true);
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setName : function(arg){
-			this.name = arg;
-			return this;
-		},		
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},																						
+		},																				
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -2745,32 +1382,27 @@ var inputTextarea = {
 			var container = "container";				
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}	
 	}
-};
-var inputSwitch = {
+});
+var inputSwitch = new configComponent({
 	name : "c-inputSwitch",
-	data: function (){
-		return {
-			inputLabelId : "",
-			name : "",
-			text : new Array("Off", "On"),
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			type : 0,
-			show : true			
-		}
+	property: {
+		inputLabelId : null,
+		name : null,
+		text : new Array("Off", "On"),
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true			
+	},
+	data:{
 	},
 	template: 
 	'<transition name="fade">\
@@ -2781,61 +1413,7 @@ var inputSwitch = {
 	</label>\
 	</div>\
 	</transition>',
-	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		generateInputLabelId : function(arg){
-			this.inputLabelId = app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-			return this.inputLabelId;	
-		},				
-		create : function(element){
-			element.setPrefix(true);
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setName : function(arg){
-			this.name = arg;
-			return this;
-		},		
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},																						
+	methods: {												
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -2844,33 +1422,28 @@ var inputSwitch = {
 			var container = "container";				
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}	
 	}
-};
-var inputCheckbox = {
+});
+var inputCheckbox = new configComponent({
 	name : "c-inputCheckbox",
-	data: function (){
-		return {
-			inputLabelId : "",
-			name : "",
-			text : "",
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			filledIn : false,
-			type : 0,
-			show : true			
-		}
+	property: {
+		inputLabelId : null,
+		name : null,
+		text : null,
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		show : true,	
+		filledIn : false,
+	},
+	data: {
 	},
 	template: 
 	'<transition name="fade">\
@@ -2879,64 +1452,7 @@ var inputCheckbox = {
 	<span>{{this.text}}</span>\
 	</label>\
 	</transition>',
-	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		generateInputLabelId : function(arg){
-			this.inputLabelId = app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-			return this.inputLabelId;	
-		},				
-		create : function(element){
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setFilledIn : function(arg){
-			this.filledIn = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setName : function(arg){
-			this.name = arg;
-			return this;
-		},		
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},																						
+	methods: {						
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -2946,33 +1462,29 @@ var inputCheckbox = {
 			var filledIn = "filled-in";				
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.filledIn ? filledIn : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}	
 	}	
-};
-var inputRadio = {
+});
+var inputRadio = new configComponent({
 	name : "c-inputRadio",
-	data: function (){
-		return {
-			inputLabelId : "",
-			name : "",
-			text : "",
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			withGap : false,
-			type : 0,
-			show : true			
-		}
+	property: {
+		inputLabelId : null,
+		name : null,
+		text : null,
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		withGap : false,
+		show : true			
+	},
+	data: {
+
 	},
 	template: 
 	'<transition name="fade">\
@@ -2981,64 +1493,7 @@ var inputRadio = {
 	<span>{{this.text}}</span>\
 	</label>\
 	</transition>',
-	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		generateInputLabelId : function(arg){
-			this.inputLabelId = app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-			return this.inputLabelId;	
-		},				
-		create : function(element){
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setWithGap : function(arg){
-			this.withGap = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setName : function(arg){
-			this.name = arg;
-			return this;
-		},		
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},																						
+	methods: {												
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -3048,64 +1503,39 @@ var inputRadio = {
 			var withGap = "with-gap";				
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.withGap ? withGap : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}	
 	}	
-};
-var img = {
+});
+var img = new configComponent({
 	name : "c-img",
-	data: function (){
-		return {
-			inputLabelId : "",
-			name : "",
-			text : "",
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			src : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			circle : false,
-			responsive : false,
-			materialbox : false,
-			show : true			
-		}
+	property: {
+		inputLabelId : null,
+		name : null,
+		text : null,
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		src : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		responsive : false,
+		show : true			
+	},
+	data: {
+		circle : false,
+		materialbox : false,
 	},
 	template: 
 	'<transition name="fade">\
 	<img key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="setClass()" v-bind:src="this.src">\
 	</transition>',
 	methods: {
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-		},
-		generateInputLabelId : function(arg){
-			this.inputLabelId = app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
-			return this.inputLabelId;	
-		},				
-		create : function(element){
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
 		setCircle : function(arg){
 			this.circle = arg;
-			return this;
-		},
-		setResponsive : function(arg){
-			this.responsive = arg;
 			return this;
 		},
 		setMaterialbox : function(arg){
@@ -3114,47 +1544,7 @@ var img = {
 				$('.materialboxed').materialbox();
 			}
 			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setSrc : function(arg){
-			this.src = arg;
-			return this;
-		},		
-		setName : function(arg){
-			this.name = arg;
-			return this;
-		},		
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},																						
+		},								
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -3165,38 +1555,33 @@ var img = {
 			var materialbox = "materialboxed";												
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.circle ? circle : "", this.responsive ? responsive : "", this.materialbox ? materialbox : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}	
 	}	
-};
-var dropdown = {
+});
+var dropdown = new configComponent({
 	name : "c-dropdown",
-	data: function () {
-		return {
-			dropdown : new Array(),
-			id : null,
-			idA : null,
-			color : "",
-			colorText : "",
-			text : "",
-			float : "",
-			shadow : "",
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			disable : false,
-			flat : false,
-			floating : false,
-			wave : "",
-			size : "btn-small",
-			href : "#",
-			show : true
-
-		}
+	property: {
+		id : null,
+		color : null,
+		colorText : null,
+		text : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		container : false,
+		valign : false,
+		disable : false,
+		flat : false,
+		floating : false,
+		wave : null,
+		size : "btn-small",
+		href : "#",
+		show : true,
+	},
+	data: {
+		dropdown : new Array(),
+		idA : null,
 	},
 	template:
 	'<transition name="fade">\
@@ -3228,13 +1613,6 @@ var dropdown = {
 			this.dropdown = new Array();
 			return this;
 		},
-		newComponent : function(component){
-			return new this.$options.components[component]();
-		},
-		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
-			return this.id;
-		},
 		generateIdA : function(arg){
 			this.idA = this.$options.name + app.generateId(arg);
 			return this.idA;
@@ -3242,73 +1620,6 @@ var dropdown = {
 		generateTag : function(){
 			var tagName = "a";
 			return tagName;	
-		},				
-		create : function(element){
-			return this.$el.prepend(element.$mount().$el);
-		},
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},		
-		setFloat : function(arg){
-			this.float = arg;
-			return this;
-		},
-		setDisable : function(arg){
-			this.disable = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
-		setTruncate : function(arg){
-			this.truncate = arg;
-			return this;
-		},
-		setCardpanel : function(arg){
-			this.cardpanel = arg;
-			return this;
-		},
-		setHoverable : function(arg){
-			this.hoverable = arg;
-			return this;
-		},
-		setValign : function(arg){
-			this.valign = arg;
-			return this;
-		},
-		setContainer : function (arg){
-			this.container = arg;
-			return this;
-		},						
-		setFlat : function (arg){
-			this.flat = arg;
-			return this;
-		},					
-		setFloating : function (arg){
-			this.floating = arg;
-			return this;
-		},					
-		setSize : function (arg){
-			this.size = arg;
-			return this;
-		},								
-		setWave : function (arg){
-			this.wave = arg;
-			return this;
-		},								
-		setHref : function (arg){
-			this.href = arg;
-			return this;
 		},								
 		setClass : function(){
 			var truncate = "truncate";
@@ -3321,11 +1632,6 @@ var dropdown = {
 			var floating = "floating";			
 			return new Array(this.wave, this.size, this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.disable ? disable : "", this.flat ? flat : "", this.floating ? floating : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}		
-
 	},
 	mounted: function () {
 		this.$nextTick(function () {
@@ -3333,39 +1639,23 @@ var dropdown = {
 		})
 	}	
 
-};
-var badge = {
+});
+var badge = new configComponent({
 	name : "c-badge",
-	data : function () {
-		return {
-			text : "",
-			color : "",
-			colorText : "",
-			show : true,
-			new : false
-		}
+	property : {
+		text : null,
+		color : null,
+		colorText : null,
+		show : true,
+	},
+	data : {
+		new : false,
 	},
 	template:
 	'<transition name="fade">\
 	<span key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="badge">{{this.text}}</span>\
 	</transition>',	
 	methods : {
-		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
-			return this.id;
-		},		
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setText : function(arg){
-			this.text = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},		
 		setNew : function(arg){
 			this.new = arg;
 			return this;
@@ -3374,47 +1664,27 @@ var badge = {
 			var css = "new"; 
 			return new Array(this.color, this.colorText, this.new ? css : "").join(" ");
 		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		}
 	}
-};
-var collection = {
+});
+var collection = new configComponent({
 	name : "c-collection",
 	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-html="this.generateRow()" >\
 	</div>\
 	</transition>',
-	data : function(){
-		return {
-			color : "",
-			colorText : "",
-			textAling : "",
-			shadow : "",
-			show : true,
-			mode : 0,
-			row : new Array(),			
-		}
+	property : {
+		color : null,
+		colorText : null,
+		textAling : null,
+		shadow : null,
+		show : true,
+	},
+	data: {
+		mode : 0,
+		row : new Array(),			
 	},
 	methods : {
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},		
 		setClass : function (){
 			var setClass = "";
 			switch(this.mode){
@@ -3426,10 +1696,6 @@ var collection = {
 			}
 
 			return new Array(setClass, this.color, this.colorText, this.textAling, this.shadow).join(" ");
-		},
-		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
-			return this.id;
 		},
 		generateRow : function(){
 			var out = new Array();
@@ -3471,10 +1737,6 @@ var collection = {
 			}
 			return tagName;	
 		},	
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		},
 		addRow : function(arg){
 			this.row.push(arg)
 			return this;			
@@ -3504,49 +1766,28 @@ var collection = {
 			return this;
 		}
 	}
-};
-var collapsible = {
+});
+var collapsible = new configComponent({
 	name : "c-collapsible",
 	template : 
 	'<transition name="fade">\
 	<ul key="this.generateId(5)" v-show="this.show" class="collapsible" v-bind:class="this.setClass()"  v-bind:id="this.generateId(5)" v-html="this.generateRow()">\
 	</ul>\
-	</transition>'
-	,
-	data : function () {
-		return {
-			id : null,
-			color : app.color.bwt[1] ,
-			colorText : app.colorText.bwt[0],
-			textAling : app.textAling.l,
-			shadow : null,
-			show : true,
-			row : new Array(),
-		}
+	</transition>',
+	property : {
+		id : null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		shadow : null,
+		show : true,
+	},
+	data:{
+		row : new Array(),
 	},
 	methods : {
-		setColor : function(arg){
-			this.color = arg;
-			return this;
-		},		
-		setColorText : function(arg){
-			this.colorText = arg;
-			return this;
-		},
-		setTextAling : function(arg){
-			this.textAling = arg;
-			return this;
-		},
-		setShadow : function(arg){
-			this.shadow = arg;
-			return this;
-		},
 		setClass : function (){
 			return new Array(this.color, this.colorText, this.textAling, this.shadow).join(" ");
-		},
-		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
-			return this.id;
 		},
 		generateRow : function(){
 			var out = new Array();
@@ -3562,10 +1803,6 @@ var collapsible = {
 			});
 			return out.join("");
 		},		
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		},
 		/**
 		* [addRow description] se agrega un vector a la lista
 		* @param {[type]} arg [description] Array (header, body), donde header y body, son componentes 
@@ -3584,8 +1821,8 @@ var collapsible = {
 			$('#'+this.id).collapsible();
 		})
 	}	
-};
-var parallax = {
+});
+var parallax = new configComponent({
 	name : "c-parallax",
 	template : 
 	'<transition name="fade">\
@@ -3593,44 +1830,32 @@ var parallax = {
 	<div class="parallax"><img v-bind:src="this.src"></div>\
 	</div>\
 	</transition>',
-	data: function () {
-		return {
-			id : null,
-			show : true,
-			src : null
-		}
+	property: {
+		id : null,
+		show : true,
+		src : null,
 	},	
 	methods: {
-		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
-			return this.id;
-		},
-		setShow : function(arg){
-			this.show = arg;
-			return this;
-		},
-		setSrc : function(arg){
-			this.src = arg;
-			return this;
-		},	
+
 	},
 	mounted: function () {
 		this.$nextTick(function () {
 			$('.parallax').parallax();
 		})
 	}		
-};
+});
 //macro components
-var preloaderFull = {
+var preloaderFull = new configComponent({
 	name : "c-preloaderFull",
-	data: function () {
-		return {
-			sectionColor : "",
-			color : new Array("", ""),
-			mode : 0,
-			progress : 40,
-			show : true
-		}
+	property: {
+		color : new Array(null, null),
+		show : true
+	},
+	data: {
+		sectionColor : "",
+		mode : 0,
+		progress : 40,
+		
 	},
 	methods: {
 		setColor : function(arg){
@@ -3683,12 +1908,9 @@ var preloaderFull = {
 		},
 		getInstance : function (){
 			//transition on
-			return this._vnode.child;
-			
+			return this._vnode.child;			
 			//transition off
-			// return this.$el.__vue__.$options.parent;
-			// return this.$el.__vue__.$options.parent;
-			
+			// return this.$el.__vue__.$options.parent;	
 		}
 	},
 	render: function (createElement) {
@@ -3707,16 +1929,16 @@ var preloaderFull = {
 		[container.name] : container,
 		[section.name] : section
 	}
-};
-var preloaderCircleFull = {
+});
+var preloaderCircleFull = new configComponent({
 	name : "c-preloaderCircleFull",
-	data: function () {
-		return {
-			sectionColor : "",
-			colorsHexa : "red",
-			size : "big",
-			show : true
-		}
+	property: {
+		colorsHexa : "red",
+		size : "big",
+		show : true
+	},
+	data: {
+		sectionColor : "",
 	},
 	methods: {
 		setColorHexa : function(arg){
@@ -3756,17 +1978,14 @@ var preloaderCircleFull = {
 		getInstance : function (){
 			//transition on
 			return this._vnode.child;
-			
 			//transition off
 			// return this.$el.__vue__.$options.parent;
-			// return this.$el.__vue__.$options.parent;
-			
-		}
+		},
 	},
 	render: function (createElement) {
 		var csection = new this.$options.components['c-section']().$mount().setStyleP(true).setColor(this.sectionColor);
 		var ccontainer = new this.$options.components['c-container']().$mount().setStyleP(true).setContainer(false);
-		var preloaderCircle = new this.$options.components['c-preloaderCircle']().$mount().setColorHexa(this.colorsHexa).setSize(this.size);
+		var preloaderCircle = new this.$options.components['c-preloader-circle']().$mount().setColorHexa(this.colorsHexa).setSize(this.size);
 		csection.create(ccontainer);
 		ccontainer.create(preloaderCircle);
 		var section = createElement('c-section');
@@ -3779,4 +1998,4 @@ var preloaderCircleFull = {
 		[container.name] : container,
 		[section.name] : section
 	}
-};
+});
