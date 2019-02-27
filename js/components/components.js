@@ -213,6 +213,7 @@ var preloaderCircle = new  configComponent({
 		show : true,
 		size : "big",
 	},
+	data: {},
 	template: 
 	'<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:class="this.size"  class="preloader-wrapper active">\
 	<div class="spinner-layer" v-bind:style="this.setStyle()">\
