@@ -8,64 +8,122 @@ let configComponent = class {
 	 */
 	 constructor(obj) {
 	 	var setProperty = {};
+	 	var setMethods = {};
 
-	 	for (var i in obj) {
-			//set name
-			i == 'name'
-			? this[i] = obj[i]
-			: null;
+	 	for (let i in obj) {
 
-			i == 'property'
-			? (() => {
-				for(var property in obj[i]){
-					property == 'text' ||
-					property == 'color' ||
-					property == 'colorText' ||
-					property == 'textAling' ||
-					property == 'float' ||
-					property == 'shadow' ||
-					property == 'truncate' ||
-					property == 'cardpanel' ||
-					property == 'hoverable' ||
-					property == 'container' || 
-					property == 'valign' || 
-					property == 'show' 
-					? setProperty[property] = obj[i][property]
-					: null;		
-				}
-			})()
-			: null;
-		};
+	 		i == 'name' ||
+	 		i == 'template' ||
+	 		i == 'render' ||
+	 		i == 'beforeCreate' ||
+	 		i == 'created' ||
+	 		i == 'beforeMount' ||
+	 		i == 'mounted' ||
+	 		i == 'beforeUpdate' ||
+	 		i == 'updated' ||
+	 		i == 'activated' ||
+	 		i == 'deactivated' ||
+	 		i == 'beforeDestroy' ||
+	 		i == 'destroyed' ||
+	 		i == 'computed' ||
+	 		i == 'component' ||
+	 		i == 'props' 
+	 		? this[i] = obj[i]
+	 		: null;
+
+	 		i == 'property'
+	 		? (() => {
+	 			for(let property in obj[i]){
+	 				property == 'text' ||
+	 				property == 'color' ||
+	 				property == 'colorText' ||
+	 				property == 'textAling' ||
+	 				property == 'float' ||
+	 				property == 'shadow' ||
+	 				property == 'truncate' ||
+	 				property == 'cardpanel' ||
+	 				property == 'hoverable' ||
+	 				property == 'container' || 
+	 				property == 'valign' || 
+	 				property == 'show' 
+	 				? setProperty[property] = obj[i][property]
+	 				: null;		
+	 			}
+	 		})()
+	 		: null;
+	 	};
 
 		//set data && extra data
 		this.data = function (){
-
 			return Object.assign(setProperty, obj.data);
 		}
 
 		//set methods
-		for(i in this.data()){
+		for(let i in this.data()){
 			var method =  'set' + i.charAt(0).toUpperCase() + i.slice(1);
-			this[method] = function(arg){
-				this[method] = arg;
+			setMethods[method] = function(arg) {
+				this[i] = arg;
 				return this;
 			}
 		}
-		//set extra methods
-		this[method] = Object.assign(this[method], obj.method);
+		this.methods =  Object.assign(setMethods, obj.methods);
 
 		//set default methods
-		this.newComponent = function(component){
+		this.methods.newComponent = function(component){
 			return new this.$options.components[component]();
 		}
-		this.generateId = function(arg){
-			return this.$options.name + app.generateId(arg);	
+		this.methods.generateId = function(arg){
+			return this.$options.name + this.$root.generateId(arg);	
 		}
-		this.create = function(element){
+		this.methods.create = function(element){
 			return this.$el.append(element.$mount().$el);
 		}
+		this.methods.setClass = function(arg){
+			let setClass = new Array;
+			switch(arg){
+				default:
+				for(let i in this.$options.data()){
+					i == 'truncate' && this.$options.data()[i] ? setClass.push(i) : null;
+					i == 'cardpanel' && this.$options.data()[i] ? setClass.push('card-panel') : null;
+					i == 'hoverable' && this.$options.data()[i] ? setClass.push(i) : null;
+					i == 'container'  && this.$options.data()[i] ? setClass.push(i) : null;
+					i == 'valign' && this.$options.data()[i] ? setClass.push('valign-wrapper') : null;
+
+					i == 'color' ||
+					i == 'colorText' ||
+					i == 'textAling' ||
+					i == 'float' ||
+					i == 'shadow' 
+					? setClass.push(this.$options.data()[i])
+					: null;
+				}
+				break;
+			}
+			return setClass.join(" ");
+		}		
 	};
 };
+var test = new  configComponent({
+	name : 'c-test',
+	property : {
+		text: null,
+		color : null,
+		colorText : null,
+		textAling : null,
+		float : null,
+		shadow : null,
+		truncate : false,
+		cardpanel : false,
+		hoverable : false,
+		valign : false,
+		container :true,
+		show : true
+	},
+	template : 
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()">{{this.text}}<slot></slot></div>\
+	</transition>'
+})
 
 //components
 var preloader = {
@@ -91,7 +149,7 @@ var preloader = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -162,7 +220,7 @@ var preloaderCircle = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -214,7 +272,7 @@ var section = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -325,7 +383,7 @@ var div = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -434,7 +492,7 @@ var modal = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -547,7 +605,7 @@ var br = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -652,7 +710,7 @@ var divider = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -757,7 +815,7 @@ var container = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -860,7 +918,7 @@ var row = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -954,7 +1012,7 @@ var col = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -1072,7 +1130,7 @@ var header = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -1163,7 +1221,7 @@ var main = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -1254,7 +1312,7 @@ var footer = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
@@ -1346,7 +1404,7 @@ var h = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "h";
@@ -1452,7 +1510,7 @@ var p = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "p";
@@ -1553,7 +1611,7 @@ var blockquotes = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "blockquote";
@@ -1664,7 +1722,7 @@ var span = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "span";
@@ -1764,7 +1822,7 @@ var pre = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "pre";
@@ -1867,7 +1925,7 @@ var icon = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "i";
@@ -1972,7 +2030,7 @@ var form = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "form";
@@ -2091,7 +2149,7 @@ var table = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(arg){
 			var tagName = "table";
@@ -2248,7 +2306,7 @@ var button = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "button";
@@ -2388,7 +2446,7 @@ var a = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateTag : function(){
 			var tagName = "a";
@@ -2511,10 +2569,10 @@ var inputFields = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateInputLabelId : function(arg){
-			this.inputLabelId = app.generateId(arg);
+			this.inputLabelId = this.$root.generateId(arg);
 			return this.inputLabelId;	
 		},				
 		create : function(element){
@@ -2629,10 +2687,10 @@ var inputTextarea = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateInputLabelId : function(arg){
-			this.inputLabelId = app.generateId(arg);
+			this.inputLabelId = this.$root.generateId(arg);
 			return this.inputLabelId;	
 		},				
 		create : function(element){
@@ -2728,10 +2786,10 @@ var inputSwitch = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateInputLabelId : function(arg){
-			this.inputLabelId = app.generateId(arg);
+			this.inputLabelId = this.$root.generateId(arg);
 			return this.inputLabelId;	
 		},				
 		create : function(element){
@@ -2826,10 +2884,10 @@ var inputCheckbox = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateInputLabelId : function(arg){
-			this.inputLabelId = app.generateId(arg);
+			this.inputLabelId = this.$root.generateId(arg);
 			return this.inputLabelId;	
 		},				
 		create : function(element){
@@ -2928,10 +2986,10 @@ var inputRadio = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateInputLabelId : function(arg){
-			this.inputLabelId = app.generateId(arg);
+			this.inputLabelId = this.$root.generateId(arg);
 			return this.inputLabelId;	
 		},				
 		create : function(element){
@@ -3029,10 +3087,10 @@ var img = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			return this.$options.name + app.generateId(arg);	
+			return this.$options.name + this.$root.generateId(arg);	
 		},
 		generateInputLabelId : function(arg){
-			this.inputLabelId = app.generateId(arg);
+			this.inputLabelId = this.$root.generateId(arg);
 			return this.inputLabelId;	
 		},				
 		create : function(element){
@@ -3174,11 +3232,11 @@ var dropdown = {
 			return new this.$options.components[component]();
 		},
 		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
+			this.id = this.$options.name + this.$root.generateId(arg);
 			return this.id;
 		},
 		generateIdA : function(arg){
-			this.idA = this.$options.name + app.generateId(arg);
+			this.idA = this.$options.name + this.$root.generateId(arg);
 			return this.idA;
 		},		
 		generateTag : function(){
@@ -3293,7 +3351,7 @@ var badge = {
 	</transition>',	
 	methods : {
 		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
+			this.id = this.$options.name + this.$root.generateId(arg);
 			return this.id;
 		},		
 		setColor : function(arg){
@@ -3370,7 +3428,7 @@ var collection = {
 			return new Array(setClass, this.color, this.colorText, this.textAling, this.shadow).join(" ");
 		},
 		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
+			this.id = this.$options.name + this.$root.generateId(arg);
 			return this.id;
 		},
 		generateRow : function(){
@@ -3458,9 +3516,9 @@ var collapsible = {
 	data : function () {
 		return {
 			id : null,
-			color : app.color.bwt[1] ,
-			colorText : app.colorText.bwt[0],
-			textAling : app.textAling.l,
+			color : this.$root.color.bwt[1] ,
+			colorText : this.$root.colorText.bwt[0],
+			textAling : this.$root.textAling.l,
 			shadow : null,
 			show : true,
 			row : new Array(),
@@ -3487,7 +3545,7 @@ var collapsible = {
 			return new Array(this.color, this.colorText, this.textAling, this.shadow).join(" ");
 		},
 		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
+			this.id = this.$options.name + this.$root.generateId(arg);
 			return this.id;
 		},
 		generateRow : function(){
@@ -3544,7 +3602,7 @@ var parallax = {
 	},	
 	methods: {
 		generateId : function(arg){
-			this.id = this.$options.name + app.generateId(arg);
+			this.id = this.$options.name + this.$root.generateId(arg);
 			return this.id;
 		},
 		setShow : function(arg){

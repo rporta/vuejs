@@ -64,14 +64,15 @@ var app = new Vue({
 		/*quedan 8 components-input pendientes */
 		/*macro-components-preloader*/
 		[preloaderFull.name] : preloaderFull,
-		[preloaderCircleFull.name] : preloaderCircleFull
+		[preloaderCircleFull.name] : preloaderCircleFull,
+		[test.name] : test,
 	},
 	methods:{
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
 		},
 		newComponent : function(component){
-			return new this.$options.components[component]();
+			return new this.$options.components['c-' + component]();
 		},
 		generateId: function(length){
 			var id = "";
