@@ -65,6 +65,7 @@ var app = new Vue({
 		/*macro-components-preloader*/
 		[preloaderFull.name] : preloaderFull,
 		[preloaderCircleFull.name] : preloaderCircleFull,
+		/*components-test*/
 		[test.name] : test,
 	},
 	methods:{
