@@ -72,7 +72,7 @@ var app = new Vue({
 			return this.$el.append(element.$mount().$el);
 		},
 		newComponent : function(component){
-			return new this.$options.components['c-' + component]();
+			return new this.$options.components[component]();
 		},
 		generateId: function(length){
 			var id = "";
