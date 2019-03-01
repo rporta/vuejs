@@ -9,7 +9,6 @@ let configComponent = class {
 	 	var setMethods = {};
 
 	 	for (let i in obj) {
-
 	 		i == 'name' ||
 	 		i == 'template' ||
 	 		i == 'render' ||
@@ -118,7 +117,13 @@ var test = new  configComponent({
 			show : true,		
 		}
 	},
-	props: ['ptext'],
+	props: {
+		ptext : {
+			type : String,
+			required : false, 
+			default : "fafa",
+		}
+	},
 	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()">{{this.text}}<slot></slot></div>\
