@@ -2,7 +2,7 @@
 let configComponent = class {
 	/**
 	 * [constructor description]
-	 * @param  {obj} obj [description] keys : string(name), obj(property) , obj(data), obj(methods)
+	 * @param  {obj} obj [description] regular object that is passed to the component constructor
 	 * @return {void}     [description] create config component : string(name), function(data), obj(methods)
 	 */
 	 constructor(obj) {
