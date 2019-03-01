@@ -1,13 +1,11 @@
 //Obj config component
 let configComponent = class {
-
 	/**
 	 * [constructor description]
 	 * @param  {obj} obj [description] keys : string(name), obj(property) , obj(data), obj(methods)
 	 * @return {void}     [description] create config component : string(name), function(data), obj(methods)
 	 */
 	 constructor(obj) {
-	 	var setProperty = {};
 	 	var setMethods = {};
 
 	 	for (let i in obj) {
@@ -29,54 +27,26 @@ let configComponent = class {
 	 		i == 'components' ||
 	 		i == 'props' 
 	 		? this[i] = obj[i]
-	 		: null;
-
-	 		i == 'property'
-	 		? (() => {
-	 			for(let property in obj[i]){
-	 				property == "striped" ||
-	 				property == "highlight" ||
-	 				property == "centered" ||
-	 				property == "responsive" ||
-	 				property == 'text' ||
-	 				property == 'color' ||
-	 				property == 'colorText' ||
-	 				property == 'colorHexa' ||
-	 				property == 'textAling' ||
-	 				property == 'float' ||
-	 				property == 'flowText' ||
-	 				property == 'shadow' ||
-	 				property == 'truncate' ||
-	 				property == 'cardpanel' ||
-	 				property == 'hoverable' ||
-	 				property == 'href' ||
-	 				property == 'src' ||
-	 				property == 'container' || 
-	 				property == 'valign' || 
-	 				property == 'size' || 
-	 				property == 'show' ||
-	 				property == 'disable' ||
-	 				property == 'flat' ||
-	 				property == 'name' ||
-	 				property == 'filledIn' ||
-	 				property == 'floating' ||
-	 				property == 'withGap' ||
-	 				property == 'wave' 
-	 				? setProperty[property] = obj[i][property]
-	 				: null;		
-	 			}
-	 		})()
-	 		: null;
+	 		: null; 		
 	 	};
 
-		//create methods in property
-		for(let i in setProperty){
-			var method =  'set' + i.charAt(0).toUpperCase() + i.slice(1);
-			setMethods[method] = function(arg) {
-				this[i] = arg;
-				return this;
+		//set data property && obj.data
+		this.data = typeof obj.data  ==  "function" ? obj.data : null;
+
+
+		//create methods in data
+		typeof obj.data  ==  "function"
+		? (()=>{
+			for(let i in obj.data()){
+				var method =  'set' + i.charAt(0).toUpperCase() + i.slice(1);
+				setMethods[method] = function(arg) {
+					this[i] = arg;
+					return this;
+				}
 			}
-		}
+		})()
+		: null;
+
 
 		//create default methods
 		setMethods.newComponent = function(component){
@@ -124,11 +94,7 @@ let configComponent = class {
 				default:
 				break;
 			}
-			return setClass.join(" ");
-		}
-		//set data property && obj.data
-		this.data = function (){
-			return Object.assign(setProperty, obj.data);
+			return setClass.join(" ").trim();
 		}
 		//set methods && obj.methods
 		this.methods = Object.assign(setMethods, obj.methods);
@@ -136,38 +102,43 @@ let configComponent = class {
 };
 var test = new  configComponent({
 	name : 'c-test',
-	property : {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		valign : false,
-		container :true,
-		show : true,
+	data : function(){
+		return {			
+			text: this.ptext,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			valign : false,
+			container :true,
+			show : true,		
+		}
 	},
+	props: ['ptext'],
 	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()">{{this.text}}<slot></slot></div>\
 	</transition>'
 })
 
+
+
 //components
 var preloader = new  configComponent({
 	name : "c-preloader",
-	property : {
-		show : true,
-		color : new Array(null, null),
-	},
-	data: {
-		mode : "indeterminate",
-		space : " ",
-		percentage : "%",
-		progress : 40,
+	data: function() {
+		return {
+			color : new Array(null, null),
+			show : true,
+			mode : "indeterminate",
+			space : " ",
+			percentage : "%",
+			progress : 40,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -208,12 +179,13 @@ var preloader = new  configComponent({
 });
 var preloaderCircle = new  configComponent({
 	name : "c-preloader-circle",
-	property : {
-		colorHexa : "red",
-		show : true,
-		size : "big",
+	data: function() {
+		return {			
+			colorHexa : "red",
+			show : true,
+			size : "big",
+		}
 	},
-	data: {},
 	template: 
 	'<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:class="this.size"  class="preloader-wrapper active">\
 	<div class="spinner-layer" v-bind:style="this.setStyle()">\
@@ -238,23 +210,23 @@ var preloaderCircle = new  configComponent({
 });
 var section = new  configComponent({
 	name : "c-section",
-	property : {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true		
-	},
-	data: {
-		styleP : false,
-		d : 0,
+	data: function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			styleP : false,
+			d : 0,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -293,22 +265,22 @@ var section = new  configComponent({
 });
 var div = new configComponent({
 	name : "c-div",
-	data: {
-		styleP :false,
-	},
-	property : {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		valign : false,
-		container :false,
-		show : true
+	data: function() {
+		return{
+			styleP :false,
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			valign : false,
+			container :false,
+			show : true,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -340,22 +312,22 @@ var div = new configComponent({
 });
 var modal = new configComponent({
 	name : "c-modal",
-	data:  {
-		styleP : false,
-	},
-	property: {
-		text:null,
-		color :null,
-		colorText :null,
-		textAling :null,
-		float :null,
-		shadow :null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
+	data:  function(){
+		return {
+			styleP : false,
+			text:null,
+			color :null,
+			colorText :null,
+			textAling :null,
+			float :null,
+			shadow :null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -401,23 +373,23 @@ var modal = new configComponent({
 });
 var br = new configComponent({
 	name : "c-br",
-	data: 
-	{
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-	},
-	property: {
-		styleP : false,
+	data: function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			styleP : false,
+			
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -450,22 +422,22 @@ var br = new configComponent({
 });
 var divider = new configComponent({
 	name : "c-divider",
-	property :{
-		styleP : false,
-	},
-	data:{
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true
+	data: function(){
+		return {
+			styleP : false,
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -498,22 +470,22 @@ var divider = new configComponent({
 });
 var container = new configComponent({
 	name : "c-container",
-	data: {
-		styleP :false,
-	},
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		valign : false,
-		container :true,
-		show : true,
+	data: function(){
+		return {
+			styleP :false,
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			valign : false,
+			container :true,
+			show : true,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -545,22 +517,21 @@ var container = new configComponent({
 });
 var row = new configComponent({
 	name : "c-row",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true
-	},
-	data:{
-
+	data: function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -580,24 +551,26 @@ var row = new configComponent({
 var col = new configComponent({
 	name : "c-col",
 	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
 	},
-	data:{
-		s: 12,
-		m: 12,
-		l: 12,
-		xl: 12,		
+	data: function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			s: 12,
+			m: 12,
+			l: 12,
+			xl: 12,		
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -644,22 +617,21 @@ var col = new configComponent({
 
 var header = new configComponent({
 	name : "c-header",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-	},
-	data : {
-
+	data : function(){
+		return{
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -679,22 +651,21 @@ var header = new configComponent({
 
 var main = new configComponent({
 	name : "c-main",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-	},
-	data: {
-
+	data: function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -714,22 +685,22 @@ var main = new configComponent({
 
 var footer = new configComponent({
 	name : "c-footer",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true
-	},
-	data : {
+	data : function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
 
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -748,23 +719,23 @@ var footer = new configComponent({
 });
 var h = new configComponent({
 	name : "c-h",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-		flowText : false
-	},
-	data: {
-		size : 1,
+	data: function(){
+		return {			
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			flowText : false,
+			size : 1,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -794,23 +765,22 @@ var h = new configComponent({
 });
 var p = new configComponent({
 	name : "c-p",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-		flowText : false
-	},
-	data : {
-
+	data : function(){
+		return{			
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			flowText : false,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -834,23 +804,25 @@ var p = new configComponent({
 });
 var blockquotes = new configComponent({
 	name : "c-blockquotes",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		colorHexa : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-		flowText : false
+	data: function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			colorHexa : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			flowText : false,
+
+		}
 	},
-	data: {},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()">{{this.text}}</div>\
@@ -884,22 +856,23 @@ var blockquotes = new configComponent({
 });
 var span = new configComponent({
 	name : "c-span",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-		flowText : false
+	data : function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			flowText : false,
+		}
 	},
-	data : {},
 	template: 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
@@ -922,23 +895,22 @@ var span = new configComponent({
 });
 var pre = new configComponent({
 	name : "c-pre",
-	property: {
-		text: null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-		flowText : false
-	},
-	data:{
-
+	data: function(){
+		return {
+			text: null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			flowText : false,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -962,23 +934,23 @@ var pre = new configComponent({
 });
 var icon = new configComponent({
 	name : "c-icon",
-	property: {
-		color : null,
-		colorText : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		size : "Small",
-		show : true
-	},
-	data: {
-		d : 0,
-		prefix : false,
-		icon: null,
+	data: function(){
+		return{
+			color : null,
+			colorText : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			size : "Small",
+			show : true,
+			d : 0,
+			prefix : false,
+			icon: null,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -1016,21 +988,21 @@ var icon = new configComponent({
 });
 var form = new configComponent({
 	name : "c-form",
-	property: {
-		color : null,
-		colorText : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true
-	},
-	data: {
-		file : false,
-		method : 0,		
+	data: function(){
+		return {
+			color : null,
+			colorText : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			file : false,
+			method : 0,		
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -1078,26 +1050,26 @@ var form = new configComponent({
 });
 var table = new configComponent({
 	name : "c-table",
-	property: {
-		color : null,
-		colorText : null,
-		textAling : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,
-		striped : false,
-		highlight : false,
-		centered : false,
-		responsive : false,
-	},
-	data: {
-		head : new Array(),
-		row : new Array(),		
+	data: function(){
+		return {
+			color : null,
+			colorText : null,
+			textAling : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,
+			striped : false,
+			highlight : false,
+			centered : false,
+			responsive : false,
+			head : new Array(),
+			row : new Array(),		
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -1169,26 +1141,26 @@ var table = new configComponent({
 });
 var button =  new configComponent({
 	name : "c-button",
-	property: {
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		wave : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		size : "btn-small",
-		show : true,
-		disable : false,
-		flat : false,
-		floating : false,
-	},
-	data: {
-		type : 0,
+	data: function(){
+		return {
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			wave : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			size : "btn-small",
+			show : true,
+			disable : false,
+			flat : false,
+			floating : false,
+			type : 0,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -1235,27 +1207,26 @@ var button =  new configComponent({
 });
 var a = new configComponent({
 	name : "c-a",
-	property: {
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		wave : null,
-		size : "btn-small",
-		href : null,
-		show : true,
-		disable : false,
-		flat : false,
-		floating : false,
-	},
-	data : {
-
+	data : function(){
+		return {
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			wave : null,
+			size : "btn-small",
+			href : null,
+			show : true,
+			disable : false,
+			flat : false,
+			floating : false,
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -1281,24 +1252,24 @@ var a = new configComponent({
 });
 var inputFields = new configComponent({
 	name : "c-inputFields",
-	property: {
-		inputLabelId : null,
-		text : null,
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		name : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true			
-	},
-	data :{
-		type : 0,
+	data :function(){
+		return {
+			inputLabelId : null,
+			text : null,
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			name : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,		
+			type : 0,
+		}	
 	},
 	template: 
 	'<transition name="fade">\
@@ -1345,23 +1316,24 @@ var inputFields = new configComponent({
 });
 var inputTextarea = new configComponent({
 	name : "c-inputTextarea",
-	property: {
-		inputLabelId : null,
-		name : null,
-		text : null,
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true			
-	},
-	data: {	
+	data: function(){
+		return {
+			inputLabelId : null,
+			name : null,
+			text : null,
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,		
+
+		}	
 	},
 	template: 
 	'<transition name="fade">\
@@ -1387,23 +1359,24 @@ var inputTextarea = new configComponent({
 });
 var inputSwitch = new configComponent({
 	name : "c-inputSwitch",
-	property: {
-		inputLabelId : null,
-		name : null,
-		text : new Array("Off", "On"),
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true			
-	},
-	data:{
+	data: function(){
+		return {
+			inputLabelId : null,
+			name : null,
+			text : new Array("Off", "On"),
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,			
+			
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -1427,24 +1400,25 @@ var inputSwitch = new configComponent({
 });
 var inputCheckbox = new configComponent({
 	name : "c-inputCheckbox",
-	property: {
-		inputLabelId : null,
-		name : null,
-		text : null,
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		show : true,	
-		filledIn : false,
-	},
-	data: {
+	data: function(){
+		return {
+			inputLabelId : null,
+			name : null,
+			text : null,
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			show : true,	
+			filledIn : false,
+			
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -1467,24 +1441,25 @@ var inputCheckbox = new configComponent({
 });
 var inputRadio = new configComponent({
 	name : "c-inputRadio",
-	property: {
-		inputLabelId : null,
-		name : null,
-		text : null,
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		withGap : false,
-		show : true			
-	},
-	data: {
+	data: function(){
+		return {
+			
+			inputLabelId : null,
+			name : null,
+			text : null,
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			withGap : false,
+			show : true,			
+		}
 
 	},
 	template: 
@@ -1508,27 +1483,27 @@ var inputRadio = new configComponent({
 });
 var img = new configComponent({
 	name : "c-img",
-	property: {
-		inputLabelId : null,
-		name : null,
-		text : null,
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		src : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		responsive : false,
-		show : true			
-	},
-	data: {
-		circle : false,
-		materialbox : false,
+	data: function(){
+		return {
+			circle : false,
+			materialbox : false,			
+			inputLabelId : null,
+			name : null,
+			text : null,
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			src : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			responsive : false,
+			show : true,			
+		}
 	},
 	template: 
 	'<transition name="fade">\
@@ -1560,29 +1535,29 @@ var img = new configComponent({
 });
 var dropdown = new configComponent({
 	name : "c-dropdown",
-	property: {
-		id : null,
-		color : null,
-		colorText : null,
-		text : null,
-		float : null,
-		shadow : null,
-		truncate : false,
-		cardpanel : false,
-		hoverable : false,
-		container : false,
-		valign : false,
-		disable : false,
-		flat : false,
-		floating : false,
-		wave : null,
-		size : "btn-small",
-		href : "#",
-		show : true,
-	},
-	data: {
-		dropdown : new Array(),
-		idA : null,
+	data: function(){
+		return {
+			id : null,
+			color : null,
+			colorText : null,
+			text : null,
+			float : null,
+			shadow : null,
+			truncate : false,
+			cardpanel : false,
+			hoverable : false,
+			container : false,
+			valign : false,
+			disable : false,
+			flat : false,
+			floating : false,
+			wave : null,
+			size : "btn-small",
+			href : "#",
+			show : true,			
+			dropdown : new Array(),
+			idA : null,
+		}
 	},
 	template:
 	'<transition name="fade">\
@@ -1643,14 +1618,14 @@ var dropdown = new configComponent({
 });
 var badge = new configComponent({
 	name : "c-badge",
-	property : {
-		text : null,
-		color : null,
-		colorText : null,
-		show : true,
-	},
-	data : {
-		new : false,
+	data: function(){
+		return {	
+			text : null,
+			color : null,
+			colorText : null,
+			show : true,
+			new : false,
+		}
 	},
 	template:
 	'<transition name="fade">\
@@ -1674,16 +1649,16 @@ var collection = new configComponent({
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-html="this.generateRow()" >\
 	</div>\
 	</transition>',
-	property : {
-		color : null,
-		colorText : null,
-		textAling : null,
-		shadow : null,
-		show : true,
-	},
-	data: {
-		mode : 0,
-		row : new Array(),			
+	data: function(){
+		return {
+			color : null,
+			colorText : null,
+			textAling : null,
+			shadow : null,
+			show : true,
+			mode : 0,
+			row : new Array(),			
+		}
 	},
 	methods : {
 		setClass : function (){
@@ -1775,16 +1750,16 @@ var collapsible = new configComponent({
 	<ul key="this.generateId(5)" v-show="this.show" class="collapsible" v-bind:class="this.setClass()"  v-bind:id="this.generateId(5)" v-html="this.generateRow()">\
 	</ul>\
 	</transition>',
-	property : {
-		id : null,
-		color : null,
-		colorText : null,
-		textAling : null,
-		shadow : null,
-		show : true,
-	},
-	data:{
-		row : new Array(),
+	data: function(){
+		return {
+			id : null,
+			color : null,
+			colorText : null,
+			textAling : null,
+			shadow : null,
+			show : true,
+			row : new Array(),
+		}
 	},
 	methods : {
 		setClass : function (){
@@ -1848,14 +1823,14 @@ var parallax = new configComponent({
 //macro components
 var preloaderFull = new configComponent({
 	name : "c-preloaderFull",
-	property: {
-		color : new Array(null, null),
-		show : true
-	},
-	data: {
-		sectionColor : "",
-		mode : 0,
-		progress : 40,
+	data: function(){
+		return {
+			color : new Array(null, null),
+			show : true,
+			sectionColor : "",
+			mode : 0,
+			progress : 40,
+		}
 		
 	},
 	methods: {
@@ -1933,13 +1908,13 @@ var preloaderFull = new configComponent({
 });
 var preloaderCircleFull = new configComponent({
 	name : "c-preloaderCircleFull",
-	property: {
-		colorsHexa : "red",
-		size : "big",
-		show : true
-	},
-	data: {
-		sectionColor : "",
+	data: function(){
+		return {
+			colorsHexa : "red",
+			size : "big",
+			show : true,
+			sectionColor : "",
+		}
 	},
 	methods: {
 		setColorHexa : function(arg){

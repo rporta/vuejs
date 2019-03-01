@@ -1069,7 +1069,9 @@ var uid$1 = 0;
     !value._isVue
     ) {
     ob = new Observer(value);
+
   }
+  
   return ob
 }
 
@@ -6045,10 +6047,12 @@ function pluckModuleFunction (
 }
 
 function addProp (el, name, value) {
+
   (el.props || (el.props = [])).push({ name: name, value: value });
 }
 
 function addAttr (el, name, value) {
+
   (el.attrs || (el.attrs = [])).push({ name: name, value: value });
 }
 
@@ -6874,6 +6878,7 @@ function genFor (el) {
 }
 
 function genData (el) {
+
   if (el.plain) {
     return
   }
