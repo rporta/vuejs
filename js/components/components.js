@@ -29,14 +29,14 @@ let configComponent = class {
 	 		: null; 		
 	 	};
 
-		//set data property && obj.data
+		//set data 
 		this.data = typeof obj.data  ==  "function" ? obj.data : null;
 
 
 		//create methods in data
-		typeof obj.data  ==  "function"
+		typeof this.data   ==  "function"
 		? (()=>{
-			for(let i in obj.data()){
+			for(let i in this.data ()){
 				var method =  'set' + i.charAt(0).toUpperCase() + i.slice(1);
 				setMethods[method] = function(arg) {
 					this[i] = arg;
@@ -90,7 +90,7 @@ let configComponent = class {
 
 			//custom class
 			switch(arg){
-				default:
+				default :
 				break;
 			}
 			return setClass.join(" ").trim();
@@ -103,7 +103,7 @@ var test = new  configComponent({
 	name : 'c-test',
 	data : function(){
 		return {			
-			text: this.ptext,
+			text : this.ptext,
 			color : null,
 			colorText : null,
 			textAling : null,
@@ -113,11 +113,11 @@ var test = new  configComponent({
 			cardpanel : false,
 			hoverable : false,
 			valign : false,
-			container :true,
+			container : true,
 			show : true,		
 		}
 	},
-	props: {
+	props : {
 		ptext : {
 			type : String,
 			required : false, 
@@ -135,23 +135,45 @@ var test = new  configComponent({
 //components
 var preloader = new  configComponent({
 	name : "c-preloader",
-	data: function() {
+	data : function() {
 		return {
-			color : new Array(null, null),
-			show : true,
-			mode : "indeterminate",
-			space : " ",
-			percentage : "%",
-			progress : 40,
+			color : this.pcolor,
+			show : this.pshow,
+			mode : this.pmode,
+			space : ' ',
+			percentage : '%',
+			progress : this.pprogress,
 		}
 	},
-	template: 
+	props : {
+		pcolor : {
+			type : Array,
+			required : false, 
+			default : function(){return new Array(null, null)},
+		},
+		pshow : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		},
+		pmode : {
+			type : String,
+			required : false, 
+			default : "indeterminate",
+		},
+		pprogress : {
+			type : Number,
+			required : false, 
+			default : 40,
+		},
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="color[0]"  class="progress" >\
 	<div v-bind:style="this.setStyle()" v-bind:class="color[1] + space + mode"></div>\
 	</div>\
 	</transition>',
-	methods: {
+	methods : {
 		setMode : function(set){
 			switch (set) {
 				case 0 :
@@ -184,14 +206,31 @@ var preloader = new  configComponent({
 });
 var preloaderCircle = new  configComponent({
 	name : "c-preloader-circle",
-	data: function() {
+	data : function() {
 		return {			
-			colorHexa : "red",
-			show : true,
-			size : "big",
+			colorHexa : this.pcolorHexa,
+			show :this.pshow,
+			size : this.psize,
 		}
 	},
-	template: 
+	props : {
+		pcolorHexa : {
+			type : String,
+			required : false, 
+			default : "red",
+		},
+		pshow : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		},
+		psize : {
+			type : String,
+			required : false, 
+			default : "big",
+		},		
+	},
+	template : 
 	'<transition name="fade"><div key="this.generateId(5)" v-show="this.show" v-bind:class="this.size"  class="preloader-wrapper active">\
 	<div class="spinner-layer" v-bind:style="this.setStyle()">\
 	<div class="circle-clipper left">\
@@ -205,7 +244,7 @@ var preloaderCircle = new  configComponent({
 	</div>\
 	</div>\
 	</div></transition>',
-	methods: {
+	methods : {
 		setStyle : function(){
 			var out;
 			out = {borderColor : this.colorsHexa}	
@@ -215,29 +254,101 @@ var preloaderCircle = new  configComponent({
 });
 var section = new  configComponent({
 	name : "c-section",
-	data: function(){
+	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			styleP : false,
-			d : 0,
+			text :this.ptext,
+			color :this.pcolor,
+			colorText :this.pcolorText,
+			textAling :this.ptextAling,
+			float :this.pfloat,
+			shadow :this.pshadow,
+			truncate :this.ptruncate,
+			cardpanel :this.pcardpanel,
+			hoverable :this.phoverable,
+			container :this.pcontainer,
+			valign :this.pvalign,
+			show :this.pshow,
+			styleP :this.pstyleP,
+			d :this.pd,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pstyleP  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pd  : {
+			type : Number,
+			required : false, 
+			default : 0,
+		}, 
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
@@ -258,11 +369,11 @@ var section = new  configComponent({
 		},
 		setStyle : function(){
 			var stylePreload = {
-				position: "fixed",
-				top: "0px",
-				zIndex: "9999",
-				width: "100%",
-				height: "100%"
+				position : "fixed",
+				top : "0px",
+				zIndex : "9999",
+				width : "100%",
+				height : "100%"
 			};
 			return this.styleP ? stylePreload : {};
 		},
@@ -270,28 +381,95 @@ var section = new  configComponent({
 });
 var div = new configComponent({
 	name : "c-div",
-	data: function() {
+	data : function() {
 		return{
-			styleP :false,
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			valign : false,
-			container :false,
-			show : true,
+			styleP : this.styleP,
+			text : this.text,
+			color : this.color,
+			colorText : this.colorText,
+			textAling : this.textAling,
+			float : this.float,
+			shadow : this.shadow,
+			truncate : this.truncate,
+			cardpanel : this.cardpanel,
+			hoverable : this.hoverable,
+			valign : this.valign,
+			container : this.container,
+			show : this.show,
 		}
 	},
-	template: 
+	props : {
+		pstyleP  : {
+			type : String,
+			required : false, 
+			default : false,
+		},  
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		},  
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		},  
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		},  
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		},  
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		},  
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		},  
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
@@ -306,10 +484,10 @@ var div = new configComponent({
 		},
 		setStyle : function(){			
 			var stylePreload = {
-				position: "absolute",
-				top: "50%",
-				left: "50%",
-				transform: "translate(-50%, -50%)"
+				position : "absolute",
+				top : "50%",
+				left : "50%",
+				transform : "translate(-50%, -50%)"
 			};
 			return this.styleP ? stylePreload : {};			
 		}	
@@ -317,33 +495,100 @@ var div = new configComponent({
 });
 var modal = new configComponent({
 	name : "c-modal",
-	data:  function(){
+	data :  function(){
 		return {
-			styleP : false,
-			text:null,
-			color :null,
-			colorText :null,
-			textAling :null,
-			float :null,
-			shadow :null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
+			styleP : this.pstyleP,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
 		}
 	},
-	template: 
+	props : {
+		pstyleP  : {
+			type : String,
+			required : false, 
+			default : false,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : String,
+			required : false, 
+			default : true,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="modal">\
 	<div class="modal-content center-align">{{this.text}}</div>\
-	<div class="modal-footer" style="text-align: center !important;">\
+	<div class="modal-footer" style="text-align : center !important;">\
 	<a class="modal-close waves-effect btn-flat" >Aceptar</a>\
 	</div>\
 	</div>\
 	</transition>',
-	methods: {
+	methods : {
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
@@ -358,19 +603,19 @@ var modal = new configComponent({
 		},
 		setStyle : function(){
 			var stylePreload = {
-				position: "fixed",
-				top: "0px",
-				zIndex: "9999",
-				width: "100%",
-				height: "100%"
+				position : "fixed",
+				top : "0px",
+				zIndex : "9999",
+				width : "100%",
+				height : "100%"
 			};
 			return this.styleP ? stylePreload : {};
 		},
-		open: function (){
+		open : function (){
 			return this.$el.M_Modal.open();
 		}
 	},
-	mounted: function () {
+	mounted : function () {
 		this.$nextTick(function () {
 			$('.modal').modal();
 		})
@@ -378,29 +623,95 @@ var modal = new configComponent({
 });
 var br = new configComponent({
 	name : "c-br",
-	data: function(){
+	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			styleP : false,
-			
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			styleP : this.pstyleP,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pstyleP		  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+	},
+	template : 
 	'<transition name="fade">\
 	<br key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
 	</transition>',
-	methods: {
+	methods : {
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
@@ -415,11 +726,11 @@ var br = new configComponent({
 		},
 		setStyle : function(){
 			var stylePreload = {
-				position: "fixed",
-				top: "0px",
-				zIndex: "9999",
-				width: "100%",
-				height: "100%"
+				position : "fixed",
+				top : "0px",
+				zIndex : "9999",
+				width : "100%",
+				height : "100%"
 			};
 			return this.styleP ? stylePreload : {};
 		},
@@ -427,28 +738,95 @@ var br = new configComponent({
 });
 var divider = new configComponent({
 	name : "c-divider",
-	data: function(){
+	data : function(){
 		return {
-			styleP : false,
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
+			styleP : this.pstyleP,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
 		}
 	},
-	template: 
+	props : {
+		pstyleP  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow		  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-bind:class="this.setClass()" v-show="this.show" v-bind:id="this.generateId(5)" class="divider"></div>\
 	</transition>',
-	methods: {
+	methods : {
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
@@ -463,11 +841,11 @@ var divider = new configComponent({
 		},
 		setStyle : function(){
 			var stylePreload = {
-				position: "fixed",
-				top: "0px",
-				zIndex: "9999",
-				width: "100%",
-				height: "100%"
+				position : "fixed",
+				top : "0px",
+				zIndex : "9999",
+				width : "100%",
+				height : "100%"
 			};
 			return this.styleP ? stylePreload : {};
 		},	
@@ -475,28 +853,95 @@ var divider = new configComponent({
 });
 var container = new configComponent({
 	name : "c-container",
-	data: function(){
+	data : function(){
 		return {
-			styleP :false,
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			valign : false,
-			container :true,
-			show : true,
+			styleP : this.pstyleP,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			valign : this.pvalign,
+			container : this.pcontainer,
+			show : this.pshow,
 		}
 	},
-	template: 
+	props : {
+		pstyleP  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pshow : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		setStyleP : function(arg){
 			this.styleP = arg;
 			return this;			
@@ -511,10 +956,10 @@ var container = new configComponent({
 		},
 		setStyle : function(){			
 			var stylePreload = {
-				position: "absolute",
-				top: "50%",
-				left: "50%",
-				transform: "translate(-50%, -50%)"
+				position : "absolute",
+				top : "50%",
+				left : "50%",
+				transform : "translate(-50%, -50%)"
 			};
 			return this.styleP ? stylePreload : {};			
 		},	
@@ -522,27 +967,89 @@ var container = new configComponent({
 });
 var row = new configComponent({
 	name : "c-row",
-	data: function(){
+	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="row">{{this.text}}</div>\
 	</transition>',
-	methods: {	
+	methods : {	
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -555,33 +1062,115 @@ var row = new configComponent({
 });
 var col = new configComponent({
 	name : "c-col",
-	property: {
+	property : {
 	},
-	data: function(){
+	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			s: 12,
-			m: 12,
-			l: 12,
-			xl: 12,		
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			s : this.ps,
+			m : this.pm,
+			l : this.pl,
+			xl : this.pxl,		
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		ps  : {
+			type : Number,
+			required : false, 
+			default : 12,
+		}, 
+		pm  : {
+			type : Number,
+			required : false, 
+			default : 12,
+		}, 
+		pl  : {
+			type : Number,
+			required : false, 
+			default : 12,
+		}, 
+		pxl  : {
+			type : Number,
+			required : false, 
+			default : 12,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="col">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		setAll : function(arg){
 			this.s = arg;
 			this.m = arg;
@@ -624,25 +1213,87 @@ var header = new configComponent({
 	name : "c-header",
 	data : function(){
 		return{
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<header key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</header>\
 	</transition>',
-	methods: {
+	methods : {
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -656,27 +1307,89 @@ var header = new configComponent({
 
 var main = new configComponent({
 	name : "c-main",
-	data: function(){
+	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		fploat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		tpruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<main key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</main>\
 	</transition>',
-	methods: {
+	methods : {
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -692,26 +1405,87 @@ var footer = new configComponent({
 	name : "c-footer",
 	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<footer key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</footer>\
 	</transition>',
-	methods: {
+	methods : {
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -724,29 +1498,101 @@ var footer = new configComponent({
 });
 var h = new configComponent({
 	name : "c-h",
-	data: function(){
+	data : function(){
 		return {			
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false,
-			size : 1,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			flowText : this.pflowText,
+			size : this.psize,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		fploat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		fplowText  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		psize  : {
+			type : Number,
+			required : false, 
+			default : 1,
+		}, 
+	},
+	template : 
 	'<transition name="fade">\
 	<h1 v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</h1>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "h" + this.size;
 			return tagName;	
@@ -772,26 +1618,93 @@ var p = new configComponent({
 	name : "c-p",
 	data : function(){
 		return{			
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			flowText : this.pflowText,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pflowText  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "p";
 			return tagName;	
@@ -809,30 +1722,101 @@ var p = new configComponent({
 });
 var blockquotes = new configComponent({
 	name : "c-blockquotes",
-	data: function(){
+	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			colorHexa : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false,
-
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			colorHexa : this.pcolorHexa,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			flowText : this.pflowText,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorHexa  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : String,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : String,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : String,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : String,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : String,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : String,
+			required : false, 
+			default : true,
+		}, 
+		pflowText  : {
+			type : String,
+			required : false, 
+			default : false,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "blockquote";
 			return tagName;	
@@ -863,26 +1847,93 @@ var span = new configComponent({
 	name : "c-span",
 	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			flowText : this.pflowText,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pflowText  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "span";
 			return tagName;	
@@ -900,28 +1951,95 @@ var span = new configComponent({
 });
 var pre = new configComponent({
 	name : "c-pre",
-	data: function(){
+	data : function(){
 		return {
-			text: null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			flowText : false,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			flowText : this.pflowText,
 		}
 	},
-	template: 
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pflowText  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "pre";
 			return tagName;	
@@ -939,29 +2057,101 @@ var pre = new configComponent({
 });
 var icon = new configComponent({
 	name : "c-icon",
-	data: function(){
+	data : function(){
 		return{
-			color : null,
-			colorText : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			size : "Small",
-			show : true,
-			d : 0,
-			prefix : false,
-			icon: null,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			size : this.psize,
+			show : this.pshow,
+			d : this.pd,
+			prefix : this.pprefix,
+			icon : this.picon,
 		}
 	},
-	template: 
+	props : {
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		psize  : {
+			type : String,
+			required : false, 
+			default : "Small",
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pd  : {
+			type : Number,
+			required : false, 
+			default : 0,
+		}, 
+		pprefix  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		picon  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div class="material-icons" v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.icon}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "i";
 			return tagName;	
@@ -993,27 +2183,89 @@ var icon = new configComponent({
 });
 var form = new configComponent({
 	name : "c-form",
-	data: function(){
+	data : function(){
 		return {
-			color : null,
-			colorText : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			file : false,
-			method : 0,		
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			file : this.pfile,
+			method : this.pmethod,		
 		}
 	},
-	template: 
+	props : {
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pfile  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pmethod  : {
+			type : Number,
+			required : false, 
+			default : 0,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "form";
 			return tagName;	
@@ -1055,35 +2307,122 @@ var form = new configComponent({
 });
 var table = new configComponent({
 	name : "c-table",
-	data: function(){
+	data : function(){
 		return {
-			color : null,
-			colorText : null,
-			textAling : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,
-			striped : false,
-			highlight : false,
-			centered : false,
-			responsive : false,
-			head : new Array(),
-			row : new Array(),		
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			striped : this.pstriped,
+			highlight : this.phighlight,
+			centered : this.pcentered,
+			responsive : this.presponsive,
+			head : this.phead,
+			row : this.prow,
 		}
 	},
-	template: 
+	props : {
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pstriped  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phighlight  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcentered  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		presponsive  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phead  : {
+			type : Array,
+			required : false, 
+			default : function () { return new Array() },
+		}, 
+		prow  : {
+			type : Array,
+			required : false, 
+			default : function () { return new Array() },
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
 	<thead v-html="this.generateHead()"></thead>\
 	<tbody v-html="this.generateRow()"></tbody>\
 	</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(arg){
 			var tagName = "table";
 			return tagName;	
@@ -1146,32 +2485,119 @@ var table = new configComponent({
 });
 var button =  new configComponent({
 	name : "c-button",
-	data: function(){
+	data : function(){
 		return {
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			wave : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			size : "btn-small",
-			show : true,
-			disable : false,
-			flat : false,
-			floating : false,
-			type : 0,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			wave : this.pwave,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			size : this.psize,
+			show : this.pshow,
+			disable : this.pdisable,
+			flat : this.pflat,
+			floating : this.pfloating,
+			type : this.ptype,
 		}
 	},
-	template: 
+	props : {
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pwave  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		psize  : {
+			type : String,
+			required : false, 
+			default : "btn-small",
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pdisable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pflat  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pfloating  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		ptype  : {
+			type : Number,
+			required : false, 
+			default : 0,
+		}, 
+	},
+	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:type="this.generateType()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "button";
 			return tagName;	
@@ -1214,30 +2640,117 @@ var a = new configComponent({
 	name : "c-a",
 	data : function(){
 		return {
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			wave : null,
-			size : "btn-small",
-			href : null,
-			show : true,
-			disable : false,
-			flat : false,
-			floating : false,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			wave : this.pwave,
+			size : this.psize,
+			href : this.phref,
+			show : this.pshow,
+			disable : this.pdisable,
+			flat : this.pflat,
+			floating : this.pfloating,
 		}
 	},
-	template: 
+	props : {
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pwave  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		psize  : {
+			type : String,
+			required : false, 
+			default : "btn-small",
+		}, 
+		phref  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pdisable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pflat  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pfloating  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:href="this.href" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateTag : function(){
 			var tagName = "a";
 			return tagName;	
@@ -1257,33 +2770,110 @@ var a = new configComponent({
 });
 var inputFields = new configComponent({
 	name : "c-inputFields",
-	data :function(){
+	data : function(){
 		return {
-			inputLabelId : null,
-			text : null,
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			name : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,		
-			type : 0,
+			inputLabelId : this.pinputLabelId,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			name : this.pname,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,		
+			type : this.ptype,
 		}	
 	},
-	template: 
+	props : {
+		pinputLabelId  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pname  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		ptype  : {
+			type : Number,
+			required : false, 
+			default : 0,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
 	<input v-bind:name="this.name" v-bind:id="this.generateInputLabelId(5)" v-bind:type="generateType()" class="validate">\
 	<label v-bind:for="this.inputLabelId">{{this.text}}</label>\
 	</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateInputLabelId : function(arg){
 			this.inputLabelId = app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
 			return this.inputLabelId;	
@@ -1321,33 +2911,104 @@ var inputFields = new configComponent({
 });
 var inputTextarea = new configComponent({
 	name : "c-inputTextarea",
-	data: function(){
+	data : function(){
 		return {
-			inputLabelId : null,
-			name : null,
-			text : null,
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,		
-
+			inputLabelId : this.pinputLabelId,
+			name : this.pname,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,		
 		}	
 	},
-	template: 
+	props : {
+		pinputLabelId  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pname  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
 	<textarea v-bind:name="this.name" class="materialize-textarea" v-bind:id="this.generateInputLabelId(5)"></textarea>\
 	<label v-bind:class="this.setClass()" v-bind:for="this.inputLabelId">{{this.text}}</label>\
 	</div>\
 	</transition>',
-	methods: {
+	methods : {
 		generateInputLabelId : function(arg){
 			this.inputLabelId = app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);	
 			return this.inputLabelId;	
@@ -1364,26 +3025,97 @@ var inputTextarea = new configComponent({
 });
 var inputSwitch = new configComponent({
 	name : "c-inputSwitch",
-	data: function(){
+	data : function(){
 		return {
-			inputLabelId : null,
-			name : null,
-			text : new Array("Off", "On"),
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,			
-			
+			inputLabelId : this.pinputLabelId,
+			name : this.pname,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
 		}
 	},
-	template: 
+	props : {
+		pinputLabelId  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pname  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : function(){return new Array("Off", "On")},
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" class="switch">\
 	<label>{{this.text[0]}}\
@@ -1392,7 +3124,7 @@ var inputSwitch = new configComponent({
 	</label>\
 	</div>\
 	</transition>',
-	methods: {												
+	methods : {												
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1405,34 +3137,110 @@ var inputSwitch = new configComponent({
 });
 var inputCheckbox = new configComponent({
 	name : "c-inputCheckbox",
-	data: function(){
+	data : function(){
 		return {
-			inputLabelId : null,
-			name : null,
-			text : null,
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			show : true,	
-			filledIn : false,
-			
+			inputLabelId : this.pinputLabelId,
+			name : this.pname,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,	
+			filledIn : this.pfilledIn,			
 		}
 	},
-	template: 
+	props : {
+		pinputLabelId  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pname  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pfilledIn  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<label key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
 	<input v-bind:class="this.setClass()" v-bind:name="this.name" type="checkbox" />\
 	<span>{{this.text}}</span>\
 	</label>\
 	</transition>',
-	methods: {						
+	methods : {						
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1446,35 +3254,110 @@ var inputCheckbox = new configComponent({
 });
 var inputRadio = new configComponent({
 	name : "c-inputRadio",
-	data: function(){
-		return {
-			
-			inputLabelId : null,
-			name : null,
-			text : null,
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			withGap : false,
-			show : true,			
+	data : function(){
+		return {		
+			inputLabelId : this.pinputLabelId,
+			name : this.pname,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			withGap : this.pwithGap,
+			show : this.pshow,			
 		}
-
 	},
-	template: 
+	props : {
+		pinputLabelId  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pname  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pwithGap  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 		
+	},
+	template : 
 	'<transition name="fade">\
 	<label key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
 	<input v-bind:class="this.setClass()" v-bind:name="this.name" type="radio" />\
 	<span>{{this.text}}</span>\
 	</label>\
 	</transition>',
-	methods: {												
+	methods : {												
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";
@@ -1488,33 +3371,125 @@ var inputRadio = new configComponent({
 });
 var img = new configComponent({
 	name : "c-img",
-	data: function(){
+	data : function(){
 		return {
-			circle : false,
-			materialbox : false,			
-			inputLabelId : null,
-			name : null,
-			text : null,
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			src : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			responsive : false,
-			show : true,			
+			circle : this.pcircle,
+			materialbox : this.pmaterialbox,			
+			inputLabelId : this.pinputLabelId,
+			name : this.pname,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			src : this.psrc,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			responsive : this.presponsive,
+			show : this.pshow,			
 		}
 	},
-	template: 
+	props : {
+		pcircle  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pmaterialbox  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pinputLabelId  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pname  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		psrc  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		presponsive  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+	},
+	template : 
 	'<transition name="fade">\
 	<img key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="setClass()" v-bind:src="this.src">\
 	</transition>',
-	methods: {
+	methods : {
 		setCircle : function(arg){
 			this.circle = arg;
 			return this;
@@ -1540,39 +3515,141 @@ var img = new configComponent({
 });
 var dropdown = new configComponent({
 	name : "c-dropdown",
-	data: function(){
+	data : function(){
 		return {
-			id : null,
-			color : null,
-			colorText : null,
-			text : null,
-			float : null,
-			shadow : null,
-			truncate : false,
-			cardpanel : false,
-			hoverable : false,
-			container : false,
-			valign : false,
-			disable : false,
-			flat : false,
-			floating : false,
-			wave : null,
-			size : "btn-small",
-			href : "#",
-			show : true,			
-			dropdown : new Array(),
-			idA : null,
+			id : this.pid,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			disable : this.pdisable,
+			flat : this.pflat,
+			floating : this.pfloating,
+			wave : this.pwave,
+			size : this.psize,
+			href : this.phref,
+			show : this.pshow,
+			dropdown : this.pdropdown,
+			idA : this.pidA,
 		}
 	},
-	template:
+	props : {
+		pid  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pdisable  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pflat  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pfloating  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pwave  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		psize  : {
+			type : String,
+			required : false, 
+			default :  "btn-small",
+		}, 
+		phref  : {
+			type : String,
+			required : false, 
+			default :  "#",
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default :  true,			
+		}, 
+		pdropdown  : {
+			type : Array,
+			required : false, 
+			default :  function(){return new Array()},
+		}, 
+		pidA  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 		
+	},
+	template :
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show">\
 	<div v-bind:id="this.generateIdA()" v-bind:is="this.generateTag()" key="this.generateId(5)" class="dropdown-trigger" v-bind:data-target="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	<ul key="this.generateId(5)" v-bind:id="this.id" class="dropdown-content" v-html="this.generateDropDown()" ></ul>\
 	</div>\
 	</transition>',
-	methods: {
-		generateDropDown: function (arg){
+	methods : {
+		generateDropDown : function (arg){
 			var out = new Array();
 			$.each(this.dropdown, function(i, v) {
 				out.push("<li>");
@@ -1614,7 +3691,7 @@ var dropdown = new configComponent({
 			return new Array(this.wave, this.size, this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.disable ? disable : "", this.flat ? flat : "", this.floating ? floating : "").join(" ");
 		},
 	},
-	mounted: function () {
+	mounted : function () {
 		this.$nextTick(function () {
 			$('#'+this.idA).dropdown();
 		})
@@ -1623,16 +3700,43 @@ var dropdown = new configComponent({
 });
 var badge = new configComponent({
 	name : "c-badge",
-	data: function(){
+	data : function(){
 		return {	
-			text : null,
-			color : null,
-			colorText : null,
-			show : true,
-			new : false,
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			show : this.pshow,
+			new : this.pnew,
 		}
 	},
-	template:
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		},  
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		},  
+		pnew  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		},  
+	},
+	template :
 	'<transition name="fade">\
 	<span key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="badge">{{this.text}}</span>\
 	</transition>',	
@@ -1654,16 +3758,53 @@ var collection = new configComponent({
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-html="this.generateRow()" >\
 	</div>\
 	</transition>',
-	data: function(){
+	data : function(){
 		return {
-			color : null,
-			colorText : null,
-			textAling : null,
-			shadow : null,
-			show : true,
-			mode : 0,
-			row : new Array(),			
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			shadow : this.pshadow,
+			show : this.pshow,
+			mode : this.pmode,
+			row : this.prow,
 		}
+	},
+	props : {
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pmode  : {
+			type : Number,
+			required : false, 
+			default : 0,
+		}, 
+		prow  : {
+			type : Array,
+			required : false, 
+			default : function(){return new Array()},
+		}, 		
 	},
 	methods : {
 		setClass : function (){
@@ -1755,16 +3896,53 @@ var collapsible = new configComponent({
 	<ul key="this.generateId(5)" v-show="this.show" class="collapsible" v-bind:class="this.setClass()"  v-bind:id="this.generateId(5)" v-html="this.generateRow()">\
 	</ul>\
 	</transition>',
-	data: function(){
+	data : function(){
 		return {
-			id : null,
-			color : null,
-			colorText : null,
-			textAling : null,
-			shadow : null,
-			show : true,
-			row : new Array(),
+			id : this.pcolor,
+			color : this.pcolorText,
+			colorText : this.ptextAling,
+			textAling : this.pshadow,
+			shadow : this.pshow,
+			show : this.pmode,
+			row : this.prow,
 		}
+	},
+	props : {
+		pid  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		prow  : {
+			type : Array,
+			required : false, 
+			default : function(){return new Array()},
+		}, 		
 	},
 	methods : {
 		setClass : function (){
@@ -1797,7 +3975,7 @@ var collapsible = new configComponent({
 			return this;
 		},		
 	},
-	mounted: function () {
+	mounted : function () {
 		this.$nextTick(function () {
 			$('#'+this.id).collapsible();
 		})
@@ -1811,15 +3989,34 @@ var parallax = new configComponent({
 	<div class="parallax"><img v-bind:src="this.src"></div>\
 	</div>\
 	</transition>',
-	property: {
-		id : null,
-		show : true,
-		src : null,
-	},	
-	methods: {
+	data : function(){
+		return {
+			id : this.pid,
+			show : this.pshow,
+			src : this.psrc,
+		}
+	},
+	props : {
+		pid  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		psrc  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 		
+	},
+	methods : {
 
 	},
-	mounted: function () {
+	mounted : function () {
 		this.$nextTick(function () {
 			$('.parallax').parallax();
 		})
@@ -1828,17 +4025,43 @@ var parallax = new configComponent({
 //macro components
 var preloaderFull = new configComponent({
 	name : "c-preloaderFull",
-	data: function(){
+	data : function(){
 		return {
-			color : new Array(null, null),
-			show : true,
-			sectionColor : "",
-			mode : 0,
-			progress : 40,
+			color : this.pcolor,
+			show : this.pshow,
+			sectionColor : this.psectionColor,
+			mode : this.pmode,
+			progress : this.pprogress,
 		}
-		
 	},
-	methods: {
+	props : {
+		pcolor  : {
+			type : Array,
+			required : false, 
+			default : function(){return new Array(null, null)},
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		psectionColor  : {
+			type : String,
+			required : false, 
+			default : "",
+		}, 
+		pmode  : {
+			type : Number,
+			required : false, 
+			default : 0,
+		}, 
+		pprogress  : {
+			type : Number,
+			required : false, 
+			default : 40,
+		}, 		
+	},
+	methods : {
 		setColor : function(arg){
 			this.color = arg;
 			if(this.$el){
@@ -1894,7 +4117,7 @@ var preloaderFull = new configComponent({
 			// return this.$el.__vue__.$options.parent;	
 		}
 	},
-	render: function (createElement) {
+	render : function (createElement) {
 		var csection = new this.$options.components['c-section']().$mount().setStyleP(true).setColor(this.sectionColor);
 		var ccontainer = new this.$options.components['c-container']().$mount().setStyleP(true);
 		var cpreloader = new this.$options.components['c-preloader']().$mount().setColor(this.color).setMode(this.mode).setProgress(this.progress);
@@ -1904,7 +4127,7 @@ var preloaderFull = new configComponent({
 		section.child = csection;
 		return section;
 	},
-	components: {
+	components : {
 		[preloader.name] : preloader,
 		[this.name] : preloaderFull,
 		[container.name] : container,
@@ -1913,7 +4136,7 @@ var preloaderFull = new configComponent({
 });
 var preloaderCircleFull = new configComponent({
 	name : "c-preloaderCircleFull",
-	data: function(){
+	data : function(){
 		return {
 			colorsHexa : "red",
 			size : "big",
@@ -1921,7 +4144,7 @@ var preloaderCircleFull = new configComponent({
 			sectionColor : "",
 		}
 	},
-	methods: {
+	methods : {
 		setColorHexa : function(arg){
 			this.colorsHexa = arg;
 			if(this.$el){
@@ -1963,7 +4186,7 @@ var preloaderCircleFull = new configComponent({
 			// return this.$el.__vue__.$options.parent;
 		},
 	},
-	render: function (createElement) {
+	render : function (createElement) {
 		var csection = new this.$options.components['c-section']().$mount().setStyleP(true).setColor(this.sectionColor);
 		var ccontainer = new this.$options.components['c-container']().$mount().setStyleP(true).setContainer(false);
 		var preloaderCircle = new this.$options.components['c-preloader-circle']().$mount().setColorHexa(this.colorsHexa).setSize(this.size);
@@ -1973,7 +4196,7 @@ var preloaderCircleFull = new configComponent({
 		section.child = csection;
 		return section;
 	},
-	components: {
+	components : {
 		[preloaderCircle.name] : preloaderCircle,
 		[this.name] : preloaderFull,
 		[container.name] : container,
