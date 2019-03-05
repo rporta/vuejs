@@ -2769,7 +2769,7 @@ var a = new configComponent({
 	}		
 });
 var inputFields = new configComponent({
-	name : "c-inputFields",
+	name : "c-input-fields",
 	data : function(){
 		return {
 			inputLabelId : this.pinputLabelId,
@@ -2910,7 +2910,7 @@ var inputFields = new configComponent({
 	}
 });
 var inputTextarea = new configComponent({
-	name : "c-inputTextarea",
+	name : "c-input-textarea",
 	data : function(){
 		return {
 			inputLabelId : this.pinputLabelId,
@@ -3024,7 +3024,7 @@ var inputTextarea = new configComponent({
 	}
 });
 var inputSwitch = new configComponent({
-	name : "c-inputSwitch",
+	name : "c-input-switch",
 	data : function(){
 		return {
 			inputLabelId : this.pinputLabelId,
@@ -3136,7 +3136,7 @@ var inputSwitch = new configComponent({
 	}
 });
 var inputCheckbox = new configComponent({
-	name : "c-inputCheckbox",
+	name : "c-input-checkbox",
 	data : function(){
 		return {
 			inputLabelId : this.pinputLabelId,
@@ -3253,7 +3253,7 @@ var inputCheckbox = new configComponent({
 	}	
 });
 var inputRadio = new configComponent({
-	name : "c-inputRadio",
+	name : "c-input-radio",
 	data : function(){
 		return {		
 			inputLabelId : this.pinputLabelId,
@@ -4024,7 +4024,7 @@ var parallax = new configComponent({
 });
 //macro components
 var preloaderFull = new configComponent({
-	name : "c-preloaderFull",
+	name : "c-preloader-full",
 	data : function(){
 		return {
 			color : this.pcolor,
@@ -4135,7 +4135,7 @@ var preloaderFull = new configComponent({
 	}
 });
 var preloaderCircleFull = new configComponent({
-	name : "c-preloaderCircleFull",
+	name : "c-preloader-circle-full",
 	data : function(){
 		return {
 			colorsHexa : "red",

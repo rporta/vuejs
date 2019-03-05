@@ -1,7 +1,7 @@
 //aca trabajo con la instancia
 //example:
 app.setColor(app.generateColor());
-var preloaderFull = app.newComponent('c-preloaderCircleFull').setSectionColor(app.generateColor()).setColorHexa(app.generateColorHexa());
+var preloaderFull = app.newComponent('c-preloader-circle-full').setSectionColor(app.generateColor()).setColorHexa(app.generateColorHexa());
 
 setTimeout(() => {
 	preloaderFull.setShow(false);
