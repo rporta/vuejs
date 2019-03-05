@@ -55,7 +55,8 @@ let configComponent = class {
 			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);		
 		}
 		setMethods.create = function(element){
-			return this.$el.append(element.$mount().$el);
+			this.$el.append(element.$mount().$el);
+			return this;
 		}
 		setMethods.setClass = function(arg){
 			let setClass = new Array;
@@ -346,7 +347,7 @@ var section = new  configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}</div>\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:style="this.setStyle()" class="section">{{this.text}}<slot></slot></div>\
 	</transition>',
 	methods : {
 		setStyleP : function(arg){
@@ -467,7 +468,7 @@ var div = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}<slot></slot></div>\
 	</transition>',
 	methods : {
 		setStyleP : function(arg){
@@ -514,7 +515,7 @@ var modal = new configComponent({
 	},
 	props : {
 		pstyleP  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : false,
 		}, 
@@ -574,7 +575,7 @@ var modal = new configComponent({
 			default : false,
 		}, 
 		pshow  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : true,
 		}, 		
@@ -612,8 +613,9 @@ var modal = new configComponent({
 			return this.styleP ? stylePreload : {};
 		},
 		open : function (){
-			return this.$el.M_Modal.open();
-		}
+			this.$el.M_Modal.open();
+			return this;
+		},
 	},
 	mounted : function () {
 		this.$nextTick(function () {
@@ -939,7 +941,7 @@ var container = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}</div>\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)"  v-bind:class="this.setClass()"  v-bind:style="this.setStyle()">{{this.text}}<slot></slot></div>\
 	</transition>',
 	methods : {
 		setStyleP : function(arg){
@@ -1047,7 +1049,7 @@ var row = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="row">{{this.text}}</div>\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="row">{{this.text}}<slot></slot></div>\
 	</transition>',
 	methods : {	
 		setClass : function(){
@@ -1168,7 +1170,7 @@ var col = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="col">{{this.text}}</div>\
+	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="col">{{this.text}}<slot></slot></div>\
 	</transition>',
 	methods : {
 		setAll : function(arg){
@@ -1291,7 +1293,7 @@ var header = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<header key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</header>\
+	<header key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}<slot></slot></header>\
 	</transition>',
 	methods : {
 		setClass : function(){
@@ -1387,7 +1389,7 @@ var main = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<main key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</main>\
+	<main key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}<slot></slot></main>\
 	</transition>',
 	methods : {
 		setClass : function(){
@@ -1483,7 +1485,7 @@ var footer = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<footer key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</footer>\
+	<footer key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}<slot></slot></footer>\
 	</transition>',
 	methods : {
 		setClass : function(){
@@ -1777,37 +1779,37 @@ var blockquotes = new configComponent({
 			default : null,
 		}, 
 		ptruncate  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : false,
 		}, 
 		pcardpanel  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : false,
 		}, 
 		phoverable  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : false,
 		}, 
 		pcontainer  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : false,
 		}, 
 		pvalign  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : false,
 		}, 
 		pshow  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : true,
 		}, 
 		pflowText  : {
-			type : String,
+			type : Boolean,
 			required : false, 
 			default : false,
 		}, 		
@@ -2263,7 +2265,7 @@ var form = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div>\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><slot></slot></div>\
 	</transition>',
 	methods : {
 		generateTag : function(){
