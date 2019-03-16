@@ -2789,6 +2789,7 @@ var inputFields = new configComponent({
 			valign : this.pvalign,
 			show : this.pshow,		
 			type : this.ptype,
+			value : this.pvalue,
 		}	
 	},
 	props : {
@@ -2866,12 +2867,17 @@ var inputFields = new configComponent({
 			type : Number,
 			required : false, 
 			default : 0,
-		}, 		
+		},
+		pvalue  : {
+			type : String,
+			required : false, 
+			default : null,
+		},	
 	},
 	template : 
 	'<transition name="fade">\
 	<div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
-	<input v-bind:name="this.name" v-bind:id="this.generateInputLabelId(5)" v-bind:type="generateType()" class="validate">\
+	<input v-bind:value="this.value" v-bind:name="this.name" v-bind:id="this.generateInputLabelId(5)" v-bind:type="generateType()" class="validate">\
 	<label v-bind:for="this.inputLabelId">{{this.text}}</label>\
 	</div>\
 	</transition>',
@@ -2928,7 +2934,8 @@ var inputTextarea = new configComponent({
 			hoverable : this.phoverable,
 			container : this.pcontainer,
 			valign : this.pvalign,
-			show : this.pshow,		
+			show : this.pshow,
+			value : this.pvalue,
 		}	
 	},
 	props : {
@@ -3001,12 +3008,17 @@ var inputTextarea = new configComponent({
 			type : Boolean,
 			required : false, 
 			default : true,
-		}, 		
+		},
+		pvalue  : {
+			type : String,
+			required : false, 
+			default : null,
+		},
 	},
 	template : 
 	'<transition name="fade">\
 	<div class="input-field" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
-	<textarea v-bind:name="this.name" class="materialize-textarea" v-bind:id="this.generateInputLabelId(5)"></textarea>\
+	<textarea v-bind:value="this.value" v-bind:name="this.name" class="materialize-textarea" v-bind:id="this.generateInputLabelId(5)"></textarea>\
 	<label v-bind:class="this.setClass()" v-bind:for="this.inputLabelId">{{this.text}}</label>\
 	</div>\
 	</transition>',
