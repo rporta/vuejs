@@ -84,6 +84,33 @@ var app = new Vue({
 			}
 			return '-' + id;
 		},
+		generateNumberId: function(length){
+			var id = "";
+			var char_list = 
+			"0123456789";
+			for(var i=0; i < length; i++ ){  
+				id += char_list.charAt(Math.floor(Math.random() * char_list.length));
+			}
+			return id;	
+		},
+		generateAphaNumberId: function(length){
+			var id = "";
+			var char_list = 
+			"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			for(var i=0; i < length; i++ ){  
+				id += char_list.charAt(Math.floor(Math.random() * char_list.length));
+			}
+			return id;	
+		},
+		generateAphaId: function(length){
+			var id = "";
+			var char_list = 
+			"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+			for(var i=0; i < length; i++ ){  
+				id += char_list.charAt(Math.floor(Math.random() * char_list.length));
+			}
+			return id;	
+		},
 		setColor : function(arg){
 			$('body').toggleClass(arg);
 			return this;
