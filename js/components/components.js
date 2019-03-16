@@ -32,7 +32,6 @@ let configComponent = class {
 		//set data 
 		this.data = typeof obj.data  ==  "function" ? obj.data : null;
 
-
 		//create methods in data
 		typeof this.data   ==  "function"
 		? (()=>{
@@ -46,7 +45,6 @@ let configComponent = class {
 		})()
 		: null;
 
-
 		//create default methods
 		setMethods.newComponent = function(component){
 			return new this.$options.components[component]();
@@ -58,26 +56,28 @@ let configComponent = class {
 			this.$el.append(element.$mount().$el);
 			return this;
 		}
+		setMethods.binaryCompare = function(a, b){
+			return a.localeCompare(b, 'es', { sensitivity: 'base' }) === 0 ? true : false;
+		}
 		setMethods.setClass = function(arg){
-			let setClass = new Array;
+			let setClass = new Array();
 			//default class
-			for(let i in this.$options.data()){
-
-				i == 'truncate' && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'cardpanel' && this.$options.data()[i] ? setClass.push('card-panel') : null;
-				i == 'hoverable' && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'container'  && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'valign' && this.$options.data()[i] ? setClass.push('valign-wrapper') : null;
-				i == 'flowText' && this.$options.data()[i] ? setClass.push('flow-text') : null;
-				i == 'striped' && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'highlight' && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'centered' && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'responsive' && this.$options.data()[i] ? setClass.push('responsive-table') : null;
-				i == 'filledIn' && this.$options.data()[i] ? setClass.push('filled-in') : null;
-				i == 'disable' && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'flat' && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'floating' && this.$options.data()[i] ? setClass.push(i) : null;
-				i == 'withGap' && this.$options.data()[i] ? setClass.push('with-gap') : null;
+			for(let i in this.$data){
+				i == 'truncate' && this.$data[i] ? setClass.push(i) : null;
+				i == 'cardpanel' && this.$data[i] ? setClass.push('card-panel') : null;
+				i == 'hoverable' && this.$data[i] ? setClass.push(i) : null;
+				i == 'container'  && this.$data[i] ? setClass.push(i) : null;
+				i == 'valign' && this.$data[i] ? setClass.push('valign-wrapper') : null;
+				i == 'flowText' && this.$data[i] ? setClass.push('flow-text') : null;
+				i == 'striped' && this.$data[i] ? setClass.push(i) : null;
+				i == 'highlight' && this.$data[i] ? setClass.push(i) : null;
+				i == 'centered' && this.$data[i] ? setClass.push(i) : null;
+				i == 'responsive' && this.$data[i] ? setClass.push('responsive-table') : null;
+				i == 'filledIn' && this.$data[i] ? setClass.push('filled-in') : null;
+				i == 'disable' && this.$data[i] ? setClass.push(i) : null;
+				i == 'flat' && this.$data[i] ? setClass.push(i) : null;
+				i == 'floating' && this.$data[i] ? setClass.push(i) : null;
+				i == 'withGap' && this.$data[i] ? setClass.push('with-gap') : null;
 
 				i == 'color' ||
 				i == 'colorText' ||
@@ -85,7 +85,7 @@ let configComponent = class {
 				i == 'textAling' ||
 				i == 'float' ||
 				i == 'shadow' 
-				? setClass.push(this.$options.data()[i])
+				? setClass.push(this.$data[i])
 				: null;
 			}
 
@@ -176,27 +176,22 @@ var preloader = new  configComponent({
 	</transition>',
 	methods : {
 		setMode : function(set){
-			switch (set) {
-				case 0 :
-				case "indeterminate" : this.mode = "indeterminate";
-				break;
-				case 1 : 
-				case "determinate" : this.mode = "determinate";
-				break;
+			if (this.binaryCompare(set, 'indeterminate') || set === 0){
+				this.mode = "indeterminate";
+			}
+			else if (this.binaryCompare(set, 'determinate') || set === 1){
+				this.mode = "determinate";
 			}
 			return this;
 		},
 		setStyle : function(){
 			var out;
-			switch (this.mode) {
-				case 0 : out = {};
-				case "indeterminate" : out = {};
-				break;
-				case 1 : out = { width : this.progress + this.percentage};
-				case "determinate" : out = { width : this.progress + this.percentage};
-				break; 
-
-			}	
+			if (this.binaryCompare(this.mode, 'indeterminate') || set === 0){
+				out = {};
+			}
+			else if(this.binaryCompare(this.mode, 'determinate') || set === 1){
+				out = { width : this.progress + this.percentage};
+			}
 			return out;
 		},
 		setProgress : function(arg){
@@ -475,14 +470,6 @@ var div = new configComponent({
 			this.styleP = arg;
 			return this;			
 		},		
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
 		setStyle : function(){			
 			var stylePreload = {
 				position : "absolute",
@@ -594,14 +581,6 @@ var modal = new configComponent({
 			this.styleP = arg;
 			return this;			
 		},
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
 		setStyle : function(){
 			var stylePreload = {
 				position : "fixed",
@@ -627,197 +606,33 @@ var br = new configComponent({
 	name : "c-br",
 	data : function(){
 		return {
-			text : this.ptext,
-			color : this.pcolor,
-			colorText : this.pcolorText,
-			textAling : this.ptextAling,
-			float : this.pfloat,
-			shadow : this.pshadow,
-			truncate : this.ptruncate,
-			cardpanel : this.pcardpanel,
-			hoverable : this.phoverable,
-			container : this.pcontainer,
-			valign : this.pvalign,
 			show : this.pshow,
-			styleP : this.pstyleP,
 		}
 	},
 	props : {
-		ptext  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		pcolor  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		pcolorText  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		ptextAling  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		pfloat  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		pshadow  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		ptruncate  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		pcardpanel  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		phoverable  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		pcontainer  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		pvalign  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
 		pshow  : {
 			type : Boolean,
 			required : false, 
 			default : true,
 		}, 
-		pstyleP		  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
+
 	},
 	template : 
 	'<transition name="fade">\
 	<br key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
 	</transition>',
 	methods : {
-		setStyleP : function(arg){
-			this.styleP = arg;
-			return this;			
-		},
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
-		setStyle : function(){
-			var stylePreload = {
-				position : "fixed",
-				top : "0px",
-				zIndex : "9999",
-				width : "100%",
-				height : "100%"
-			};
-			return this.styleP ? stylePreload : {};
-		},
+
 	}
 });
 var divider = new configComponent({
 	name : "c-divider",
 	data : function(){
 		return {
-			styleP : this.pstyleP,
-			text : this.ptext,
-			color : this.pcolor,
-			colorText : this.pcolorText,
-			textAling : this.ptextAling,
-			float : this.pfloat,
-			shadow : this.pshadow,
-			truncate : this.ptruncate,
-			cardpanel : this.pcardpanel,
-			hoverable : this.phoverable,
-			container : this.pcontainer,
-			valign : this.pvalign,
 			show : this.pshow,
 		}
 	},
 	props : {
-		pstyleP  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		ptext  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		pcolor  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		pcolorText  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		ptextAling  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		pfloat  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		pshadow  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
-		ptruncate  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		pcardpanel  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		phoverable  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		pcontainer  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
-		pvalign  : {
-			type : Boolean,
-			required : false, 
-			default : false,
-		}, 
 		pshow		  : {
 			type : Boolean,
 			required : false, 
@@ -829,28 +644,7 @@ var divider = new configComponent({
 	<div key="this.generateId(5)" v-bind:class="this.setClass()" v-show="this.show" v-bind:id="this.generateId(5)" class="divider"></div>\
 	</transition>',
 	methods : {
-		setStyleP : function(arg){
-			this.styleP = arg;
-			return this;			
-		},
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
-		setStyle : function(){
-			var stylePreload = {
-				position : "fixed",
-				top : "0px",
-				zIndex : "9999",
-				width : "100%",
-				height : "100%"
-			};
-			return this.styleP ? stylePreload : {};
-		},	
+
 	}
 });
 var container = new configComponent({
@@ -948,14 +742,6 @@ var container = new configComponent({
 			this.styleP = arg;
 			return this;			
 		},		
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
 		setStyle : function(){			
 			var stylePreload = {
 				position : "absolute",
@@ -1051,15 +837,8 @@ var row = new configComponent({
 	'<transition name="fade">\
 	<div key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" class="row">{{this.text}}<slot></slot></div>\
 	</transition>',
-	methods : {	
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
+	methods : {
+
 	},	
 });
 var col = new configComponent({
@@ -1206,7 +985,7 @@ var col = new configComponent({
 			var l = "l";
 			var xl = "xl";
 			var container = "container";
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", typeof this.s === "number" ? s + this.s : s + 12, typeof this.m === "number" ? m + this.m : m +  12, typeof this.l === "number" ? l + this.l : l + 12, typeof this.xl === "number" ? xl + this.xl : xl + 12, this.container ? container : "").join(" ");
+			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", typeof this.s === "number" ? s + this.s : s + 12, typeof this.m === "number" ? m + this.m : m +  12, typeof this.l === "number" ? l + this.l : l + 12, typeof this.xl === "number" ? xl + this.xl : xl + 12, this.container ? container : "").join(" ").trim();
 		},
 	},	
 });
@@ -1296,14 +1075,7 @@ var header = new configComponent({
 	<header key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}<slot></slot></header>\
 	</transition>',
 	methods : {
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
+
 	}		
 });
 
@@ -1392,14 +1164,7 @@ var main = new configComponent({
 	<main key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}<slot></slot></main>\
 	</transition>',
 	methods : {
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
+
 	}		
 });
 
@@ -1488,14 +1253,7 @@ var footer = new configComponent({
 	<footer key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}<slot></slot></footer>\
 	</transition>',
 	methods : {
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},
+
 	}		
 });
 var h = new configComponent({
@@ -1606,13 +1364,7 @@ var h = new configComponent({
 			return this;
 		},			
 		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";			
-			var flowText = "flow-text";			
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
+
 		},
 	},		
 });
@@ -1710,15 +1462,6 @@ var p = new configComponent({
 		generateTag : function(){
 			var tagName = "p";
 			return tagName;	
-		},		
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			var flowText = "flow-text";				
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
 	}		
 });
@@ -1823,15 +1566,6 @@ var blockquotes = new configComponent({
 			var tagName = "blockquote";
 			return tagName;	
 		},		
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			var flowText = "flow-text";				
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
-		},
 		setShow : function(arg){
 			this.show = arg;
 			return this;
@@ -1939,15 +1673,6 @@ var span = new configComponent({
 		generateTag : function(){
 			var tagName = "span";
 			return tagName;	
-		},		
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			var flowText = "flow-text";	
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
 	}		
 });
@@ -2045,15 +1770,6 @@ var pre = new configComponent({
 		generateTag : function(){
 			var tagName = "pre";
 			return tagName;	
-		},		
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";
-			var flowText = "flow-text";	
-			return new Array(this.color, this.colorText, this.textAling, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.flowText ? flowText : "").join(" ");
 		},
 	}		
 });
@@ -2179,7 +1895,7 @@ var icon = new configComponent({
 			var prefix = "prefix";
 			var dbox = "dbox";
 			var dline = "dline";
-			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "",  this.prefix ? prefix : "", (this.d == 0 ? "" : (this.d == 1 ? dline : (this.d == 2 ? dbox : "")))).join(" ");
+			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "",  this.prefix ? prefix : "", (this.d == 0 ? "" : (this.d == 1 ? dline : (this.d == 2 ? dbox : "")))).join(" ").trim();
 		},
 	}		
 });
@@ -2187,6 +1903,7 @@ var form = new configComponent({
 	name : "c-form",
 	data : function(){
 		return {
+			action : this.paction,
 			color : this.pcolor,
 			colorText : this.pcolorText,
 			float : this.pfloat,
@@ -2202,6 +1919,11 @@ var form = new configComponent({
 		}
 	},
 	props : {
+		paction  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
 		pcolor  : {
 			type : String,
 			required : false, 
@@ -2265,7 +1987,7 @@ var form = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><slot></slot></div>\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:action="this.action" v-bind:method="this.generateMethod()" v-bind:enctype="this.generateEnctype()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"><slot></slot></div>\
 	</transition>',
 	methods : {
 		generateTag : function(){
@@ -2279,32 +2001,16 @@ var form = new configComponent({
 		generateMethod : function(){
 			var methods = new Array("get", "post");
 			return methods[this.method];	
-		},						
-		setFile : function (arg){
-			this.file = arg;
-			return this;
-		},					
+		},									
 		setMethod : function (arg){
-			switch(arg){
-				case "GET":
-				case "get":
-				case 0: this.method = 0;
-				break;
-				case "POST":
-				case "post":
-				case 1: this.method = 1;
-				break;
+			if(this.binaryCompare(arg, 'get') || 0 === arg){
+				this.method = 0;
+			}
+			else if(this.binaryCompare(arg, 'post') || 1 === arg){
+				this.method = 1;
 			}
 			return this;
-		},					
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";			
-			return new Array(this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
-		},	
+		},						
 	}		
 });
 var table = new configComponent({
@@ -2609,19 +2315,14 @@ var button =  new configComponent({
 			return type[this.type];	
 		},		
 		setType : function (arg){
-			switch(arg){
-				case "button":
-				case "BUTTON":
-				case 0: this.type = 0;
-				break;
-				case "submit":
-				case "SUBMIT":
-				case 1: this.type = 1;
-				break;
-				case "reset":
-				case "RESET":
-				case 2: this.type = 2;
-				break;
+			if(this.binaryCompare(arg, 'button') || arg === 0){
+				this.type = 0;
+			}
+			else if(this.binaryCompare(arg, 'submit') || arg === 1){
+				this.type = 1;
+			}
+			else if(this.binaryCompare(arg, 'reset') || arg === 2){
+				this.type = 2;
 			}
 			return this;
 		},					
@@ -2895,19 +2596,14 @@ var inputFields = new configComponent({
 			return new Array(this.color, this.colorText, this.float, this.shadow, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "").join(" ");
 		},
 		setType : function (arg){
-			switch(arg){
-				case "text":
-				case "TEXT":
-				case 0: this.type = 0;
-				break;
-				case "email":
-				case "EMAIL":
-				case 1: this.type = 1;
-				break;
-				case "password":
-				case "PASSWORD":
-				case 2: this.type = 2;
-				break;
+			if (this.binaryCompare(arg, 'text') || arg === 0) {
+				this.type = 0;
+			}
+			else if (this.binaryCompare(arg, 'email') || arg === 1) {
+				this.type = 1;
+			}
+			else if (this.binaryCompare(arg, 'password') || arg === 2) {
+				this.type = 2;
 			}
 			return this;
 		},
@@ -3831,7 +3527,7 @@ var collection = new configComponent({
 				break; 
 			}
 
-			return new Array(setClass, this.color, this.colorText, this.textAling, this.shadow).join(" ");
+			return new Array(setClass, this.color, this.colorText, this.textAling, this.shadow).join(" ").trim();
 		},
 		generateRow : function(){
 			var out = new Array();
@@ -3882,22 +3578,14 @@ var collection = new configComponent({
 			return this;
 		},
 		setMode : function(set){
-			switch (set) {
-				case 0 :
-				case "basic" : 
-				case "Basic" : 
+			if (this.binaryCompare(set, 'basic') || set === 0){
 				this.mode = 0;
-				break;
-				case 1 : 
-				case "link" : 
-				case "Link" : 
+			}
+			else if (this.binaryCompare(set, 'link') || set === 1){
 				this.mode = 1;
-				break;
-				case 2 : 
-				case "headers" : 
-				case "HEADERS" : 
+			}
+			else if (this.binaryCompare(set, 'headers') || set === 2){
 				this.mode = 2;
-				break;
 			}
 			return this;
 		}
@@ -4036,6 +3724,43 @@ var parallax = new configComponent({
 		})
 	}		
 });
+var navbar = new configComponent({
+	name : "c-nav-bar",
+	template :
+	'<nav>\
+	<div class="nav-wrapper">\
+	<a href="#!" class="brand-logo">Logo</a>\
+	<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>\
+	<ul class="right hide-on-med-and-down">\
+	<li><a href="sass.html">Sass</a></li>\
+	<li><a href="badges.html">Components</a></li>\
+	<li><a href="collapsible.html">Javascript</a></li>\
+	<li><a href="mobile.html">Mobile</a></li>\
+	</ul>\
+	</div>\
+	</nav>\
+	<ul class="sidenav" id="mobile-demo">\
+	<li><a href="sass.html">Sass</a></li>\
+	<li><a href="badges.html">Components</a></li>\
+	<li><a href="collapsible.html">Javascript</a></li>\
+	<li><a href="mobile.html">Mobile</a></li>\
+	</ul>',	
+	data : function(){
+		return{
+
+		}
+	},
+	props : {
+
+	},
+	methods : {
+		mounted : function () {
+			this.$nextTick(function () {
+				$('.sidenav').sidenav();
+			})
+		},
+	},
+}); 
 //macro components
 var preloaderFull = new configComponent({
 	name : "c-preloader-full",
@@ -4092,13 +3817,11 @@ var preloaderFull = new configComponent({
 			return this;
 		},
 		setMode : function(arg){
-			switch (arg) {
-				case 0 :
-				case "indeterminate" : this.mode = "indeterminate";
-				break;
-				case 1 : 
-				case "determinate" : this.mode = "determinate";
-				break;
+			if (this.binaryCompare(arg, 'indeterminate') || arg === 0){
+				this.mode = "indeterminate";
+			}
+			else if (this.binaryCompare(arg, 'determinate') || arg === 1){
+				this.mode = "determinate";
 			}
 			if(this.$el){
 				container = this.getChild(this);

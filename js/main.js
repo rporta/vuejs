@@ -39,3 +39,4 @@ footer.create(table);
 var icon = app.newComponent("c-icon").setIcon("account_balance");
 var form = app.newComponent("c-form");
 footer.create(form);
+form.setColor(app.generateColor());

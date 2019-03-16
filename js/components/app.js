@@ -20,6 +20,8 @@ var app = new Vue({
 		/*components-preloader*/
 		[preloader.name] : preloader,
 		[preloaderCircle.name] : preloaderCircle,
+		/*component-navbar*/
+		[navbar.name] : navbar,
 		/*components-modal*/
 		[modal.name] : modal,
 		/*components-containers*/
