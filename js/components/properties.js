@@ -132,3 +132,16 @@ var sizeButton = ((arg) => {
 	});
 	return out;
 })(new Array("btn-small" , "btn-large"));
+let getGlobalVue = (uid = 0) =>{
+	var uids = {};
+	for(let i in document.all){
+		var current = document.all[i];
+		if(current.__vue__){
+			uids[current.__vue__._uid] = current.__vue__;
+			if(current.__vue__._uid === uid){
+				return current.__vue__;
+			}
+		}
+	}
+	return uids;
+};

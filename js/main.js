@@ -12,7 +12,8 @@ app.create(preloaderFull);
 var footer = app.newComponent('c-footer').setText("soy footer").setColor(app.generateColor()).setColorText(app.generateColorText()).setTextAling(app.textAling.c);
 var main = app.newComponent('c-main').setText("soy main").setColor(app.generateColor()).setColorText(app.generateColorText()).setTextAling(app.textAling.c);
 var header = app.newComponent('c-header').setText("soy header").setColor(app.generateColor()).setColorText(app.generateColorText()).setTextAling(app.textAling.c);
-
+var nav = app.newComponent('c-nav-bar');
+app.create(nav);
 app.create(header);
 app.create(main);
 app.create(footer);

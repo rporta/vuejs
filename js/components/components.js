@@ -46,6 +46,19 @@ let configComponent = class {
 		: null;
 
 		//create default methods
+		setMethods.getVue = function(uid = 0){
+			var uids = {};
+			for(let i in document.all){
+				var current = document.all[i];
+				if(current.__vue__){
+					uids[current.__vue__._uid] = current.__vue__;
+					if(current.__vue__._uid === uid){
+						return current.__vue__;
+					}
+				}
+			}
+			return uids;
+		}
 		setMethods.newComponent = function(component){
 			return new this.$options.components[component]();
 		}
@@ -3722,16 +3735,17 @@ var parallax = new configComponent({
 		this.$nextTick(function () {
 			$('.parallax').parallax();
 		})
-	}		
+	},		
 });
 var navbar = new configComponent({
 	name : "c-nav-bar",
 	template :
-	'<nav>\
-	<div class="nav-wrapper">\
-	<a href="#!" class="brand-logo">Logo</a>\
-	<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>\
-	<ul class="right hide-on-med-and-down">\
+	'<transition-group name="fade">\
+	<nav key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
+	<div class="nav-wrapper" v-bind:class="this.setClass()">\
+	<a href="#!" class="brand-logo" v-bind:class="this.setClassLogo()"><i class="material-icons">cloud</i>Logo</a>\
+	<a href="#" data-target="mobile-demo" class="sidenav-trigger" v-bind:class="this.setClassMenu()"><i class="material-icons">menu</i></a>\
+	<ul class="hide-on-med-and-down" v-bind:class="this.setClassMenu()">\
 	<li><a href="sass.html">Sass</a></li>\
 	<li><a href="badges.html">Components</a></li>\
 	<li><a href="collapsible.html">Javascript</a></li>\
@@ -3739,27 +3753,135 @@ var navbar = new configComponent({
 	</ul>\
 	</div>\
 	</nav>\
-	<ul class="sidenav" id="mobile-demo">\
+	<ul key="this.generateId(5)" class="sidenav" v-bind:class="this.setClassMobile()" id="mobile-demo">\
 	<li><a href="sass.html">Sass</a></li>\
 	<li><a href="badges.html">Components</a></li>\
 	<li><a href="collapsible.html">Javascript</a></li>\
 	<li><a href="mobile.html">Mobile</a></li>\
-	</ul>',	
+	</ul>\
+	</transition-group>',	
 	data : function(){
 		return{
-
+			alingLogo : 0,
+			logo : null,
+			menuD : new Array(),
+			menuM : new Array(),
+			shadow : this.pshadow,
+			show : this.pshow,
+			color : this.pcolor,
+			colorText : this.pcolorText,			
+			colorM : this.pcolorM,			
+			colorTextM : this.pcolorTextM,			
 		}
 	},
 	props : {
-
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : "z-depth-1",
+		},		
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		},
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : "blue",
+		}, 
+		pcolorM  : {
+			type : String,
+			required : false, 
+			default : "white",
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 		
+		pcolorTextM  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 		
 	},
 	methods : {
-		mounted : function () {
-			this.$nextTick(function () {
-				$('.sidenav').sidenav();
-			})
+		setAlingLogo(arg){
+			if (this.binaryCompare(arg, 'left') || this.binaryCompare(arg, 'l') || arg === 0){
+				this.alingLogo = 0;
+			}			
+			else if(this.binaryCompare(arg, 'center') || this.binaryCompare(arg, 'c') || arg === 1){
+				this.alingLogo = 1;
+			}			
+			else if(this.binaryCompare(arg, 'right') || this.binaryCompare(arg, 'r') || arg === 2){
+				this.alingLogo = 2;
+			}
+			else if(this.binaryCompare(arg, 'centerright') || this.binaryCompare(arg, 'cr') || arg === 3){
+				this.alingLogo = 3;
+			}			
+			return this;		
+		},
+		addLogo(add){
+			return this;
+		},
+		generateMenuD(){
+
+		},
+		generateMenuM(){
+
+		},
+		addMenuD(arg){
+			this.menuD.push(arg);
+			return this;
+		},
+		addMenuM(arg){
+			this.menuM.push(arg);
+			return this;
+		},
+		clearMenuD(){
+			this.menuD = new Array();
+			return this;
+		},
+		clearMenuM(){
+			this.menuM.push(arg);
+			return this;
+		},
+		setClassMobile : function(){
+			let setClass = new Array();
+			//default class
+			for(let i in this.$data){
+				// i == 'truncate' && this.$data[i] ? setClass.push(i) : null;
+				// i == 'cardpanel' && this.$data[i] ? setClass.push('card-panel') : null;
+
+				i == 'colorM' 
+				i == 'colorTextM' 
+				? setClass.push(this.$data[i])
+				: null;
+			}
+			return setClass.join(" ").trim();
+		},
+		setClassMenu : function(){
+			var out = null; 
+			let aling = ["left", "center", "right"];
+			if(this.alingLogo == 0 || this.alingLogo == 3 ){
+				out = aling[2];
+			}
+			else if(this.alingLogo == 2){
+				out = aling[0];
+			}
+			return out;
+		},
+		setClassLogo : function(){
+			let aling = ["left", "center", "right", "center"];
+			return aling[this.alingLogo];
 		},
 	},
+	mounted : function () {
+		this.$nextTick(function () {
+			$('#mobile-demo').sidenav();
+		})
+	},	
 }); 
 //macro components
 var preloaderFull = new configComponent({
