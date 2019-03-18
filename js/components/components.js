@@ -3823,6 +3823,7 @@ var navbar = new configComponent({
 			return this;		
 		},
 		addLogo(add){
+			this.logo = add;
 			return this;
 		},
 		generateMenuD(){
@@ -3833,6 +3834,11 @@ var navbar = new configComponent({
 		},
 		addMenuD(arg){
 			this.menuD.push(arg);
+			return this;
+		},
+		addMenu(arg){
+			this.menuD.push(arg);
+			this.menuM.push(arg);
 			return this;
 		},
 		addMenuM(arg){
