@@ -2464,7 +2464,7 @@ var a = new configComponent({
 	},
 	template : 
 	'<transition name="fade">\
-	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:href="this.href" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()"></div>\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:href="this.href" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
 	</transition>',
 	methods : {
 		generateTag : function(){
@@ -3741,9 +3741,9 @@ var navbar = new configComponent({
 	name : "c-nav-bar",
 	template :
 	'<transition-group name="fade">\
-	<nav key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)">\
+	<nav key="this.generateId(5)" style="position: relative;height: 100%;" v-show="this.show" v-bind:id="this.generateId(5)">\
 	<div class="nav-wrapper" v-bind:class="this.setClass()">\
-	<a href="#!" class="brand-logo" v-bind:class="this.setClassLogo()"><i class="material-icons">cloud</i>Logo</a>\
+	<a href="#!" style="position: relative;height: 100%;" class="brand-logo" v-bind:class="this.setClassLogo()"></a>\
 	<a href="#" data-target="mobile-demo" class="sidenav-trigger" v-bind:class="this.setClassMenu()"><i class="material-icons">menu</i></a>\
 	<ul class="hide-on-med-and-down" v-bind:class="this.setClassMenu()">\
 	<li><a href="sass.html">Sass</a></li>\
@@ -3823,6 +3823,7 @@ var navbar = new configComponent({
 			return this;		
 		},
 		addLogo(add){
+			if(this.$mount().$el)this.$el.childNodes[0].childNodes[0].childNodes[0].append(add.$mount().$el);
 			return this;
 		},
 		generateMenuD(){
@@ -3830,6 +3831,14 @@ var navbar = new configComponent({
 		},
 		generateMenuM(){
 
+		},
+		fafa(){
+			return "fafa";
+		},
+		addMenu(arg){
+			this.menuD.push(arg);
+			this.menuM.push(arg);
+			return this;
 		},
 		addMenuD(arg){
 			this.menuD.push(arg);
@@ -3854,7 +3863,7 @@ var navbar = new configComponent({
 				// i == 'truncate' && this.$data[i] ? setClass.push(i) : null;
 				// i == 'cardpanel' && this.$data[i] ? setClass.push('card-panel') : null;
 
-				i == 'colorM' 
+				i == 'colorM' ||
 				i == 'colorTextM' 
 				? setClass.push(this.$data[i])
 				: null;
@@ -3864,11 +3873,17 @@ var navbar = new configComponent({
 		setClassMenu : function(){
 			var out = null; 
 			let aling = ["left", "center", "right"];
-			if(this.alingLogo == 0 || this.alingLogo == 3 ){
+			if(this.alingLogo == 0){
 				out = aling[2];
 			}
 			else if(this.alingLogo == 2){
 				out = aling[0];
+			}
+			else if(this.alingLogo == 1){
+				out = aling[0];
+			}
+			else if(this.alingLogo == 3){
+				out = aling[2];
 			}
 			return out;
 		},
@@ -3879,7 +3894,7 @@ var navbar = new configComponent({
 	},
 	mounted : function () {
 		this.$nextTick(function () {
-			$('#mobile-demo').sidenav();
+			$('.sidenav').sidenav();
 		})
 	},	
 }); 

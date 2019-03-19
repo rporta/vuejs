@@ -13,6 +13,12 @@ var footer = app.newComponent('c-footer').setText("soy footer").setColor(app.gen
 var main = app.newComponent('c-main').setText("soy main").setColor(app.generateColor()).setColorText(app.generateColorText()).setTextAling(app.textAling.c);
 var header = app.newComponent('c-header').setText("soy header").setColor(app.generateColor()).setColorText(app.generateColorText()).setTextAling(app.textAling.c);
 var nav = app.newComponent('c-nav-bar');
+// logo = app.newComponent("c-img").setSrc("https://materializecss.com/res/materialize.svg");
+logo = app.newComponent("c-icon").setIcon('add_to_queue').setSize(app.sizeIcon.m).setColorText(app.generateColorText());
+var spanLogo = app.newComponent("c-span").setText("reg 8").setColorText('white-text');
+// logo = app.newComponent("c-a").setText("ffff");
+nav.addLogo(spanLogo).setColorM(app.generateColor());
+spanLogo.create(logo);
 app.create(nav);
 app.create(header);
 app.create(main);
@@ -41,3 +47,6 @@ var icon = app.newComponent("c-icon").setIcon("account_balance");
 var form = app.newComponent("c-form");
 footer.create(form);
 form.setColor(app.generateColor());
+
+
+
