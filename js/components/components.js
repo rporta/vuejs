@@ -69,6 +69,40 @@ let configComponent = class {
 			this.$el.append(element.$mount().$el);
 			return this;
 		}
+		setMethods.setVue = function (add = "string", b = this){
+			if(!b.$el){
+				b.$mount();
+			}
+			$(b).empty();
+			if(typeof add == 'string'){
+				$(b.$el).text(add);
+			}else{
+				$(b.$el).append(add.$mount().$el);
+			}
+			return this;
+		}
+		setMethods.addVue = function (add = "string", b = this){
+			if(!b.$el){
+				b.$mount();
+			}
+			if(typeof add == 'string'){
+				$(b.$el).append((document.createTextNode(add)));
+			}else{
+				if(!add.$el){
+					add.$mount();	
+				}
+				var x = $(add.$el)
+				console.log($(add.$el));
+				$(b.$el).append(x);
+			}
+			return this;
+		}
+		setMethods.clearVue = function(b = this){
+			if(!b.$el){
+				b.$mount();
+			}
+			$(b).empty();
+		}
 		setMethods.binaryCompare = function(a, b){
 			return a.localeCompare(b, 'es', { sensitivity: 'base' }) === 0 ? true : false;
 		}
@@ -3822,8 +3856,16 @@ var navbar = new configComponent({
 			}			
 			return this;		
 		},
-		addLogo(add){
-			if(this.$mount().$el)this.$el.childNodes[0].childNodes[0].childNodes[0].append(add.$mount().$el);
+		addLogo(add = "string", b = this){
+			if(!b.$el){
+				b.$mount();
+			}
+			$(b.$el.childNodes[0].childNodes[0].childNodes[0]).empty();
+			if(typeof add == 'string'){
+				$(b.$el.childNodes[0].childNodes[0].childNodes[0]).text(add);
+			}else{
+				$(b.$el.childNodes[0].childNodes[0].childNodes[0]).append(add.$mount().$el);
+			}
 			return this;
 		},
 		generateMenuD(){

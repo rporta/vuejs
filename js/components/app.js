@@ -74,6 +74,22 @@ var app = new Vue({
 		create : function(element){
 			return this.$el.append(element.$mount().$el);
 		},
+		addVue : function (add = "string", b = this){
+			if(!b.$el){
+				b.$mount();
+			}
+			if(typeof add == 'string'){
+				$(b.$el).append((document.createTextNode(add)));
+			}else{
+				if(!add.$el){
+					add.$mount();	
+				}
+				var x = $(add.$el)
+				console.log($(add.$el));
+				$(b.$el).append(x);
+			}
+			return this;
+		},
 		newComponent : function(component){
 			return new this.$options.components[component]();
 		},
