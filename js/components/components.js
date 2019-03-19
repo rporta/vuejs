@@ -3844,6 +3844,11 @@ var navbar = new configComponent({
 			this.menuD.push(arg);
 			return this;
 		},
+		addMenu(arg){
+			this.menuD.push(arg);
+			this.menuM.push(arg);
+			return this;
+		},
 		addMenuM(arg){
 			this.menuM.push(arg);
 			return this;
