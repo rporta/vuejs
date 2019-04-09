@@ -66,7 +66,12 @@ let configComponent = class {
 			return app ? this.$options.name + app.generateId(arg) : this.$options.name + this.$root.generateId(arg);		
 		}
 		setMethods.create = function(element){
-			this.$el.append(element.$mount().$el);
+			this.$el
+			? this.$el.append(element.$mount().$el)
+			: (() => {
+				this.$mount().$el.append(element.$mount().$el);
+			})();
+
 			return this;
 		}
 		setMethods.setVue = function (add = "string", b = this){
@@ -3856,15 +3861,21 @@ var navbar = new configComponent({
 			}			
 			return this;		
 		},
-		addLogo(add = "string", b = this){
+		addLogo(arg){
+			this.logo = arg;
+			this.generateLogo();
+			return this;
+		},
+		generateLogo(){
+			var b = this;
 			if(!b.$el){
 				b.$mount();
 			}
 			$(b.$el.childNodes[0].childNodes[0].childNodes[0]).empty();
-			if(typeof add == 'string'){
-				$(b.$el.childNodes[0].childNodes[0].childNodes[0]).text(add);
+			if(typeof this.logo == 'string'){
+				$(b.$el.childNodes[0].childNodes[0].childNodes[0]).text(this.logo);
 			}else{
-				$(b.$el.childNodes[0].childNodes[0].childNodes[0]).append(add.$mount().$el);
+				$(b.$el.childNodes[0].childNodes[0].childNodes[0]).append(this.logo.$mount().$el);
 			}
 			return this;
 		},
@@ -3874,9 +3885,6 @@ var navbar = new configComponent({
 		generateMenuM(){
 
 		},
-		fafa(){
-			return "fafa";
-		},
 		addMenu(arg){
 			this.menuD.push(arg);
 			this.menuM.push(arg);
@@ -3884,11 +3892,6 @@ var navbar = new configComponent({
 		},
 		addMenuD(arg){
 			this.menuD.push(arg);
-			return this;
-		},
-		addMenu(arg){
-			this.menuD.push(arg);
-			this.menuM.push(arg);
 			return this;
 		},
 		addMenuM(arg){
@@ -3900,7 +3903,12 @@ var navbar = new configComponent({
 			return this;
 		},
 		clearMenuM(){
-			this.menuM.push(arg);
+			this.menuM = new Array();
+			return this;
+		},
+		clearMenu(){
+			this.menuD = new Array();
+			this.menuM = new Array();
 			return this;
 		},
 		setClassMobile : function(){
