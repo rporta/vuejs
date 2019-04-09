@@ -3871,19 +3871,47 @@ var navbar = new configComponent({
 			if(!b.$el){
 				b.$mount();
 			}
-			$(b.$el.childNodes[0].childNodes[0].childNodes[0]).empty();
+			$(b.$el.children[0].children[0].children[0]).empty();
 			if(typeof this.logo == 'string'){
-				$(b.$el.childNodes[0].childNodes[0].childNodes[0]).text(this.logo);
+				$(b.$el.children[0].children[0].children[0]).text(this.logo);
 			}else{
-				$(b.$el.childNodes[0].childNodes[0].childNodes[0]).append(this.logo.$mount().$el);
+				$(b.$el.children[0].children[0].children[0]).append(this.logo.$mount().$el);
 			}
 			return this;
 		},
 		generateMenuD(){
-
+			var b = this;
+			if(!b.$el){
+				b.$mount();
+			}
+			$(b.$el.children[0].children[0].children[2]).empty();
+			for(let i in this.menuD){
+				//aca se resuelve menu desktop
+				if(typeof this.menuD[i] == 'string'){
+					$(b.$el.children[0].children[0].children[2]).text(this.menuD[i]);
+				}else{
+					$(b.$el.children[0].children[0].children[2]).append(this.menuD[i].$mount().$el);
+				}
+			}
+			
+			return this;
 		},
 		generateMenuM(){
-
+			var b = this;
+			if(!b.$el){
+				b.$mount();
+			}
+			$(b.$el.children[1]).empty();
+			
+			for(let i in this.menuM){
+				//aca se resuelve menu desktop
+				if(typeof this.menuM[i] == 'string'){
+					$(b.$el.children[0].children[0].children[2]).text(this.menuM[i]);
+				}else{
+					$(b.$el.children[0].children[0].children[2]).append(this.menuM[i].$mount().$el);
+				}
+			}	
+			return this;
 		},
 		addMenu(arg){
 			this.menuD.push(arg);
@@ -3900,6 +3928,7 @@ var navbar = new configComponent({
 		},
 		clearMenuD(){
 			this.menuD = new Array();
+			$(nav.$el.children[0].children[0].children[2]).empty();
 			return this;
 		},
 		clearMenuM(){
