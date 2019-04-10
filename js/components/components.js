@@ -4213,14 +4213,15 @@ var navbar = new configComponent({
 				b.$mount();
 			}
 			$(b.$el.children[0].children[0].children[2]).empty();
-			
-			for(let i in this.menuM){
+
+			for(let i in this.menuD){
 				//aca se resuelve menu desktop
 				if(this.menuD[i].constructor.name == 'Array'){
 					for (var name in this.menuD[i]) {
 						var current = this.menuD[i][name];
 						var li = new this.$options.components['c-li']().$mount();
 						var a = new this.$options.components['c-a']().$mount().setHref(current).setText(name);
+						$(a.$el).attr("class", "");
 						li.create(a);
 					}
 					$(b.$el.children[0].children[0].children[2]).append(li.$el);
@@ -4244,6 +4245,7 @@ var navbar = new configComponent({
 						var current = this.menuM[i][name];
 						var li = new this.$options.components['c-li']().$mount();
 						var a = new this.$options.components['c-a']().$mount().setHref(current).setText(name);
+						$(a.$el).attr("class", "");
 						li.create(a);
 					}
 					$(b.$el.children[1]).append(li.$el);
@@ -4256,14 +4258,18 @@ var navbar = new configComponent({
 		addMenu(arg){
 			this.menuD.push(arg);
 			this.menuM.push(arg);
+			this.generateMenuD();
+			this.generateMenuM();
 			return this;
 		},
 		addMenuD(arg){
 			this.menuD.push(arg);
+			this.generateMenuD();
 			return this;
 		},
 		addMenuM(arg){
 			this.menuM.push(arg);
+			this.generateMenuM();
 			return this;
 		},
 		clearMenuD(){
