@@ -1517,6 +1517,333 @@ var p = new configComponent({
 		},
 	}		
 });
+var ol = new configComponent({
+	name : "c-ol",
+	data : function(){
+		return{			
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			flowText : this.pflowText,
+		}
+	},
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pflowText  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 		
+	},
+	template : 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
+	</transition>',
+	methods : {
+		generateTag : function(){
+			var tagName = "ol";
+			return tagName;	
+		},		
+	}		
+});
+var ul = new configComponent({
+	name : "c-ul",
+	data : function(){
+		return{			
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			flowText : this.pflowText,
+			padingl : this.pppadingl,
+		}
+	},
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pflowText  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 		
+		ppadingl  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 		
+	},
+	template : 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:style="this.generateStyle()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
+	</transition>',
+	methods : {
+		generateTag : function(){
+			var tagName = "ul";
+			return tagName;	
+		},	
+		generateStyle : function(){
+			var setStyle = {};
+			this.padingl !== null 
+			? (() => {
+				setStyle.paddingLeft = this.padingl;
+			})()
+			: null; 
+			return setStyle;	
+		},	
+	}		
+});
+var li = new configComponent({
+	name : "c-li",
+	data : function(){
+		return{			
+			text : this.ptext,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			show : this.pshow,
+			flowText : this.pflowText,
+			value : this.pvalue,
+			listStyle : this.plistStyle,
+		}
+	},
+	props : {
+		ptext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pflowText  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 		
+		pvalue  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 		
+		plistStyle  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 		
+	},
+	template : 
+	'<transition name="fade">\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:style="this.generateStyle()" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-bind:value="this.value">{{this.text}}</div>\
+	</transition>',
+	methods : {
+		generateTag : function(){
+			var tagName = "li";
+			return tagName;	
+		},
+		generateStyle : function(){
+			var setStyle = {}
+			this.listStyle !== null 
+			? (() => {
+				setStyle.listStyleType = this.listStyle;
+			})()
+			: null;
+			return setStyle;	
+		},
+	}		
+});
 var blockquotes = new configComponent({
 	name : "c-blockquotes",
 	data : function(){
@@ -3776,6 +4103,7 @@ var parallax = new configComponent({
 		})
 	},		
 });
+//macro components
 var navbar = new configComponent({
 	name : "c-nav-bar",
 	template :
@@ -3872,7 +4200,7 @@ var navbar = new configComponent({
 				b.$mount();
 			}
 			$(b.$el.children[0].children[0].children[0]).empty();
-			if(typeof this.logo == 'string'){
+			if(this.logo.constructor.name == 'String'){
 				$(b.$el.children[0].children[0].children[0]).text(this.logo);
 			}else{
 				$(b.$el.children[0].children[0].children[0]).append(this.logo.$mount().$el);
@@ -3885,15 +4213,21 @@ var navbar = new configComponent({
 				b.$mount();
 			}
 			$(b.$el.children[0].children[0].children[2]).empty();
-			for(let i in this.menuD){
-				//aca se resuelve menu desktop
-				if(typeof this.menuD[i] == 'string'){
-					$(b.$el.children[0].children[0].children[2]).text(this.menuD[i]);
-				}else{
-					$(b.$el.children[0].children[0].children[2]).append(this.menuD[i].$mount().$el);
-				}
-			}
 			
+			for(let i in this.menuM){
+				//aca se resuelve menu desktop
+				if(this.menuD[i].constructor.name == 'Array'){
+					for (var name in this.menuD[i]) {
+						var current = this.menuD[i][name];
+						var li = new this.$options.components['c-li']().$mount();
+						var a = new this.$options.components['c-a']().$mount().setHref(current).setText(name);
+						li.create(a);
+					}
+					$(b.$el.children[0].children[0].children[2]).append(li.$el);
+				}else{
+					$(b.$el.children[0].children[0].children[2]).append(this.menuM[i].$mount().$el);
+				}
+			}	
 			return this;
 		},
 		generateMenuM(){
@@ -3905,10 +4239,16 @@ var navbar = new configComponent({
 			
 			for(let i in this.menuM){
 				//aca se resuelve menu desktop
-				if(typeof this.menuM[i] == 'string'){
-					$(b.$el.children[0].children[0].children[2]).text(this.menuM[i]);
+				if(this.menuM[i].constructor.name == 'Array'){
+					for (var name in this.menuM[i]) {
+						var current = this.menuM[i][name];
+						var li = new this.$options.components['c-li']().$mount();
+						var a = new this.$options.components['c-a']().$mount().setHref(current).setText(name);
+						li.create(a);
+					}
+					$(b.$el.children[1]).append(li.$el);
 				}else{
-					$(b.$el.children[0].children[0].children[2]).append(this.menuM[i].$mount().$el);
+					$(b.$el.children[1]).append(this.menuM[i].$mount().$el);
 				}
 			}	
 			return this;
@@ -3927,15 +4267,21 @@ var navbar = new configComponent({
 			return this;
 		},
 		clearMenuD(){
+			var b = this;
 			this.menuD = new Array();
-			$(nav.$el.children[0].children[0].children[2]).empty();
+			$(b.$el.children[0].children[0].children[2]).empty();
 			return this;
 		},
 		clearMenuM(){
+			var b = this;
 			this.menuM = new Array();
+			$(b.$el.children[1]).empty();
 			return this;
 		},
 		clearMenu(){
+			var b = this;
+			$(b.$el.children[1]).empty();
+			$(b.$el.children[0].children[0].children[2]).empty();
 			this.menuD = new Array();
 			this.menuM = new Array();
 			return this;
@@ -3980,9 +4326,13 @@ var navbar = new configComponent({
 		this.$nextTick(function () {
 			$('.sidenav').sidenav();
 		})
-	},	
+	},
+	components : {
+		[this.name] : navbar,
+		[li.name] : li,
+		[a.name] : a,
+	}
 }); 
-//macro components
 var preloaderFull = new configComponent({
 	name : "c-preloader-full",
 	data : function(){

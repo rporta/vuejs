@@ -34,6 +34,9 @@ var app = new Vue({
 		[main.name] : main,
 		[footer.name] : footer,
 		[form.name] : form,
+		[ul.name] : ul,
+		[ol.name] : ol,
+		[li.name] : li,
 		/*components-text*/
 		[h.name] : h,
 		[p.name] : p,
