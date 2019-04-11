@@ -3602,191 +3602,6 @@ var img = new configComponent({
 		},
 	}	
 });
-var dropdown = new configComponent({
-	name : "c-dropdown",
-	data : function(){
-		return {
-			id : this.pid,
-			color : this.pcolor,
-			colorText : this.pcolorText,
-			text : this.ptext,
-			float : this.pfloat,
-			shadow : this.pshadow,
-			truncate : this.ptruncate,
-			cardpanel : this.pcardpanel,
-			hoverable : this.phoverable,
-			container : this.pcontainer,
-			valign : this.pvalign,
-			disable : this.pdisable,
-			flat : this.pflat,
-			floating : this.pfloating,
-			wave : this.pwave,
-			size : this.psize,
-			href : this.phref,
-			show : this.pshow,
-			dropdown : this.pdropdown,
-			idA : this.pidA,
-		}
-	},
-	props : {
-		pid  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		pcolor  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		pcolorText  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		ptext  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		pfloat  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		pshadow  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		ptruncate  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pcardpanel  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		phoverable  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pcontainer  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pvalign  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pdisable  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pflat  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pfloating  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pwave  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		psize  : {
-			type : String,
-			required : false, 
-			default :  "btn-small",
-		}, 
-		phref  : {
-			type : String,
-			required : false, 
-			default :  "#",
-		}, 
-		pshow  : {
-			type : Boolean,
-			required : false, 
-			default :  true,			
-		}, 
-		pdropdown  : {
-			type : Array,
-			required : false, 
-			default :  function(){return new Array()},
-		}, 
-		pidA  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 		
-	},
-	template :
-	'<transition name="fade">\
-	<div key="this.generateId(5)" v-show="this.show">\
-	<div v-bind:id="this.generateIdA()" v-bind:is="this.generateTag()" key="this.generateId(5)" class="dropdown-trigger" v-bind:data-target="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
-	<ul key="this.generateId(5)" v-bind:id="this.id" class="dropdown-content" v-html="this.generateDropDown()" ></ul>\
-	</div>\
-	</transition>',
-	methods : {
-		generateDropDown : function (arg){
-			var out = new Array();
-			$.each(this.dropdown, function(i, v) {
-				out.push("<li>");
-				if(typeof v == 'string'){
-					out.push(v);
-				}else{
-					console.log(v);
-					out.push(v.$el.outerHTML);
-				}
-				out.push("</li>");
-			});
-			return out.join("");
-		},
-		addDropDown : function (arg){
-			this.dropdown.push(arg);
-			return this;
-		},
-		clearDropDown : function (arg){
-			this.dropdown = new Array();
-			return this;
-		},
-		generateIdA : function(arg){
-			this.idA = this.$options.name + app.generateId(arg);
-			return this.idA;
-		},		
-		generateTag : function(){
-			var tagName = "a";
-			return tagName;	
-		},								
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";			
-			var disable = "disable";			
-			var flat = "flat";			
-			var floating = "floating";			
-			return new Array(this.wave, this.size, this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.disable ? disable : "", this.flat ? flat : "", this.floating ? floating : "").join(" ");
-		},
-	},
-	mounted : function () {
-		this.$nextTick(function () {
-			$('#'+this.idA).dropdown();
-		})
-	}	
-
-});
 var badge = new configComponent({
 	name : "c-badge",
 	data : function(){
@@ -4113,18 +3928,10 @@ var navbar = new configComponent({
 	<a href="#!" style="position: relative;height: 100%;" class="brand-logo" v-bind:class="this.setClassLogo()"></a>\
 	<a href="#" data-target="mobile-demo" class="sidenav-trigger" v-bind:class="this.setClassMenu()"><i class="material-icons">menu</i></a>\
 	<ul class="hide-on-med-and-down" v-bind:class="this.setClassMenu()">\
-	<li><a href="sass.html">Sass</a></li>\
-	<li><a href="badges.html">Components</a></li>\
-	<li><a href="collapsible.html">Javascript</a></li>\
-	<li><a href="mobile.html">Mobile</a></li>\
 	</ul>\
 	</div>\
 	</nav>\
 	<ul key="this.generateId(5)" class="sidenav" v-bind:class="this.setClassMobile()" id="mobile-demo">\
-	<li><a href="sass.html">Sass</a></li>\
-	<li><a href="badges.html">Components</a></li>\
-	<li><a href="collapsible.html">Javascript</a></li>\
-	<li><a href="mobile.html">Mobile</a></li>\
 	</ul>\
 	</transition-group>',	
 	data : function(){
@@ -4516,4 +4323,189 @@ var preloaderCircleFull = new configComponent({
 		[container.name] : container,
 		[section.name] : section
 	}
+});
+var dropdown = new configComponent({
+	name : "c-dropdown",
+	data : function(){
+		return {
+			id : this.pid,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			text : this.ptext,
+			float : this.pfloat,
+			shadow : this.pshadow,
+			truncate : this.ptruncate,
+			cardpanel : this.pcardpanel,
+			hoverable : this.phoverable,
+			container : this.pcontainer,
+			valign : this.pvalign,
+			disable : this.pdisable,
+			flat : this.pflat,
+			floating : this.pfloating,
+			wave : this.pwave,
+			size : this.psize,
+			href : this.phref,
+			show : this.pshow,
+			dropdown : this.pdropdown,
+			idA : this.pidA,
+		}
+	},
+	props : {
+		pid  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		pcolor  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		pcolorText  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		ptext  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		pfloat  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		pshadow  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		ptruncate  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		phoverable  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pcontainer  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pvalign  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pdisable  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pflat  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pfloating  : {
+			type : Boolean,
+			required : false, 
+			default :  false,
+		}, 
+		pwave  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 
+		psize  : {
+			type : String,
+			required : false, 
+			default :  "btn-small",
+		}, 
+		phref  : {
+			type : String,
+			required : false, 
+			default :  "#",
+		}, 
+		pshow  : {
+			type : Boolean,
+			required : false, 
+			default :  true,			
+		}, 
+		pdropdown  : {
+			type : Array,
+			required : false, 
+			default :  function(){return new Array()},
+		}, 
+		pidA  : {
+			type : String,
+			required : false, 
+			default :  null,
+		}, 		
+	},
+	template :
+	'<transition name="fade">\
+	<div key="this.generateId(5)" v-show="this.show">\
+	<div v-bind:id="this.generateIdA()" v-bind:is="this.generateTag()" key="this.generateId(5)" class="dropdown-trigger" v-bind:data-target="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
+	<ul key="this.generateId(5)" v-bind:id="this.id" class="dropdown-content" v-html="this.generateDropDown()" ></ul>\
+	</div>\
+	</transition>',
+	methods : {
+		generateDropDown : function (arg){
+			var out = new Array();
+			$.each(this.dropdown, function(i, v) {
+				out.push("<li>");
+				if(typeof v == 'string'){
+					out.push(v);
+				}else{
+					console.log(v);
+					out.push(v.$el.outerHTML);
+				}
+				out.push("</li>");
+			});
+			return out.join("");
+		},
+		addDropDown : function (arg){
+			this.dropdown.push(arg);
+			return this;
+		},
+		clearDropDown : function (arg){
+			this.dropdown = new Array();
+			return this;
+		},
+		generateIdA : function(arg){
+			this.idA = this.$options.name + app.generateId(arg);
+			return this.idA;
+		},		
+		generateTag : function(){
+			var tagName = "a";
+			return tagName;	
+		},								
+		setClass : function(){
+			var truncate = "truncate";
+			var cardpanel = "card-panel";
+			var hoverable = "hoverable";
+			var valign = "valign-wrapper";
+			var container = "container";			
+			var disable = "disable";			
+			var flat = "flat";			
+			var floating = "floating";			
+			return new Array(this.wave, this.size, this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.disable ? disable : "", this.flat ? flat : "", this.floating ? floating : "").join(" ");
+		},
+	},
+	mounted : function () {
+		this.$nextTick(function () {
+			$('#'+this.idA).dropdown();
+		})
+	}	
+
 });
