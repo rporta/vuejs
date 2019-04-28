@@ -3837,26 +3837,20 @@ var collapsible = new configComponent({
 	name : "c-collapsible",
 	template : 
 	'<transition name="fade">\
-	<ul key="this.generateId(5)" v-show="this.show" class="collapsible" v-bind:class="this.setClass()"  v-bind:id="this.generateId(5)" v-html="this.generateRow()">\
+	<ul key="this.generateId(5)" v-show="this.show" class="collapsible" v-bind:class="this.setClass()"  v-bind:id="this.generateId(5)">\
 	</ul>\
 	</transition>',
 	data : function(){
 		return {
-			id : this.pcolor,
-			color : this.pcolorText,
-			colorText : this.colorText,
-			textAling : this.textAling,
+			color : this.pcolor,
+			colorText : this.pcolorText,
+			textAling : this.ptextAling,
 			shadow : this.pshow,
-			show : this.pmode,
+			show : this.pshow,
 			row : this.prow,
 		}
 	},
 	props : {
-		pid  : {
-			type : String,
-			required : false, 
-			default : null,
-		}, 
 		pcolor  : {
 			type : String,
 			required : false, 
@@ -3890,10 +3884,35 @@ var collapsible = new configComponent({
 	},
 	methods : {
 		generateRow : function(){
+			var b = this;
+			if(!b.$el){
+				b.$mount();
+			}
+			$(this.$el).empty();
+			for(var r in this.row){
+				var currentRow = this.row[r];
+				var currentBody = currentRow.body;
+				var currentHead = currentRow.head;
+				if(!currentHead.$el){
+					currentHead.$mount();
+				}
+				if(!currentBody.$el){
+					currentBody.$mount();
+				}
+				var li = this.newComponent("c-li").$mount();
+				var divHead = this.newComponent("c-div").$mount();
+				var divBody = this.newComponent("c-div").$mount();
+				$(divHead.$el).addClass("collapsible-header").append(currentHead.$el);
+				$(divBody.$el).addClass("collapsible-body").append(currentBody.$el);
+				$(li.$el).append(divHead.$el);
+				$(li.$el).append(divBody.$el);
+				$(this.$el).append(li.$el);
+			}			
 			return this;
 		},
 		addRow : function(arg){
-			this.row.push(arg)
+			this.row.push(arg);
+			this.generateRow();
 			return this;			
 		},
 		clearRow : function(){
@@ -3903,8 +3922,13 @@ var collapsible = new configComponent({
 	},
 	mounted : function () {
 		this.$nextTick(function () {
-			$('#'+this.id).collapsible();
+			$('.collapsible').collapsible();
 		})
+	},
+	components : {
+		[li.name] : li,
+		[div.name] : div,
+		[this.name] : collapsible,
 	}	
 });
 var parallax = new configComponent({
