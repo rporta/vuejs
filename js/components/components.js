@@ -109,7 +109,14 @@ let configComponent = class {
 			$(b).empty();
 		}
 		setMethods.binaryCompare = function(a, b){
-			return a.localeCompare(b, 'es', { sensitivity: 'base' }) === 0 ? true : false;
+			if(b.constructor.name === "Array"){
+				for(var x in b){
+					if(this.binaryCompare(a, b[x])) return true;
+					if(x === b.length -1) return false;
+				}
+			}else{
+				return a.localeCompare(b, 'es', { sensitivity: 'base' }) === 0 ? true : false;
+			}
 		}
 		setMethods.setClass = function(arg){
 			let setClass = new Array();
@@ -2505,8 +2512,8 @@ var table = new configComponent({
 	template : 
 	'<transition name="fade">\
 	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
-	<thead v-html="this.generateHead()"></thead>\
-	<tbody v-html="this.generateRow()"></tbody>\
+	<thead><tr></tr></thead>\
+	<tbody></tbody>\
 	</div>\
 	</transition>',
 	methods : {
@@ -2515,47 +2522,73 @@ var table = new configComponent({
 			return tagName;	
 		},		
 		generateHead : function(){
-			var out = new Array();
-			var head = new Array();
-			out.push("<tr>");
+			var b = this;
+			if(!b.$el) b.$mount();
+			var head = table.$el.children[0].children[0];
+			$(head).empty();
+			for(x in this.head){
+				var currentHead = this.head[x];
+				if(currentHead.constructor.name == 'String'){
+					var th = $('<th>');
+					th.append(currentHead);
+					$(head).append(th);
+				}else{
+					var th = $('<th>');
+					th.append(currentHead.$mount().$el);
+					$(head).append(th);
+				}
+			}
 
-			$.each(this.head, function(x, j) {
-				head.push("<th>");
-				head.push(j);
-				head.push("</th>");
-			});
-			out.push(head.join(""));
-			out.push("</tr>");
-			return out.join("");	
+			return this;
 		},		
 		generateRow : function(){
-			var out = new Array();
-			var row = new Array();
-			$.each(this.row, function(x, data) {
-				out.push("<tr>");
-				$.each(data, function(p, l) {
-					var row = new Array();
-					row.push("<td>");
-					row.push(l);
-					row.push("</td>");
-					out.push(row.join(""));
-				});
-				out.push("</tr>");
-			});
-			return out.join("");
+			var b = this;
+			if(!b.$el) b.$mount();
+			var row = b.$el.children[1];
+			$(row).empty();
+			for(x in this.row){
+				var currentRow = this.row[x];
+				var tr = $('<tr>');
+				for(c in currentRow){
+					var th = $('<th>');
+					var currentC = currentRow[c];
+					if(currentC.constructor.name == 'String'){
+						th.append(currentC);
+						tr.append(th);
+					}else{
+						tr.append(currentC.$mount().$el);
+						tr.append(th);
+					}
+				}
+				$(row).append(tr);
+			}
+			return this;
 		},		
 		setHead : function(arg){
 			this.head = arg;
-			return this;
-		},
-		addRow : function(arg){
-			this.row.push(arg);
+			this.generateHead();
 			return this;
 		},
 		addHead : function(arg){
 			this.head.push(arg);
+			this.generateHead();
 			return this;
-		},		
+		},
+		addRow : function(arg){
+			this.row.push(arg);
+			this.generateRow();
+			return this;
+		},
+		clearRow :function(){
+			this.row = new Array();
+			this.generateRow();
+			return this;
+		},
+		clearHead : function(){
+			this.head = new Array();
+			this.generateHead();
+			return this;
+		},
 		setClass : function(){
 			var truncate = "truncate";
 			var cardpanel = "card-panel";

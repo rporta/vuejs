@@ -36,7 +36,7 @@ var span = app.newComponent("c-span").setText("reg 8").setColorText(app.generate
 table.setHead(new Array("fa", "so", "gg", "sarasa"));
 table.addRow(new Array("f", "j", "l"));
 table.addRow(new Array("f", "j", "l"));
-table.addRow(new Array(span.$mount().$el.outerHTML, "j", "l", "ggg"));
+table.addRow(new Array("j", "l", span));
 
 
 footer.create(p);
@@ -47,6 +47,3 @@ var icon = app.newComponent("c-icon").setIcon("account_balance");
 var form = app.newComponent("c-form");
 footer.create(form);
 form.setColor(app.generateColor());
-
-
-
