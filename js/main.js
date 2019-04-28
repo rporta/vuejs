@@ -30,8 +30,20 @@ var p = app.newComponent("c-p").setText("soy p").setColorText(app.generateColorT
 var span = app.newComponent("c-span").setText("soy span").setColorText(app.generateColorText());
 var pre = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
 var table = app.newComponent("c-table").setColor(app.generateColor()).setCentered(true);
+var pre1 = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
+var pre2 = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
+var pre3 = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
+var pre4 = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
+var pre5 = app.newComponent("c-pre").setText("soy pre").setColorText(app.generateColorText());
 
 var span = app.newComponent("c-span").setText("reg 8").setColorText(app.generateColorText());
+var collection = app.newComponent("c-collection");
+
+collection.addRow(pre1);
+collection.addRow(pre2);
+collection.addRow(pre3);
+collection.addRow(pre4);
+collection.addRow(pre5);
 
 table.setHead(new Array("fa", "so", "gg", "sarasa"));
 table.addRow(new Array("f", "j", "l"));
@@ -43,6 +55,7 @@ footer.create(p);
 footer.create(span);
 footer.create(pre);
 footer.create(table);
+footer.create(collection);
 var icon = app.newComponent("c-icon").setIcon("account_balance");
 var form = app.newComponent("c-form");
 footer.create(form);

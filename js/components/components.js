@@ -3692,7 +3692,7 @@ var collection = new configComponent({
 	name : "c-collection",
 	template : 
 	'<transition name="fade">\
-	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()" v-html="this.generateRow()" >\
+	<div v-bind:is="this.generateTag()" key="this.generateId(5)" v-show="this.show" v-bind:id="this.generateId(5)" v-bind:class="this.setClass()">\
 	</div>\
 	</transition>',
 	data : function(){
@@ -3704,6 +3704,7 @@ var collection = new configComponent({
 			show : this.pshow,
 			mode : this.pmode,
 			row : this.prow,
+			x : 0,
 		}
 	},
 	props : {
@@ -3747,9 +3748,9 @@ var collection = new configComponent({
 		setClass : function (){
 			var setClass = "";
 			switch(this.mode){
+				case 1 : 
 				case 0 : setClass = "collection";
 				break; 
-				case 1 : 
 				case 2 : setClass = "collection with-header";
 				break; 
 			}
@@ -3757,47 +3758,55 @@ var collection = new configComponent({
 			return new Array(setClass, this.color, this.colorText, this.textAling, this.shadow).join(" ").trim();
 		},
 		generateRow : function(){
-			var out = new Array();
-			switch(this.mode){
-				case 0 : 
-				$.each(this.row, function(i, v) {
-					out.push('<li class="collection-item">' + v + '</li>');
-				});
-				break; 
-				case 1 :
-				$.each(this.row, function(i, v) {
-					console.log(v.$el);
-					$(v.$el).addClass('collection-item');
-					out.push(v.$el.outerHTML);
-				});
-				break; 
-				case 2 :
-				$.each(this.row, function(i, v) {
-					if(i == 0){
-						out.push('<li class="collection-header">' + v.$el.outerHTML + '</li>');
-					}else{
-						out.push('<li class="collection-item">' + v.$el.outerHTML + '</li>');
-					}
-				});
-				break; 
-			}			
+			var b = this;
+			if(!b.$el){
+				b.$mount();
+			}
+			$(this.$el).empty();
 
-			return out.join("");
+			for(var r in this.row){
+				var currentRow = this.row[r];
+				if(!currentRow.$el){
+					currentRow.$mount();
+				}
+				switch(this.mode){
+					case 0 : 
+					var li = this.newComponent("c-li").$mount();
+					$(li.$el).addClass("collection-item").append(currentRow.$el);
+					$(this.$el).append(li.$el);
+					break; 
+					case 1 : 
+					$(currentRow.$el).addClass("collection-item");
+					$(this.$el).append(currentRow.$el);
+					break; 
+					case 2 : 
+					var li = this.newComponent("c-li").$mount();
+					if(r === 0){
+						$(li.$el).addClass("collection-header").append(currentRow.$el);
+					}else{
+						$(li.$el).addClass("collection-item").append(currentRow.$el);
+					}
+					$(this.$el).append(li.$el);
+					break; 	
+				}
+			}
+			this.x++;
+			console.log(this.x);	
 		},
 		generateTag : function(){
 			var tagName = "";
 			switch(this.mode){
-				case 0 : tagName = "ul";
+				case 0 : 
+				case 2 :  tagName = "ul";
 				break; 
 				case 1 : tagName = "div";
-				break; 
-				case 2 : tagName = "ul";
 				break; 
 			}
 			return tagName;	
 		},	
 		addRow : function(arg){
-			this.row.push(arg)
+			this.row.push(arg);
+			this.generateRow();
 			return this;			
 		},
 		clearRow : function(){
@@ -3816,6 +3825,12 @@ var collection = new configComponent({
 			}
 			return this;
 		}
+	},
+	components : {
+		[li.name] : li,
+		[ul.name] : ul,
+		[div.name] : ul,
+		[this.name] : collection,
 	}
 });
 var collapsible = new configComponent({
@@ -3829,8 +3844,8 @@ var collapsible = new configComponent({
 		return {
 			id : this.pcolor,
 			color : this.pcolorText,
-			colorText : this.ptextAling,
-			textAling : this.pshadow,
+			colorText : this.colorText,
+			textAling : this.textAling,
 			shadow : this.pshow,
 			show : this.pmode,
 			row : this.prow,
@@ -3874,27 +3889,9 @@ var collapsible = new configComponent({
 		}, 		
 	},
 	methods : {
-		setClass : function (){
-			return new Array(this.color, this.colorText, this.textAling, this.shadow).join(" ");
-		},
 		generateRow : function(){
-			var out = new Array();
-			$.each(this.row, function(i, v) {
-				out.push('<li>');
-				out.push('<div class="collapsible-header">');
-				out.push(v.header.$el ? v.header.$el.outerHTML : v.header);
-				out.push('</div>');
-				out.push('<div class="collapsible-body">');
-				out.push(v.body.$el ? v.body.$el.outerHTML : v.body);
-				out.push('</div>');
-				out.push('</li>');				
-			});
-			return out.join("");
-		},		
-		/**
-		* [addRow description] se agrega un vector a la lista
-		* @param {[type]} arg [description] Array (header, body), donde header y body, son componentes 
-		*/
+			return this;
+		},
 		addRow : function(arg){
 			this.row.push(arg)
 			return this;			
