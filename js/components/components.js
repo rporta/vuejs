@@ -4382,184 +4382,266 @@ var dropdown = new configComponent({
 	name : "c-dropdown",
 	data : function(){
 		return {
-			id : this.pid,
-			color : this.pcolor,
-			colorText : this.pcolorText,
-			text : this.ptext,
-			float : this.pfloat,
-			shadow : this.pshadow,
-			truncate : this.ptruncate,
-			cardpanel : this.pcardpanel,
-			hoverable : this.phoverable,
-			container : this.pcontainer,
-			valign : this.pvalign,
-			disable : this.pdisable,
-			flat : this.pflat,
-			floating : this.pfloating,
-			wave : this.pwave,
-			size : this.psize,
-			href : this.phref,
 			show : this.pshow,
-			dropdown : this.pdropdown,
-			idA : this.pidA,
+			row : this.prow,
+			/*data c-a*/
+			acolor : this.pacolor,
+			acolorText : this.pacolorText,
+			atext : this.patext,
+			afloat : this.pafloat,
+			ashadow : this.pashadow,
+			atruncate : this.patruncate,
+			acardpanel : this.pacardpanel,
+			ahoverable : this.pahoverable,
+			acontainer : this.pacontainer,
+			avalign : this.pavalign,
+			awave : this.pawave,
+			asize : this.pasize,
+			ahref : this.pahref,
+			ashow : this.pashow,
+			adisable : this.padisable,
+			aflat : this.paflat,
+			afloating : this.pafloating,
+			/*data c-ul*/
+			ultext : this.pultext,
+			ulcolor : this.pulcolor,
+			ulcolorText : this.pulcolorText,
+			ultextAling : this.pultextAling,
+			ulfloat : this.pulfloat,
+			ulshadow : this.pulshadow,
+			ultruncate : this.pultruncate,
+			ulcardpanel : this.pulcardpanel,
+			ulhoverable : this.pulhoverable,
+			ulcontainer : this.pulcontainer,
+			ulvalign : this.pulvalign,
+			ulshow : this.pulshow,
+			ulflowText : this.pulflowText,
+			ulpadingl : this.pulppadingl,
 		}
 	},
 	props : {
-		pid  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		pcolor  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		pcolorText  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		ptext  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		pfloat  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		pshadow  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		ptruncate  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pcardpanel  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		phoverable  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pcontainer  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pvalign  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pdisable  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pflat  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pfloating  : {
-			type : Boolean,
-			required : false, 
-			default :  false,
-		}, 
-		pwave  : {
-			type : String,
-			required : false, 
-			default :  null,
-		}, 
-		psize  : {
-			type : String,
-			required : false, 
-			default :  "btn-small",
-		}, 
-		phref  : {
-			type : String,
-			required : false, 
-			default :  "#",
-		}, 
 		pshow  : {
 			type : Boolean,
 			required : false, 
-			default :  true,			
-		}, 
-		pdropdown  : {
+			default : true,
+		},
+		prow  : {
 			type : Array,
 			required : false, 
-			default :  function(){return new Array()},
-		}, 
-		pidA  : {
+			default : function () { return new Array() },
+		}, 	
+		/*props c-a*/
+		pacolor  : {
 			type : String,
 			required : false, 
-			default :  null,
+			default : null,
+		}, 
+		pacolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		patext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pafloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pashadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		patruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pacardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pahoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pacontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pavalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pawave  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pasize  : {
+			type : String,
+			required : false, 
+			default : "btn-small",
+		}, 
+		pahref  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pashow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		padisable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		paflat  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pafloating  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		},
+		/*props c-ul*/
+		pultext  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pulcolor  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pulcolorText  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pultextAling  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pulfloat  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pulshadow  : {
+			type : String,
+			required : false, 
+			default : null,
+		}, 
+		pultruncate  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pulcardpanel  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pulhoverable  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pulcontainer  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pulvalign  : {
+			type : Boolean,
+			required : false, 
+			default : false,
+		}, 
+		pulshow  : {
+			type : Boolean,
+			required : false, 
+			default : true,
+		}, 
+		pulflowText  : {
+			type : Boolean,
+			required : false, 
+			default : false,
 		}, 		
+		pulpadingl  : {
+			type : String,
+			required : false, 
+			default : null,
+		}
+
 	},
 	template :
 	'<transition name="fade">\
-	<div key="this.generateId(5)" v-show="this.show">\
-	<div v-bind:id="this.generateIdA()" v-bind:is="this.generateTag()" key="this.generateId(5)" class="dropdown-trigger" v-bind:data-target="this.generateId(5)" v-bind:class="this.setClass()">{{this.text}}</div>\
-	<ul key="this.generateId(5)" v-bind:id="this.id" class="dropdown-content" v-html="this.generateDropDown()" ></ul>\
-	</div>\
+	<div v-bind:id="this.generateId(5)" v-show="this.show"></div>\
 	</transition>',
 	methods : {
-		generateDropDown : function (arg){
-			var out = new Array();
-			$.each(this.dropdown, function(i, v) {
-				out.push("<li>");
-				if(typeof v == 'string'){
-					out.push(v);
+		generateDropdown : function (){
+			var b = this;
+			if(!b.$el){
+				b.$mount();
+			}
+			$(b.$el).empty();
+			var ul = this.newComponent("c-ul").setText(this.ultext).setColor(this.ulcolor).setColorText(this.ulcolorText).setTextAling(this.ultextAling).setFloat(this.ulfloat).setShadow(this.ulshadow).setTruncate(this.ultruncate).setCardpanel(this.ulcardpanel).setHoverable(this.ulhoverable).setContainer(this.ulcontainer).setValign(this.ulvalign).setShow(this.ulshow).setFlowText(this.ulflowText).setPadingl(this.ulpadingl).$mount();
+			$(ul.$el).addClass("dropdown-content");
+			var a = this.newComponent("c-a").setColor(this.acolor).setColorText(this.acolorText).setText(this.atext).setFloat(this.afloat).setShadow(this.ashadow).setTruncate(this.atruncate).setCardpanel(this.acardpanel).setHoverable(this.ahoverable).setContainer(this.acontainer).setValign(this.avalign).setWave(this.awave).setSize(this.asize).setHref(this.ahref).setShow(this.ashow).setDisable(this.adisable).setFlat(this.aflat).setFloating(this.afloating).$mount();
+			$(a.$el).addClass("dropdown-trigger");
+			$(a.$el).attr('data-target', ul.$el.id);
+			$(b.$el).append(a.$el);
+			$(b.$el).append(ul.$el);
+			for(var x in this.row){
+				var currentRow = this.row[x];
+				var li = this.newComponent("c-li").$mount();
+				if (currentRow.constructor.name === "String"){
+					$(li.$el).text(currentRow);
+					$(b.$el.children[1]).append(li.$el);
 				}else{
-					console.log(v);
-					out.push(v.$el.outerHTML);
+
+					$(b.$el.children[1]).append(li.$el);
+					$(li.$el).append(currentRow.$mount().$el);
 				}
-				out.push("</li>");
-			});
-			return out.join("");
-		},
-		addDropDown : function (arg){
-			this.dropdown.push(arg);
+			}
+			$('.dropdown-trigger').dropdown();
 			return this;
 		},
-		clearDropDown : function (arg){
-			this.dropdown = new Array();
+		addRow : function(arg){
+			this.row.push(arg);
+			this.generateDropdown();
 			return this;
 		},
-		generateIdA : function(arg){
-			this.idA = this.$options.name + app.generateId(arg);
-			return this.idA;
-		},		
-		generateTag : function(){
-			var tagName = "a";
-			return tagName;	
-		},								
-		setClass : function(){
-			var truncate = "truncate";
-			var cardpanel = "card-panel";
-			var hoverable = "hoverable";
-			var valign = "valign-wrapper";
-			var container = "container";			
-			var disable = "disable";			
-			var flat = "flat";			
-			var floating = "floating";			
-			return new Array(this.wave, this.size, this.color, this.colorText, this.float, this.shadow, this.size, this.truncate ? truncate : "", this.cardpanel ? cardpanel : "", this.hoverable ? hoverable : "", this.valign ? valign : "", this.container ? container : "", this.disable ? disable : "", this.flat ? flat : "", this.floating ? floating : "").join(" ");
+		clearRow : function(arg){
+			this.row = new Array();
+			this.generateDropdown();
+			return this;
 		},
 	},
 	mounted : function () {
 		this.$nextTick(function () {
-			$('#'+this.idA).dropdown();
-		})
+			this.generateDropdown();
+		});
+	},
+	components : {
+		[this.name] : dropdown,
+		[ul.name] : ul,
+		[li.name] : li,
+		[a.name] : a
 	}	
-
 });

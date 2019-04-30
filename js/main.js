@@ -39,15 +39,11 @@ var pre5 = app.newComponent("c-pre").setText("soy pre5").setColorText(app.genera
 
 var span = app.newComponent("c-span").setText("reg 8").setColorText(app.generateColorText());
 
-var collapsible = app.newComponent("c-collapsible");
-var cont1 = new Object();
-cont1.head = pre1; 
-cont1.body = pre2;
-collapsible.addRow(cont1);
-var cont2 = new Object();
-cont2.head = pre3; 
-cont2.body = pre4;
-collapsible.addRow(cont2);
+var dropdown = app.newComponent("c-dropdown").setAtext("fafa");
+dropdown.setUlcolor(app.generateColor())
+
+dropdown.addRow(pre1);
+dropdown.addRow(pre2);
 
 table.setHead(new Array("fa", "so", "gg", "sarasa"));
 table.addRow(new Array("f", "j", "l"));
@@ -59,7 +55,7 @@ footer.create(p);
 footer.create(span);
 footer.create(pre);
 footer.create(table);
-footer.create(collapsible);
+footer.create(dropdown);
 var icon = app.newComponent("c-icon").setIcon("account_balance");
 var form = app.newComponent("c-form");
 footer.create(form);
